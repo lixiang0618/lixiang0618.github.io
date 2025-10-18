@@ -139,3 +139,31 @@
   }
 })();
 
+
+
+// 肖像
+const portrait = document.getElementById("portrait-img");
+
+// 两张头像路径（可自行替换）
+const portraits = [
+  "Resources/portrait-1.jpg",
+  "Resources/portrait-2.jpg",
+  "Resources/portrait-3.jpg"
+];
+
+let current = 0;
+
+portrait.addEventListener("click", () => {
+  current = (current + 1) % portraits.length;
+  portrait.src = portraits[current];
+});
+
+
+// 语言
+document.querySelectorAll('.section-skills .lang-item').forEach(item => {
+  const percent = item.getAttribute('data-percent');
+  const color = item.getAttribute('data-color');
+  const circle = item.querySelector('circle:last-child');
+  circle.style.setProperty('--percent', percent);
+  circle.style.setProperty('--circle-color', color);
+});
