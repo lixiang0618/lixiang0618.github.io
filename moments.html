@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script>
+    (function() {
+      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      if (isMobile) {
+        const navLinks = document.querySelectorAll('.site-nav a');
+        navLinks.forEach(link => {
+          if (link.href.indexOf('index.html') !== -1) {
+            link.href = 'index-mobile.html';
+          }
+        });
+      }
+    })();
+  </script>
+  <title>Li Xiang | Moments</title>
+  <meta name="description" content="Li Xiang's Moments - Daily life and updates">
+  <meta name="author" content="Li Xiang">
+  <link rel="icon" href="Resources/Logo.png">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .moments-container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 40px 28px;
+    }
+    .moments-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    .moments-header h1 {
+      font-size: 32px;
+      margin-bottom: 8px;
+      color: var(--text);
+    }
+    .moments-header p {
+      color: var(--subtle);
+      font-size: 16px;
+    }
+    .moment-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      margin-bottom: 20px;
+      overflow: hidden;
+      transition: box-shadow 0.2s ease;
+    }
+    .moment-card:hover {
+      box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+    }
+    .moment-header {
+      display: flex;
+      align-items: center;
+      padding: 16px 16px 12px;
+      gap: 12px;
+    }
+    .moment-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-weight: 700;
+      font-size: 18px;
+    }
+    .moment-info {
+      flex: 1;
+    }
+    .moment-name {
+      font-weight: 600;
+      color: var(--text);
+    }
+    .moment-time {
+      font-size: 12px;
+      color: var(--subtle);
+    }
+    .moment-content {
+      padding: 0 16px 12px;
+      color: var(--text);
+      line-height: 1.6;
+    }
+    .moment-images {
+      display: grid;
+      gap: 4px;
+      padding: 0 16px;
+      margin-bottom: 12px;
+    }
+    .moment-images.triple {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .moment-images.quad {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .moment-images.single {
+      grid-template-columns: 1fr;
+    }
+    .moment-images img {
+      width: 100%;
+      aspect-ratio: 1;
+      object-fit: cover;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+    .moment-images img:hover {
+      transform: scale(1.02);
+    }
+    .loading {
+      text-align: center;
+      padding: 60px 0;
+      color: var(--subtle);
+    }
+    .empty-state {
+      text-align: center;
+      padding: 60px 0;
+      color: var(--subtle);
+    }
+    .empty-state .icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+    }
+
+    @media (max-width: 768px) {
+      .moments-container {
+        padding: 24px 16px;
+      }
+      .moments-header h1 {
+        font-size: 26px;
+      }
+      .moments-header p {
+        font-size: 14px;
+      }
+      .moment-card {
+        margin-bottom: 16px;
+      }
+      .moment-header {
+        padding: 14px 14px 10px;
+      }
+      .moment-content {
+        padding: 0 14px 10px;
+        font-size: 15px;
+      }
+      .moment-images {
+        padding: 0 14px;
+        gap: 3px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .moments-header h1 {
+        font-size: 22px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="index.html" aria-label="Home">
+      <span class="brand-name">Li Xiang</span>
+    </a>
+    <nav class="site-nav" aria-label="Primary">
+      <a href="index.html">Profile</a>
+      <a href="blog.html">Blog</a>
+      <a href="moments.html">Moments</a>
+      <a href="about.html">About Me</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="moments-container">
+      <div class="moments-header">
+        <h1>Moments</h1>
+        <p>Sharing my daily life and thoughts</p>
+      </div>
+
+      <div id="moments-list"></div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>© <span id="year">2025</span> Li Xiang</span>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    function formatDate(dateStr) {
+      const date = new Date(dateStr);
+      const now = new Date();
+      const diff = now - date;
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+
+      if (days === 0) {
+        const hours = Math.floor(diff / (1000 * 60 * 60));
+        if (hours === 0) return 'Just now';
+        if (hours === 1) return '1 hour ago';
+        if (hours < 24) return `${hours} hours ago`;
+        return date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+      }
+      if (days === 1) return 'Yesterday';
+      if (days < 7) return `${days} days ago`;
+
+      return date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
+    }
+
+    function getImageClass(count) {
+      if (count === 1) return 'single';
+      if (count <= 4) return 'quad';
+      return 'triple';
+    }
+
+    const moments = [
+    {
+        "date": "2026-03-01 4:30",
+        "content": "想你们🏐",
+        "images": [
+            "Resources/sports-1.jpg",
+            "Resources/sports-2.jpg",
+            "Resources/sports-3.jpg",
+            "Resources/sports-4.jpg"
+        ]
+    },
+    {
+        "date": "2025-07-28 09:15",
+        "content": "喜欢绿色📸",
+        "images": [
+            "Resources/portrait-1.jpg"
+        ]
+    }
+];
+    
+    
+    
+    
+    
+    
+    
+
+    const container = document.getElementById('moments-list');
+
+    if (moments.length > 0) {
+      container.innerHTML = moments.map(moment => {
+        const imageClass = getImageClass(moment.images.length);
+        const imagesHtml = moment.images.length > 0
+          ? `<div class="moment-images ${imageClass}">
+              ${moment.images.map(img => `<img src="${img}" alt="Moment photo">`).join('')}
+            </div>`
+          : '';
+        const contentHtml = moment.content
+          ? `<div class="moment-content">${moment.content}</div>`
+          : '';
+
+        return `
+          <div class="moment-card">
+            <div class="moment-header">
+              <div class="moment-avatar">L</div>
+              <div class="moment-info">
+                <div class="moment-name">Li Xiang</div>
+                <div class="moment-time">${formatDate(moment.date)}</div>
+              </div>
+            </div>
+            ${contentHtml}
+            ${imagesHtml}
+          </div>
+        `;
+      }).join('');
+    } else {
+      container.innerHTML = `
+        <div class="empty-state">
+          <div class="icon">📷</div>
+          <p>No moments yet.</p>
+          <p>Edit data/moments.json to add your moments</p>
+        </div>
+      `;
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script>
+    (function() {
+      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      if (isMobile) {
+        const navLinks = document.querySelectorAll('.site-nav a');
+        navLinks.forEach(link => {
+          if (link.href.indexOf('index.html') !== -1) {
+            link.href = 'index-mobile.html';
+          }
+        });
+      }
+    })();
+  </script>
+  <title>Li Xiang | Blog</title>
+  <meta name="description" content="Li Xiang's Blog - Thoughts on my life and learning journey">
+  <meta name="author" content="Li Xiang">
+  <link rel="icon" href="Resources/Logo.png">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .blog-container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 28px;
+    }
+    .blog-header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+    .blog-header h1 {
+      font-size: 36px;
+      margin-bottom: 12px;
+      color: var(--text);
+    }
+    .blog-header p {
+      color: var(--subtle);
+      font-size: 18px;
+    }
+    .blog-filters {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 32px;
+    }
+    .filter-btn {
+      padding: 8px 20px;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      background: #fff;
+      color: var(--text);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .filter-btn:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+    .filter-btn.active {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #fff;
+    }
+    .blog-post {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px;
+      margin-bottom: 24px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .blog-post:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    }
+    .blog-post.hidden {
+      display: none;
+    }
+    .blog-meta {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 16px;
+      color: var(--subtle);
+      font-size: 14px;
+    }
+    .blog-category {
+      display: inline-block;
+      padding: 4px 10px;
+      background: var(--muted);
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .blog-title {
+      font-size: 24px;
+      margin-bottom: 12px;
+      color: var(--text);
+    }
+    .blog-excerpt {
+      color: var(--subtle);
+      line-height: 1.7;
+      margin-bottom: 16px;
+    }
+    .blog-read-more {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--primary);
+      font-weight: 600;
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+    .blog-read-more:hover {
+      color: var(--accent);
+    }
+
+    @media (max-width: 768px) {
+      .blog-container {
+        padding: 24px 16px;
+      }
+      .blog-header h1 {
+        font-size: 28px;
+      }
+      .blog-header p {
+        font-size: 16px;
+      }
+      .blog-filters {
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .filter-btn {
+        padding: 6px 14px;
+        font-size: 13px;
+      }
+      .blog-post {
+        padding: 20px;
+      }
+      .blog-title {
+        font-size: 20px;
+      }
+      .blog-excerpt {
+        font-size: 15px;
+      }
+      .blog-meta {
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .blog-header h1 {
+        font-size: 24px;
+      }
+      .blog-title {
+        font-size: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="index.html" aria-label="Home">
+      <span class="brand-name">Li Xiang</span>
+    </a>
+    <nav class="site-nav" aria-label="Primary">
+      <a href="index.html">Profile</a>
+      <a href="blog.html">Blog</a>
+      <a href="moments.html">Moments</a>
+      <a href="about.html">About Me</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="blog-container">
+      <div class="blog-header">
+        <h1>My Blog</h1>
+        <p>Sharing Thoughts on My Life and Learning Journey</p>
+      </div>
+
+      <div class="blog-filters">
+        <button class="filter-btn active" data-filter="all">全部</button>
+        <button class="filter-btn" data-filter="随笔">随笔</button>
+        <button class="filter-btn" data-filter="学习">学习</button>
+      </div>
+
+      <div id="blog-posts"></div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>© <span id="year">2025</span> Li Xiang</span>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    let posts = [];
+
+    async function loadPosts() {
+      try {
+        const response = await fetch('./data/blog.json');
+        posts = await response.json();
+        posts.sort((a, b) => {
+          if (a.pinned && !b.pinned) return -1;
+          if (!a.pinned && b.pinned) return 1;
+          return new Date(b.date) - new Date(a.date);
+        });
+        renderPosts();
+      } catch (error) {
+        console.error('加载博客失败:', error);
+        document.getElementById('blog-posts').innerHTML = '<p style="text-align:center;color:var(--subtle);">加载失败，请刷新重试</p>';
+      }
+    }
+
+    const container = document.getElementById('blog-posts');
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    let currentFilter = 'all';
+
+    function renderPosts() {
+      const filteredPosts = currentFilter === 'all'
+        ? posts
+        : posts.filter(post => post.tags.includes(currentFilter));
+
+      if (filteredPosts.length > 0) {
+        container.innerHTML = filteredPosts.map(post => {
+          const date = new Date(post.date);
+          const dateStr = date.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+          });
+          const fileName = post.file || post.title.toLowerCase().replace(/\s+/g, '-');
+          const tag = post.tags[0] || post.categories[0] || '随笔';
+          const pinBadge = post.pinned ? '<span style="color:#e74c3c;margin-right:6px;">📌</span>' : '';
+
+          return `
+            <article class="blog-post">
+              <div class="blog-meta">
+                <span>${dateStr}</span>
+                <span class="blog-category">${tag}</span>
+              </div>
+              <h2 class="blog-title">${pinBadge}${post.title}</h2>
+              <p class="blog-excerpt">${post.excerpt}</p>
+              <a href="blog-post.html?p=${fileName}" class="blog-read-more">Read more →</a>
+            </article>
+          `;
+        }).join('');
+      } else {
+        container.innerHTML = '<p style="text-align:center;color:var(--subtle);">暂无文章</p>';
+      }
+    }
+
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentFilter = btn.dataset.filter;
+        renderPosts();
+      });
+    });
+
+    loadPosts();
+  </script>
+</body>
+</html>

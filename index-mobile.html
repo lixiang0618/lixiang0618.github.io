@@ -1,0 +1,572 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Li Xiang | Personal Website (Mobile)</title>
+  <meta name="description" content="Li Xiang — Information Management & Information System undergraduate. GNN, Data Science, AIoT.">
+  <meta name="author" content="Li Xiang">
+  <link rel="icon" href="Resources/Logo.png">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* 手机版专享样式 - 强制限制宽度防止左右滑动 */
+    html, body {
+      overflow-x: hidden !important;
+      max-width: 100vw !important;
+      width: 100% !important;
+      min-width: 0 !important;
+    }
+    body {
+      font-size: 15px;
+      min-width: 0 !important;
+    }
+    .container {
+      max-width: 100% !important;
+      width: 100% !important;
+      min-width: 0 !important;
+    }
+    .hero-inner {
+      max-width: 100% !important;
+      width: 100% !important;
+      min-width: 0 !important;
+      padding: 0 !important;
+    }
+    .hero {
+      padding: 30px 16px 20px !important;
+      max-width: 100% !important;
+      width: 100% !important;
+      min-width: 0 !important;
+    }
+    .timeline, .timeline-item, .row, .section {
+      max-width: 100% !important;
+      width: 100% !important;
+      min-width: 0 !important;
+    }
+    .photo-wall {
+      max-width: 100% !important;
+      width: 100% !important;
+      column-count: 2 !important;
+      min-width: 0 !important;
+    }
+    .photo-wall img {
+      max-width: 100% !important;
+      width: 100% !important;
+      min-width: 0 !important;
+    }
+    .site-header {
+      position: sticky !important;
+      top: 0 !important;
+      z-index: 100 !important;
+      flex-direction: column;
+      gap: 10px;
+      padding: 10px 12px;
+      max-width: 100% !important;
+      width: 100% !important;
+      min-width: 0 !important;
+      background: rgba(255,255,255,0.9) !important;
+      backdrop-filter: saturate(140%) blur(8px) !important;
+      border-bottom: 1px solid var(--border) !important;
+    }
+    .brand-name {
+      font-size: 18px;
+    }
+    .site-nav {
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .site-nav a {
+      font-size: 13px;
+      padding: 6px 8px;
+    }
+    .hero {
+      padding: 30px 16px 20px;
+    }
+    .hero-inner {
+      grid-template-columns: 1fr;
+    }
+    .hero-media {
+      justify-content: center;
+    }
+    .hero-img {
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+    }
+    .hero-text {
+      text-align: center;
+    }
+    .hero-text h1 {
+      font-size: 24px;
+    }
+    .chips {
+      justify-content: center;
+      gap: 6px;
+    }
+    .chip {
+      padding: 6px 10px;
+      font-size: 12px;
+    }
+    .location-info {
+      justify-content: center;
+      text-align: center;
+      font-size: 15px;
+    }
+    .social-links {
+      justify-content: center;
+      gap: 10px;
+    }
+    .social-link {
+      padding: 8px 10px;
+    }
+    .social-link span {
+      display: none;
+    }
+    .contact-row {
+      justify-content: center;
+    }
+    .section {
+      padding: 24px 16px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .container, .site-header, .site-main, .site-footer {
+      max-width: 100% !important;
+      width: 100% !important;
+      box-sizing: border-box !important;
+      overflow-x: hidden !important;
+    }
+    .row, .row_nus_aiot, .row_learnGo {
+      width: 100% !important;
+      box-sizing: border-box !important;
+    }
+    .row-text, .row-media {
+      width: 100% !important;
+      box-sizing: border-box !important;
+    }
+    .site-main {
+      max-width: 100% !important;
+      width: 100% !important;
+      min-width: 0 !important;
+    }
+    .site-footer {
+      max-width: 100% !important;
+      width: 100% !important;
+      min-width: 0 !important;
+      padding: 16px !important;
+    }
+    .footer-inner {
+      flex-direction: column !important;
+      gap: 8px !important;
+      text-align: center !important;
+      max-width: 100% !important;
+      width: 100% !important;
+    }
+    .row-text, .row-media, .left-section, .right-section {
+      max-width: 100% !important;
+      width: 100% !important;
+      min-width: 0 !important;
+    }
+    .section-title {
+      font-size: 20px;
+    }
+    .row {
+      width: 100%;
+      margin: 20px 0;
+    }
+    .row-text h3 {
+      font-size: 17px;
+    }
+    .meta-inline {
+      font-size: 13px;
+    }
+    .row-text li {
+      font-size: 14px;
+    }
+    .timeline {
+      width: 100%;
+      margin-left: 0;
+      padding: 0;
+    }
+    .timeline-item {
+      flex-direction: column;
+      gap: 6px;
+    }
+    .timeline-date {
+      width: 100%;
+      text-align: left;
+      font-size: 12px;
+    }
+    .timeline-content {
+      font-size: 14px;
+    }
+    .sports-icons {
+      gap: 24px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .sports-icons .sport {
+      width: 90px;
+    }
+    .sports-icons .sport img {
+      width: 50px; height: 50px;
+    }
+    .photo-wall {
+      column-count: 2;
+    }
+    .leadership-cards {
+      grid-template-columns: 1fr;
+    }
+    .education-row {
+      width: 100%;
+      gap: 16px;
+      flex-direction: column;
+    }
+    .education_logo img {
+      width: 80px;
+      margin-top: 0;
+    }
+    .row_nus_aiot, .row_learnGo {
+      flex-direction: column;
+      width: 100%;
+    }
+    .nus-aiot, .right-section {
+      width: 100%;
+      flex-direction: column;
+    }
+    .right-section img {
+      width: 100%;
+    }
+    .site-footer {
+      padding: 12px 16px;
+    }
+    .footer-inner {
+      flex-direction: column;
+      text-align: center;
+      font-size: 13px;
+    }
+    /* 隐藏指定区域 */
+    #news, #skills {
+      display: none !important;
+    }
+    /* 手机版按钮 - 切换桌面版 */
+    .desktop-switch-btn {
+      position: fixed;
+      bottom: 80px;
+      right: 15px;
+      z-index: 999;
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 20px;
+      padding: 6px 12px;
+      font-size: 12px;
+      cursor: pointer;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+  </style>
+  <script>
+    (function() {
+      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      if (!isMobile && window.location.pathname.indexOf('index.html') === -1) {
+        window.location.href = 'index.html';
+      }
+    })();
+    function switchToDesktop() {
+      window.location.href = 'index.html';
+    }
+  </script>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="#top" aria-label="Home">
+      <span class="brand-name">Li Xiang</span>
+    </a>
+    <nav class="site-nav" aria-label="Primary">
+      <a href="index.html">Profile</a>
+      <a href="blog.html">Blog</a>
+      <a href="moments.html">Moments</a>
+      <a href="about.html">About Me</a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero" aria-labelledby="intro-title">
+      <div class="hero-inner">
+        <div class="hero-media">
+          <img src="Resources/portrait-1.jpg" alt="portrait" class="hero-img" />
+        </div>
+        <div class="hero-text">
+          <h1 id="intro-title">李想 / LI XIANG</h1>
+          <div class="chips">
+            <span class="chip">Graph Network Learning</span>
+            <span class="chip">Social Network Analysis</span>
+            <span class="chip">Modeling & Simulation</span>
+            <span class="chip">Volleyball(Setter)</span>
+            <span class="chip">Badminton</span>
+            <span class="chip">Travel & Photo</span>
+          </div>
+          
+          <div class="location-info">
+            <span>Shortest Shortcut is Detour</span>
+          </div>
+          <div class="social-links">
+            <a class="social-link" href="https://xhslink.com/m/YNCXKZoX5C" target="_blank" rel="noopener">
+              <img src="https://tse1.mm.bing.net/th/id/OIP.wo1WIItmWh812PwxQwsbLAAAAA?cb=12&rs=1&pid=ImgDetMain&o=7&rm=3" alt="XiaoHongShu" />
+              <span>RedNote</span>
+            </a>
+            <a class="social-link" href="https://v.douyin.com/J17ey4JXPp0" target="_blank" rel="noopener">
+              <span>TikTok</span>
+            </a>
+            <a class="social-link" href="https://github.com/lixiang0618" target="_blank" rel="noopener">
+              <img src="https://tse3.mm.bing.net/th/id/OIP.Lwbgu4eSpSz4gKe-F_k58gHaHa?cb=12&rs=1&pid=ImgDetMain&o=7&rm=3" alt="GitHub" />
+              <span>GitHub</span>
+            </a>
+            <a class="social-link" href="https://b23.tv/7Q10Hdu" target="_blank" rel="noopener">
+              <img src="https://raw.githubusercontent.com/marguerite/BiliGui/master/data/bilibili.png" alt="BiliBili" />
+              <span>BiliBili</span>
+            </a>
+          </div>
+          <div class="contact-row">
+            <span>📩 Email: <a class="contact-link" href="mailto:leisoeng618@gmail.com">leisoeng618@gmail.com</a></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="education" class="section">
+      <h2 class="section-title">Education</h2>
+
+      <div class="row education-row">
+        <div class="row-text">
+          <h3>Central China Normal University (CCNU) | Wuhan, China</h3>
+          <div class="meta-inline">Sept. 2022 – Jun. 2026</div>
+          <ul>
+            <li>Candidate for Bachelor of Management in Information Management & Information System</li>
+            <li>Major Average Mark: 89.18/100;  Rank: 1/32</li>
+            <li>Core Courses: Operation Research, Algorithm Design, Convex Optimisation, Computer Networks</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="row education-row">
+        <div class="row-text">
+          <h3>Wuzhou Senior High School (WSHS) | Wuzhou, China</h3>
+          <div class="meta-inline">Sept. 2019 – Jun. 2022</div>
+          <ul>
+            <!-- <li>Optional Subject: Physics, Chemistry, Biology</li>
+            <li>University Entrance Exam (GaoKao) Rank: 1/56 in class</li> -->
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="news" class="section">
+      <h2 class="section-title">News / What I Am Doing</h2>
+      <ul class="news-list">
+        <li>Completed my latest research experiment and currently writing the paper.</li>
+        <li>Joined a new research group focusing on improving the State Space Model.</li>
+        <li>Applying for a master's degree to further my academic journey.</li>
+        <li>Training hard for the upcoming volleyball league.</li>
+        <li>Preparing for an exciting cruise trip soon.</li>
+      </ul>
+    </section>
+
+    <section id="research" class="section">
+      <h2 class="section-title">Research Experience</h2>
+      <div class="row">
+        <div class="row-text">
+          <h3>Cost-Sensitive Guided Graph Neural Network on Healthy Insurance Network</h3>
+          <div class="meta-inline">Mentored by Dr. Fei Xiao, CCNU · Apr. 2024 – Present</div>
+          <ul>
+            <li>Constructed a novel healthcare network using coupling mechanism and cost-sensitive learning</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="row-text">
+          <h3>InterLibrary Interaction among Major Universities in Hubei Province Based on Gravity Model and Social Network Analysis (SNA)</h3>
+          <div class="meta-inline">Mentored by Prof. Min Zhang, CCNU · Sept. 2024 – Jan. 2025</div>
+          <ul>
+            <li>Collected information on 50 university libraries in Hubei Province, constructed adjacency matrices, and built interaction networks using Ucinet and Gephi.</li>
+            <li>Analyzed the structural patterns of inter-library relationships using SNA indicators</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="row-text">
+          <h3>Operation Research on Dual-Command Cycle in Split-Platform AS/IS</h3>
+          <div class="meta-inline">Mentored by Associate Prof. Guangmei Wu, CCNU · May 2024</div>
+          <ul>
+            <li>Analyzed operational efficiency of 3D compact AS/RS under I/O dwell-point and random storage strategies.</li>
+            <li>Developed a dual-command travel time model to represent the coordinated horizontal and vertical platform movements and derived the optimal rack dimension parameters.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="internship" class="section">
+      <h2 class="section-title">Internship</h2>
+      <div class="row">
+        <div class="row-text">
+          <h3>Research Intern of AIoT project, School of Computing, National University of Singapore | Singapore</h3>
+          <div class="meta-inline">May 2025 – Jul. 2025</div>
+          <ul>
+            <li>Coordinated progress of a 4-member team, including hardware assembly, model training, UI design, and front-end development.</li>
+            <li>Used ResNet for image feature extraction and LightGBM for food nutrient identification and validated via Raspberry Pi camera with 100% accuracy in the final demonstration session.</li>
+            <li>Conducted IMU sensor data collection for real-time motion classification using feedforward networks.</li>
+            <li>Independently designed a React-based web interface with data dashboard, food analysis, and motion analysis modules, and integrated real-time motion classification and calorie calculation via WebSocket connections to backend systems.</li>
+            <li>Developed a simplified TCP sliding window protocol to resolve the broadcast data loss and misordering issues during IMU sensor transmission in Micro Bit.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="row-text">
+          <h3>AI Development Intern, Sinolight (Guizhou) Industrial Internet Co., LTD. | Beijing, China</h3>
+          <div class="meta-inline">Jul. 2024 – Aug. 2024</div>
+          <ul>
+            <li>Labeled performance indicators across subsidiaries and business units using LLMs and extracted corresponding data via SQL to support model queries.</li>
+            <li>Built a knowledge graph with over 3,000 indicators using GraphRAG to extract and link indicator, business, and subsidiary.</li>
+            <li>Tuned few-shot examples and model parameters to improve numerical reasoning and reduce hallucination in data-driven responses, enhancing the model’s understanding of business relations.</li>
+            <li>Visualized the indicator network with Gephi and dynamically highlighted anomalous areas.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects" class="section">
+      <h2 class="section-title">Project Experience</h2>
+      <div class="row">
+        <div class="row-text">
+          <h3>Team leader, LearnGo Development Project, 2025 Mobile Application Innovation Contest</h3>
+          <div class="meta-inline">May 2025 – Jul. 2025</div>
+          <ul>
+            <li>Software Copyright of LearnGo App V1.0 (Registration No.: 2025SR1265534).</li>
+            <li>Led the design of the LearnGo prototype using Figma and improved user experience during implementation.</li>
+            <li>Independently developed front-end and back-end systems, including animation effects and model training.</li>
+            <li>An AI-powered intelligent learning assistant integrating RAG-based subject Q&A, multimodal input (voice, text, file, image), and automatic note generation using fine-tuned LLMs.</li>
+            <li>Implemented multimodal translation and recognition pipeline with YOLOv3, MobileNetV2 for real-time image translation and multilingual speech recognition.</li>
+            <li><a href="https://learngo-lx.vercel.app/" target="_blank" class="floating-link">🌐 LearnGo Official Website</a></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="awards" class="section">
+      <h2 class="section-title">Certificates & Awards</h2>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-date">Aug. 2025</div>
+          <div class="timeline-line">
+            <div class="timeline-dot"></div>
+          </div>
+          <div class="timeline-content">Second Prize of 2025 Mobile Application Innovation Contest</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-date">Nov. 2024</div>
+          <div class="timeline-line">
+            <div class="timeline-dot"></div>
+          </div>
+          <div class="timeline-content">App Development with Swift Certified User Badge</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-date">Jun. 2024</div>
+          <div class="timeline-line">
+            <div class="timeline-dot"></div>
+          </div>
+          <div class="timeline-content">Huawei Cloud Developer Certification</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-date">May 2024</div>
+          <div class="timeline-line">
+            <div class="timeline-dot"></div>
+          </div>
+          <div class="timeline-content">Third Prize for Type C in NECCS</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-date">Dec. 2024 & Dec. 2023</div>
+          <div class="timeline-line">
+            <div class="timeline-dot"></div>
+          </div>
+          <div class="timeline-content">CCNU Merit Student & Shuren Scholarships</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="skills" class="section section-skills">
+      <h2 class="section-title">Skills & Languages</h2>
+      <div class="skills-container">
+        <div class="skills-card">
+          <h3 class="skills-subtitle">💻 Technical Skills</h3>
+          <ul class="skills-list">
+            <li><i class="devicon-python-plain colored"></i> Python</li>
+            <li><i class="devicon-mysql-plain colored"></i> SQL</li>
+            <li><i class="devicon-vuejs-plain colored"></i> Vue 3</li>
+            <li><i class="devicon-react-original colored"></i> React</li>
+            <li><i class="devicon-pytorch-original colored"></i> PyTorch</li>
+          </ul>
+        </div>
+        <div class="skills-card">
+          <h3 class="skills-subtitle">🌐 Languages</h3>
+          <div class="lang-vertical-list">
+            <div class="lang-item">
+              <div class="lang-desc">
+                <h4>Mandarin, Cantonese, English</h4>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="sports" class="section">
+      <h2 class="section-title">Sports</h2>
+      <div class="sports-section">
+        <div class="sports-showcase">
+          <div class="sports-icons">
+            <div class="sport">
+              <img src="./Resources/volleyball.png" alt="Volleyball icon">
+              <p>Volleyball<br><span>Silver & Star Team</span></p>
+            </div>
+            <div class="sport">
+              <img src="./Resources/badminton.png" alt="Badminton icon">
+              <p>Badminton<br><span>6 yrs of Exp</span></p>
+            </div>
+            <div class="sport">
+              <img src="./Resources/pingpong.png" alt="Pingpong icon">
+              <p>Table Tennis<br><span>3 yrs of Training</span></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="photo-wall">
+          <img src="./Resources/sports-1.jpg" alt="Volleyball team">
+          <img src="./Resources/sports-2.jpg" alt="Badminton practice">
+          <img src="./Resources/sports-3.jpg" alt="Tennis match">
+          <img src="./Resources/sports-4.jpg" alt="Volleyball game">
+          <img src="./Resources/sports-5.jpg" alt="Team celebration">
+          <img src="./Resources/sports-6.jpg" alt="Training">
+          <img src="./Resources/sports-7.jpg" alt="Training">
+          <img src="./Resources/sports-8.jpg" alt="Training">
+          <img src="./Resources/sports-9.jpg" alt="Training">
+          <img src="./Resources/sports-10.jpg" alt="Training">
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>© <span id="year"></span> Li Xiang</span>
+    </div>
+  </footer>
+
+  <button class="desktop-switch-btn" onclick="switchToDesktop()">View Desktop Version</button>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>

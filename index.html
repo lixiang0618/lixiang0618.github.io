@@ -3,6 +3,14 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script>
+    (function() {
+      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      if (isMobile && window.location.pathname.indexOf('index-mobile.html') === -1) {
+        window.location.href = 'index-mobile.html';
+      }
+    })();
+  </script>
   <title>Li Xiang | Personal Website</title>
   <meta name="description" content="Li Xiang — Information Management & Information System undergraduate. GNN, Data Science, AIoT.">
   <meta name="author" content="Li Xiang">
@@ -37,22 +45,13 @@
 <body>
   <header class="site-header">
     <a class="brand" href="#top" aria-label="Home">
-      <img class="brand-logo" src="Resources/Logo-removebg.png" alt="Li Xiang Logo" />
       <span class="brand-name">Li Xiang</span>
     </a>
     <nav class="site-nav" aria-label="Primary">
-      <a href="#education">Education</a>
-      <a href="#news">News</a>
-      <a href="#research">Research</a>
-      <a href="#internship">Internship</a>
-      <a href="#projects">Projects</a>
-      <a href="#awards">Awards</a>
-      <a href="#skills">Skills</a>
-      <!-- <a href="#open-source">Open-source</a> -->
-      <a href="#leadership">Leadership & Sports</a>
-      
-      
-      <a class="btn btn-ghost" href="./Resources/Resume.pdf" target="_blank" rel="noopener">Resume</a>
+      <a href="index.html">Profile</a>
+      <a href="blog.html">Blog</a>
+      <a href="moments.html">Moments</a>
+      <a href="about.html">About Me</a>
     </nav>
   </header>
 
@@ -60,20 +59,22 @@
     <section class="hero" aria-labelledby="intro-title">
       <div class="hero-inner">
         <div class="hero-text">
-          <h1 id="intro-title">LI XIANG / Lei Seung</h1>
+          <h1 id="intro-title">李想 / LI XIANG</h1>
           <!-- <p class="subtitle">你的slogan</p> -->
           <div class="chips">
-            <span class="chip">Machine Learning</span>
+            <span class="chip">Graph Network Learning</span>
             <span class="chip">Social Network Analysis</span>
-            <span class="chip">App Development</span>
-            <span class="chip">Graph Neural Network</span>
+            <span class="chip">Modeling & Simulation</span>
+            <!-- <span class="chip">App Development</span> -->
+            <!-- <span class="chip">Graph Neural Network</span> -->
             <span class="chip">Volleyball(Setter)</span>
-            <span class="chip">Travel</span>
+            <span class="chip">Badminton</span>
+            <span class="chip">Travel & Photo</span>
           </div>
           
           <div class="location-info">
-            <span>📍 Currently studying in Wuhan, Hubei</span>
-            <span>🏠 From Wuzhou, Guangxi & Guangzhou, Guangdong</span>
+            <!-- <span>Currently studying in 武汉(Wuhan), From 梧州 (Wuzhou) & 广州 (Guangzhou)</span> -->
+            <span>Shortest Shortcut is Detour</span>
           </div>
           <div class="social-links">
             <a class="social-link" href="https://xhslink.com/m/YNCXKZoX5C" target="_blank" rel="noopener" aria-label="XiaoHongShu">
@@ -81,7 +82,6 @@
               <span>RedNote</span>
             </a>
             <a class="social-link" href="https://v.douyin.com/J17ey4JXPp0" target="_blank" rel="noopener" aria-label="Douyin">
-              <img src="https://toppng.com/uploads/preview/tiktok-logo-png-download-116616376145yvg1mox2s.png" alt="Douyin" />
               <span>TikTok</span>
             </a>
             <a class="social-link" href="https://github.com/lixiang0618" target="_blank" rel="noopener" aria-label="GitHub">
@@ -95,11 +95,9 @@
           </div>
           <div class="contact-row">
             <span>📩 Email: <a class="contact-link" href="mailto:leisoeng618@gmail.com">leisoeng618@gmail.com</a></span>
-            <span>📞 Phone: <a class="contact-link" href="tel:+8617371995850">+86 173 7199 5850</a></span>
+            <!-- <span>📞 Phone: <a class="contact-link" href="tel:+8617371995850">+86 173 7199 5850</a></span> -->
           </div>
-          <div class="hero-actions">
-            <a class="btn" href="./Resources/Resume.pdf" target="_blank" rel="noopener">Download Resume</a>
-          </div>
+
         </div>
 
         <div class="hero-media">
@@ -124,31 +122,20 @@
           <div class="meta-inline">Sept. 2022 – Jun. 2026</div>
           <ul>
             <li>Candidate for Bachelor of Management in Information Management & Information System</li>
-            <li>Rank: 1/32</li>
-            <li>Major GPA: 3.73/5.0; Major Average Mark: 89.18/100</li>
-            <li>Core Courses: Operation Research, Algorithm Design, Convex Optimisation, Computer Networks, Apple Development, Game Theory, Elementary Economics, Management Statics</li>
+            <li>Major Average Mark: 89.18/100; Rank: 1/32</li>
+            <li>Core Courses: Operation Research, Algorithm Design, Convex Optimisation, Computer Networks</li>
           </ul>
         </div>
-      
-        <div class="education_logo">
-          <img src="./Resources/education-ccnu-2.jpg" alt="CCNU Logo">
-        </div>
       </div>
-
 
       <div class="row education-row">
         <div class="row-text">
           <h3>Wuzhou Senior High School (WSHS) | Wuzhou, China</h3>
           <div class="meta-inline">Sept. 2019 – Jun. 2022</div>
           <ul>
-            <li>Optional Subject: Physics, Chemistry, Biology</li>
-            <li>University Entrance Exam Rank: 1/56 in class </li>
-            
+            <!-- <li>Optional Subject: Physics, Chemistry, Biology</li>
+            <li>University Entrance Exam (GaoKao) Rank: 1/56 in class</li> -->
           </ul>
-        </div>
-      
-        <div class="education_logo">
-          <img src="./Resources/education-ccnu-1.jpg" alt="CCNU Logo">
         </div>
       </div>
       
@@ -158,7 +145,7 @@
       </div> -->
     </section>
 
-    <section id="news" class="section">
+    <!-- <section id="news" class="section">
       <h2 class="section-title">News / What I Am Doing</h2>
       <ul class="news-list">
         <li>Completed my latest research experiment and currently writing the paper.</li>
@@ -169,7 +156,7 @@
         
       </ul>
       <h2>• • • • • • • • </h2>
-    </section>
+    </section> -->
 
 
     <section id="research" class="section">
@@ -179,9 +166,9 @@
           <h3>Cost-Sensitive Guided Graph Neural Network on Healthy Insurance Network</h3>
           <div class="meta-inline">Mentored by Dr. Fei Xiao, CCNU · Apr. 2024 – Present</div>
           <ul>
-            <li>Constructed a novel hospital-patient-disease network using coupled-node techniques and designed metapaths based on fraud patterns and entity attributes.</li>
-            <li>Redesigned the loss function by integrating cost-sensitive learning and expected loss with cross-entropy to ensure the model accuracy while concerning the cost loss.</li>
-            <li>Applied RFM-based feature engineering to enrich node attributes and enhance representation learning, leading to a 126% improvement in cost-sensitive performance.</li>
+            <li>Constructed a novel healthcare network using coupling mechanism and cost-sensitive learning </li>
+            <!-- <li></li> -->
+            <!-- <li>Applied RFM-based feature engineering to enrich node attributes and enhance representation learning, leading to a 126% improvement in cost-sensitive performance.</li> -->
           </ul>
         </div>
         <div class="row-media media-grid" data-gallery="research-gnn"></div>
@@ -192,9 +179,9 @@
           <h3>InterLibrary Interaction among Major Universities in Hubei Province Based on Gravity Model and Social Network Analysis (SNA)</h3>
           <div class="meta-inline">Mentored by Prof. Min Zhang, CCNU · Sept. 2024 – Jan. 2025</div>
           <ul>
-            <li>Collected information on 27 university libraries in Hubei Province, constructed adjacency matrices, and built interaction networks using Ucinet and Gephi.</li>
-            <li>Analyzed the structural patterns of inter-library relationships using SNA indicators, such as Centrality, Density, and Average Path Length, and the CONCOR block model.</li>
-            <li>Performed regression analysis to identify official cooperation intention constraining collaboration.</li>
+            <li>Collected information on 50 university libraries in Hubei Province, constructed adjacency matrices, and built interaction networks using Ucinet and Gephi.</li>
+            <li>Analyzed the structural patterns of inter-library relationships using SNA indicators</li>
+            <!-- <li>Performed regression analysis to identify official cooperation intention constraining collaboration.</li> -->
           </ul>
         </div>
         <div class="row-media media-grid" data-gallery="research-sna"></div>
@@ -207,7 +194,7 @@
           <ul>
             <li>Analyzed operational efficiency of 3D compact AS/RS under I/O dwell-point and random storage strategies.</li>
             <li>Developed a dual-command travel time model to represent the coordinated horizontal and vertical platform movements and derived the optimal rack dimension parameters.</li>
-            <li>Used Monte Carlo simulation to identify a 27% improvement in average travel time under the dual-command strategy compared to the single-command strategy.</li>
+            <!-- <li>Used Monte Carlo simulation to identify a 27% improvement in average travel time under the dual-command strategy compared to the single-command strategy.</li> -->
           </ul>
         </div>
         <div class="row-media media-grid" data-gallery="research-asrs"></div>
@@ -259,7 +246,7 @@
     <section id="projects" class="section">
       <h2 class="section-title">Project Experience</h2>
       <div class="row_learnGo">
-        <!-- 左侧：文字 + 大图 -->
+        <!-- 左侧：文字 -->
         <div class="left-section">
           <div class="row-text">
             <h3>Team leader, LearnGo Development Project, 2025 Mobile Application Innovation Contest</h3>
@@ -273,16 +260,17 @@
               <li><a href="https://learngo-lx.vercel.app/" target="_blank" class="floating-link">🌐 LearnGo Official Website</a></li>
             </ul>
           </div>
-      
-          <!-- <div class="main-image">
-            <img src="./Resources/project-learnGo-4.gif" alt="Main demo">
-          </div> -->
         </div>
       
-        <!-- 右侧：图1 | 图2 -->
-        <div class="right-section">
-          <img src="./Resources/project-learnGo-1.gif" alt="LearnGo interface 1">
-          <img src="./Resources/project-learnGo-2.gif" alt="LearnGo interface 2">
+        <!-- 右侧：图片区域 - 左边一张大图，右边两张小图竖着排列 -->
+        <div class="right-section-compact">
+          <div class="compact-left">
+            <img src="./Resources/project-learnGo-1.gif" alt="LearnGo main demo">
+          </div>
+          <div class="compact-right">
+            <img src="./Resources/project-learnGo-2.gif" alt="LearnGo interface 1">
+            <img src="./Resources/project-learnGo-3.gif" alt="LearnGo interface 2">
+          </div>
         </div>
       </div>
 
@@ -506,123 +494,41 @@
 
 
 
-    <section id="leadership" class="section">
-      <h2 class="section-title">Leadership & Sports</h2>
-      <div>
-        <div class="awards-list">
-          <!-- <h4>Leadership</h4> -->
-          
-
-
-          <div class="leadership-cards">
-            <!-- <h4>Leadership</h4> -->
-            <div class="card">
-              <h5>CCNU Volunteer Peer Tutor for Linear Algebra</h5>
-              <span>Oct. 2023 – Dec. 2023</span>
+    <section id="sports" class="section">
+      <h2 class="section-title">Sports</h2>
+      <div class="sports-section">
+        <div class="sports-showcase">
+          <div class="sports-icons">
+            <div class="sport">
+              <img src="./Resources/volleyball.png" alt="Volleyball icon">
+              <p>Volleyball<br><span>Silver Team & Star Team (2 yrs)</span></p>
             </div>
-            <div class="card">
-              <h5>Captain, Shuwei Cup IMCM Meritorious Winner Team</h5>
-              <span>Sept. 2023 – Oct. 2023</span>
+            <div class="sport">
+              <img src="./Resources/badminton.png" alt="Badminton icon">
+              <p>Badminton<br><span>6 yrs of Experience</span></p>
             </div>
-            <div class="card">
-              <h5>Deputy Director, Activities Department, Student Union</h5>
-              <span>Sept. 2022 – Jun. 2023</span>
-            </div>
-            <div class="card">
-              <h5>Member, Student Innovation Department, Youth League Committee</h5>
-              <span>Sept. 2022 – Jun. 2023</span>
-            </div>
-            <div class="card">
-              <h5>Member, Learning and Development Center, CCNU</h5>
-              <span>Sept. 2022 – Jun. 2023</span>
-            </div>
-            
-          </div>
-
-
-
-
-
-
-
-
-
-          <!-- <div class="award-item"><span class="award-title">CCNU Volunteer Peer Tutor for Linear Algebra</span><span class="award-meta">Oct. 2023 – Dec. 2023</span></div>
-          <div class="award-item"><span class="award-title">Deputy Director of the Activities Department of the Student Union, School of Information Management, CCNU</span><span class="award-meta">Sept. 2022 – Jun. 2023</span></div>
-          <div class="award-item"><span class="award-title">Member of the Student Innovation Department in 11th Youth League Committee and Student Union, School of Information Management, CCNU</span><span class="award-meta">Sept. 2022 – Jun. 2023</span></div>
-          <div class="award-item"><span class="award-title">Member of the Learning and Development Center, School of Information Management, CCNU</span><span class="award-meta">Sept. 2022 – Jun. 2023</span></div> -->
-          
-      
-          <!-- <li>Deputy Director of the Activities Department of the Student Union, School of Information Management, CCNU (Sept. 2022 – Jun. 2023)</li>
-          <li>Member of the Student Innovation Department in 11th Youth League Committee and Student Union, School of Information Management, CCNU (Sept. 2022 – Jun. 2023)</li>
-          <li>CCNU Volunteer Peer Tutor for Linear Algebra (Oct. 2023 – Dec. 2023)</li> -->
-        </div>
-
-
-        
-
-        <div class="sports-section">
-          <!-- <h4>Sports</h4> -->
-
-          <div class="sports-showcase">
-            <!-- <h4>Sports & Hobbies</h4> -->
-            <div class="sports-icons">
-              <div class="sport">
-                <img src="./Resources/volleyball.png" alt="Volleyball icon">
-                <p>Volleyball<br><span>Silver Team & Star Team (2 yrs) </span></p>
-              </div>
-              <div class="sport">
-                <img src="./Resources/badminton.png" alt="Badminton icon">
-                <p>Badminton<br><span>6 yrs of Experience</span></p>
-              </div>
-              <div class="sport">
-                <img src="./Resources/pingpong.png" alt="Table tennis icon">
-                <p>Table Tennis<br><span>3 yrs of Training</span></p>
-              </div>
+            <div class="sport">
+              <img src="./Resources/pingpong.png" alt="Table tennis icon">
+              <p>Table Tennis<br><span>3 yrs of Training</span></p>
             </div>
           </div>
-          
-          
-
-
-          <!-- <div>
-            Volleyball (member of a star team for two years and silver team in school-level league),
-            Badminton (6 years), Tennis (3 years)
-          </div> -->
-        
-          <div class="photo-wall">
-            <img src="./Resources/sports-1.jpg" alt="Volleyball team">
-            <img src="./Resources/sports-2.jpg" alt="Badminton practice">
-            <img src="./Resources/sports-3.jpg" alt="Tennis match">
-            <img src="./Resources/sports-4.jpg" alt="Volleyball game">
-            <img src="./Resources/sports-5.jpg" alt="Team celebration">
-            <img src="./Resources/sports-6.jpg" alt="Training">
-            <img src="./Resources/sports-7.jpg" alt="Training">
-            <img src="./Resources/sports-8.jpg" alt="Training">
-            <img src="./Resources/sports-9.jpg" alt="Training">
-            <img src="./Resources/sports-10.jpg" alt="Training">
-            
-          </div>
         </div>
-        
 
-
-
-        <!-- <div>
-          <h4>Sports</h4>
-          <p>Volleyball (member of a star team for two years and silver team in school-level league), Badminton (6 years), Tennis (3 years)</p>
+        <div class="photo-wall">
+          <img src="./Resources/sports-1.jpg" alt="Volleyball team">
+          <img src="./Resources/sports-2.jpg" alt="Badminton practice">
+          <img src="./Resources/sports-3.jpg" alt="Tennis match">
+          <img src="./Resources/sports-4.jpg" alt="Volleyball game">
+          <img src="./Resources/sports-5.jpg" alt="Team celebration">
+          <img src="./Resources/sports-6.jpg" alt="Training">
+          <img src="./Resources/sports-7.jpg" alt="Training">
+          <img src="./Resources/sports-8.jpg" alt="Training">
+          <img src="./Resources/sports-9.jpg" alt="Training">
+          <img src="./Resources/sports-10.jpg" alt="Training">
         </div>
-        <div>
-          <div class="media-grid" data-gallery="sports"></div>
-        </div> -->
-
-
-
-
       </div>
     </section>
 
-    
   </main>
 
   <footer class="site-footer">

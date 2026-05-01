@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script>
+    (function() {
+      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      if (isMobile) {
+        const navLinks = document.querySelectorAll('.site-nav a');
+        navLinks.forEach(link => {
+          if (link.href.indexOf('index.html') !== -1) {
+            link.href = 'index-mobile.html';
+          }
+        });
+      }
+    })();
+  </script>
+  <title>Li Xiang | About Me</title>
+  <meta name="description" content="About Li Xiang">
+  <link rel="icon" href="Resources/Logo.png">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .about-container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 28px;
+    }
+    .slogan-section {
+      text-align: center;
+      margin-bottom: 48px;
+      padding: 40px 20px;
+      background: linear-gradient(135deg, rgba(15, 103, 255, 0.05), rgba(106, 92, 255, 0.05));
+      border-radius: 16px;
+    }
+    .slogan-text {
+      font-size: 28px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+    .slogan-author {
+      color: var(--subtle);
+      font-size: 16px;
+    }
+    .section-title {
+      font-size: 24px;
+      margin-bottom: 24px;
+      color: var(--text);
+      position: relative;
+      padding-left: 20px;
+    }
+    .section-title::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 4px;
+      height: 24px;
+      background: linear-gradient(180deg, var(--primary), var(--accent));
+      border-radius: 2px;
+    }
+    .focus-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .focus-item {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px 24px;
+      margin-bottom: 16px;
+      font-size: 18px;
+      color: var(--text);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      text-align: center;
+    }
+    .focus-item:hover {
+      transform: translateX(4px);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+    }
+
+    @media (max-width: 768px) {
+      .about-container {
+        padding: 24px 16px;
+      }
+      .slogan-section {
+        padding: 28px 16px;
+        margin-bottom: 32px;
+      }
+      .slogan-text {
+        font-size: 20px;
+      }
+      .section-title {
+        font-size: 20px;
+      }
+      .focus-item {
+        padding: 16px 18px;
+        font-size: 16px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .slogan-text {
+        font-size: 18px;
+      }
+      .focus-item {
+        font-size: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="index.html" aria-label="Home">
+      <span class="brand-name">Li Xiang</span>
+    </a>
+    <nav class="site-nav" aria-label="Primary">
+      <a href="index.html">Profile</a>
+      <a href="blog.html">Blog</a>
+      <a href="moments.html">Moments</a>
+      <a href="about.html">About Me</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="about-container">
+      <div class="slogan-section">
+        <p class="slogan-text"><em>"The Shortest Shortcut is the Detour."</em></p>
+      </div>
+
+      <section>
+        <h2 class="section-title">Current Focus</h2>
+        <ul class="focus-list">
+          <li class="focus-item">毕业设计 ing</li>
+          <li class="focus-item">刷Leetcode题目 ing</li>
+          <li class="focus-item">找相关实习 ing</li>
+          <li class="focus-item">思考有没有必要读PhD</li>
+        </ul>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>© <span id="year">2025</span> Li Xiang</span>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>

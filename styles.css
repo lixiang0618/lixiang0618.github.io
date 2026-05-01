@@ -132,6 +132,61 @@ body {
   .location-info { justify-content: center; }
 }
 
+/* Mobile - 768px */
+@media (max-width: 768px) {
+  .site-header { padding: 12px 16px; }
+  .brand-name { font-size: 16px; }
+  .site-nav { gap: 10px; }
+  .site-nav a { font-size: 14px; padding: 6px 6px; }
+  .hero { padding: 40px 16px 24px; }
+  .hero-text h1 { font-size: 28px; }
+  .subtitle { font-size: 16px; }
+  .hero-img { width: 100%; height: auto; max-width: 320px; height: 320px; }
+  .hero-actions { flex-wrap: wrap; justify-content: center; }
+  .section { padding: 32px 16px; }
+  .row { width: 100%; padding: 0 16px; }
+  .key-facts { padding-left: 16px; }
+  .socials { grid-template-columns: 1fr; }
+  .skills-grid { grid-template-columns: 1fr; }
+  .section-skills .skills-container { grid-template-columns: 1fr; gap: 24px; }
+  .section-skills .skills-card { padding: 1.2rem 1.5rem; }
+  .sports-icons { gap: 40px; }
+  .sports-icons .sport { width: 120px; }
+  .sports-icons .sport img { width: 70px; height: 70px; }
+  .timeline { width: 100%; margin-left: 0; padding: 0 16px; }
+  .timeline-date { width: 100px; font-size: 14px; }
+  .news-list { margin-left: 0; padding: 0 16px; }
+  .news-list li { font-size: 16px; }
+  #news h2 { margin-left: 16px; }
+  .row_nus_aiot { flex-direction: column; width: 100%; }
+  .nus-aiot { width: 100%; flex-direction: column; }
+  .row_learnGo { flex-direction: column; width: 100%; }
+  .right-section { max-width: 100%; }
+  .right-section img { width: 100%; }
+  .right-section-compact { max-width: 100%; flex-direction: row; }
+  .compact-left { width: 60%; }
+  .compact-right { flex-direction: column; width: 40%; }
+  .compact-right img { width: 100%; }
+  .education-row { width: 100%; }
+  .site-footer { padding: 16px; }
+  .footer-inner { flex-direction: column; gap: 8px; text-align: center; }
+}
+
+/* Small Mobile - 480px */
+@media (max-width: 480px) {
+  .hero-text h1 { font-size: 24px; }
+  .site-nav { gap: 6px; }
+  .site-nav a { font-size: 12px; }
+  .hero-img { max-width: 260px; height: 260px; }
+  .social-link span { display: none; }
+  .sports-icons .sport { width: 100px; }
+  .sports-icons .sport img { width: 50px; height: 50px; }
+  .sports-icons .sport p { font-size: 14px; }
+  .sports-icons .sport p span { font-size: 14px; }
+  .timeline-date { width: 70px; font-size: 12px; }
+  .timeline-content { font-size: 14px; }
+}
+
 /* nus-aiot */
 /* 外层整体布局 */
 .row_nus_aiot {
@@ -205,19 +260,53 @@ body {
 .right-section {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
-  align-items: flex-start;
+  justify-content: center;
+  align-items: center;
   gap: 10px;
   flex: 1;
-  max-width: 420px;
+  max-width: 350px;
 }
 
 /* 右侧图片样式 */
 .right-section img {
-  width: 60%; /* 两张图平分一行 */
+  width: 48%; /* 两张图一行，各占一半 */
   border-radius: 8px;
   object-fit: cover;
-  /* max-height: 230px; */
+  max-height: 180px;
+}
+
+/* 紧凑布局：左边一张大图，右边两张小图竖着排列 */
+.right-section-compact {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  flex: 1;
+  max-width: 400px;
+}
+
+.compact-left {
+  flex: 2;
+}
+
+.compact-left img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.compact-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.compact-right img {
+  width: 100%;
+  flex: 1;
+  object-fit: cover;
+  border-radius: 8px;
 }
 
 /* 左侧大图 */
@@ -317,15 +406,15 @@ body {
 /* ✅ 照片墙核心布局 */
 /* Masonry 照片墙风格 */
 .photo-wall {
-  column-count: 3;              /* 三列，可根据宽度调整 */
-  column-gap: 14px;             /* 列间距 */
+  column-count: 5;              /* 五列，更紧凑 */
+  column-gap: 8px;             /* 列间距减小 */
 }
 
 .photo-wall img {
   width: 100%;
   display: block;
-  margin-bottom: 14px;
-  border-radius: 12px;
+  margin-bottom: 8px;
+  border-radius: 8px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   break-inside: avoid;          /* ✅ 关键，防止图片被分割 */
   box-shadow: 0 2px 6px rgba(0,0,0,0.15);
@@ -338,15 +427,21 @@ body {
 }
 
 /* ✅ 手机端自动减少列数 */
+@media (max-width: 1100px) {
+  .photo-wall {
+    column-count: 4;
+  }
+}
+
 @media (max-width: 900px) {
   .photo-wall {
-    column-count: 2;
+    column-count: 3;
   }
 }
 
 @media (max-width: 600px) {
   .photo-wall {
-    column-count: 1;
+    column-count: 2;
   }
 }
 
@@ -884,60 +979,39 @@ body {
 
 .timeline-item {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   position: relative;
-  margin-bottom: 25px;
+  margin-bottom: 15px;
+  padding: 12px 20px;
+  background: rgba(0, 123, 255, 0.05);
+  border-radius: 10px;
+  border-left: 3px solid #007bff;
 }
 
 .timeline-date {
-  width: 220px;
+  width: 180px;
   text-align: right;
   padding-right: 20px;
-  font-weight: 600;
-  color: #555;
-  font-size: 0.95rem;
+  font-weight: 700;
+  color: #007bff;
+  font-size: 0.9rem;
   flex-shrink: 0;
 }
 
 .timeline-line {
-  position: relative;
-  width: 2px;
-  background: linear-gradient(180deg, #007bff, #00c6ff);
-  margin-right: 25px;
-  border-radius: 2px;
-  flex-shrink: 0;
+  display: none;
 }
 
 .timeline-dot {
-  position: absolute;
-  top: 4px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 12px;
-  height: 12px;
-  background-color: #007bff;
-  border-radius: 50%;
-  box-shadow: 0 0 10px rgba(0, 123, 255, 0.4);
+  display: none;
 }
 
 .timeline-content {
   flex: 1;
-  font-size: 1rem;
-  line-height: 1.5;
+  font-size: 0.95rem;
+  line-height: 1.4;
   color: #333;
   padding-top: 0px;
-}
-
-/* 可选 hover 效果（增加交互感） */
-.timeline-item:hover .timeline-dot {
-  background-color: #00c6ff;
-  box-shadow: 0 0 12px rgba(0, 198, 255, 0.6);
-}
-
-.timeline-item:hover .timeline-content {
-  transform: translateX(3px);
-  transition: 0.2s ease;
-  color: #007bff;
 }
 
 

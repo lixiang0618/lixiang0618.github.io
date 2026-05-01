@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script>
+    (function() {
+      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      if (isMobile) {
+        const navLinks = document.querySelectorAll('.site-nav a');
+        navLinks.forEach(link => {
+          if (link.href.indexOf('index.html') !== -1) {
+            link.href = 'index-mobile.html';
+          }
+        });
+      }
+    })();
+  </script>
+  <title id="post-title">Blog Post</title>
+  <meta name="description" content="Blog post">
+  <link rel="icon" href="Resources/Logo.png">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .post-container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 40px 28px;
+    }
+    .post-header {
+      margin-bottom: 40px;
+    }
+    .post-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--primary);
+      font-weight: 600;
+      text-decoration: none;
+      margin-bottom: 24px;
+      transition: color 0.2s ease;
+    }
+    .post-back:hover {
+      color: var(--accent);
+    }
+    .post-meta {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 16px;
+      color: var(--subtle);
+      font-size: 14px;
+    }
+    .post-category {
+      display: inline-block;
+      padding: 4px 10px;
+      background: var(--muted);
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .post-title {
+      font-size: 36px;
+      margin-bottom: 12px;
+      color: var(--text);
+      line-height: 1.3;
+    }
+    .post-content {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 40px;
+      line-height: 1.8;
+      color: var(--text);
+    }
+    .post-content h1, .post-content h2, .post-content h3 {
+      margin-top: 32px;
+      margin-bottom: 16px;
+      color: var(--text);
+    }
+    .post-content h2 {
+      font-size: 24px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 8px;
+    }
+    .post-content p {
+      margin-bottom: 16px;
+    }
+    .post-content ul, .post-content ol {
+      margin-bottom: 16px;
+      padding-left: 24px;
+    }
+    .post-content li {
+      margin-bottom: 8px;
+    }
+    .post-content code {
+      background: var(--muted);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: monospace;
+    }
+    .post-content pre {
+      background: var(--muted);
+      padding: 16px;
+      border-radius: 8px;
+      overflow-x: auto;
+      margin-bottom: 16px;
+    }
+    .post-content pre code {
+      background: none;
+      padding: 0;
+    }
+    .post-content img {
+      max-width: 100%;
+      border-radius: 8px;
+      margin: 16px 0;
+    }
+    .post-content blockquote {
+      border-left: 4px solid var(--primary);
+      padding-left: 16px;
+      margin: 16px 0;
+      color: var(--subtle);
+    }
+    .post-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 24px;
+    }
+    .post-tag {
+      padding: 4px 10px;
+      background: rgba(15, 103, 255, 0.08);
+      color: var(--primary);
+      border-radius: 6px;
+      font-size: 13px;
+    }
+
+    @media (max-width: 768px) {
+      .post-container {
+        padding: 24px 16px;
+      }
+      .post-header {
+        margin-bottom: 24px;
+      }
+      .post-title {
+        font-size: 26px;
+      }
+      .post-content {
+        padding: 24px;
+      }
+      .post-content h2 {
+        font-size: 20px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .post-title {
+        font-size: 22px;
+      }
+      .post-content {
+        padding: 18px;
+      }
+      .post-meta {
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="index.html" aria-label="Home">
+      <span class="brand-name">Li Xiang</span>
+    </a>
+    <nav class="site-nav" aria-label="Primary">
+      <a href="index.html">Profile</a>
+      <a href="blog.html">Blog</a>
+      <a href="moments.html">Moments</a>
+      <a href="about.html">About Me</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="post-container">
+      <a href="blog.html" class="post-back">← Back to Blog</a>
+
+      <div class="post-header">
+        <div class="post-meta">
+          <span id="post-date"></span>
+          <span id="post-category" class="post-category"></span>
+        </div>
+        <h1 id="post-title-text" class="post-title"></h1>
+      </div>
+
+      <article id="post-content" class="post-content"></article>
+
+      <div id="post-tags" class="post-tags"></div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>© <span id="year">2025</span> Li Xiang</span>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    const params = new URLSearchParams(window.location.search);
+    const postFile = params.get('p');
+
+    function parseMarkdown(text) {
+      let html = text;
+
+      html = html.replace(/^### (.+)$/gm, '<h3>$1</h3>');
+      html = html.replace(/^## (.+)$/gm, '<h2>$1</h2>');
+      html = html.replace(/^# (.+)$/gm, '<h1>$1</h1>');
+
+      html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+      html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
+      html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
+
+      html = html.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1">');
+      html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+
+      html = html.replace(/^- (.+)$/gm, '<li>$1</li>');
+      html = html.replace(/(<li>.*<\/li>)/s, '<ul>$1</ul>');
+
+      html = html.replace(/^> (.+)$/gm, '<blockquote>$1</blockquote>');
+
+      html = html.replace(/\n\n/g, '</p><p>');
+      html = '<p>' + html + '</p>';
+      html = html.replace(/<p><h/g, '<h');
+      html = html.replace(/<\/h(\d)><\/p>/g, '</h$1>');
+      html = html.replace(/<p><ul>/g, '<ul>');
+      html = html.replace(/<\/ul><\/p>/g, '</ul>');
+      html = html.replace(/<p><blockquote>/g, '<blockquote>');
+      html = html.replace(/<\/blockquote><\/p>/g, '</blockquote>');
+      html = html.replace(/<p><\/p>/g, '');
+
+      return html;
+    }
+
+    function formatDate(dateStr) {
+      const date = new Date(dateStr);
+      return date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
+    }
+
+    async function loadPost() {
+      if (!postFile) {
+        document.getElementById('post-content').innerHTML = '<p>Post not found.</p>';
+        return;
+      }
+
+      try {
+        const response = await fetch('./blogs/' + postFile + '.md');
+        if (!response.ok) {
+          document.getElementById('post-content').innerHTML = '<p>Post not found.</p>';
+          return;
+        }
+
+        const content = await response.text();
+        const lines = content.split('\n');
+        let frontMatter = {};
+        let body = content;
+
+        if (lines[0] === '---') {
+          let endIdx = -1;
+          for (let i = 1; i < lines.length; i++) {
+            if (lines[i] === '---') {
+              endIdx = i;
+              break;
+            }
+          }
+          if (endIdx > 0) {
+            const yamlStr = lines.slice(1, endIdx).join('\n');
+            yamlStr.split('\n').forEach(line => {
+              const match = line.match(/^(\w+):\s*(.*)$/);
+              if (match) {
+                if (match[2].startsWith('-')) {
+                  frontMatter[match[1]] = match[2].replace(/^\s*-\s*/, '').split(',').map(s => s.trim());
+                } else {
+                  frontMatter[match[1]] = match[2];
+                }
+              }
+            });
+            body = lines.slice(endIdx + 1).join('\n');
+          }
+        }
+
+        document.getElementById('post-title').textContent = (frontMatter.title || postFile) + ' | Li Xiang';
+        document.getElementById('post-title-text').textContent = frontMatter.title || postFile;
+        document.getElementById('post-date').textContent = formatDate(frontMatter.date || '2026-01-01');
+        document.getElementById('post-category').textContent = frontMatter.categories || 'Uncategorized';
+        document.getElementById('post-content').innerHTML = parseMarkdown(body);
+
+        const tagsContainer = document.getElementById('post-tags');
+        if (frontMatter.tags && Array.isArray(frontMatter.tags)) {
+          tagsContainer.innerHTML = frontMatter.tags.map(tag => `<span class="post-tag">${tag}</span>`).join('');
+        }
+      } catch (error) {
+        console.error('Error loading post:', error);
+        document.getElementById('post-content').innerHTML = '<p>Error loading post.</p>';
+      }
+    }
+
+    loadPost();
+  </script>
+</body>
+</html>
