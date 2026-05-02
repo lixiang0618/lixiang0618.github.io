@@ -247,6 +247,9 @@
       html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
       html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
 
+      // 处理代码块 ```language...```
+      html = html.replace(/```(\w*)\n([\s\S]*?)```/g, '<pre><code class="language-$1">$2</code></pre>');
+
       html = html.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="./blogs/$2" alt="$1">');
       html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
 
