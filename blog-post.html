@@ -237,7 +237,13 @@
     const postFile = params.get('p');
 
     function parseMarkdown(text) {
-      let html = text;
+      // 先用占位符保护代码块
+      const codeBlocks = [];
+      let html = text.replace(/```(\w*)\n([\s\S]*?)```/g, function(match, lang, code) {
+        const placeholder = 'CODEBLOCK_PLACEHOLDER_' + codeBlocks.length + '_END';
+        codeBlocks.push('<pre><code class="language-' + lang + '">' + code.trim() + '</code></pre>');
+        return placeholder;
+      });
 
       html = html.replace(/^### (.+)$/gm, '<h3>$1</h3>');
       html = html.replace(/^## (.+)$/gm, '<h2>$1</h2>');
@@ -246,9 +252,6 @@
       html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
       html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
       html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
-
-      // 处理代码块 ```language...```
-      html = html.replace(/```(\w*)\n([\s\S]*?)```/g, '<pre><code class="language-$1">$2</code></pre>');
 
       html = html.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="./blogs/$2" alt="$1">');
       html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
@@ -267,6 +270,11 @@
       html = html.replace(/<p><blockquote>/g, '<blockquote>');
       html = html.replace(/<\/blockquote><\/p>/g, '</blockquote>');
       html = html.replace(/<p><\/p>/g, '');
+
+      // 恢复代码块
+      codeBlocks.forEach((block, i) => {
+        html = html.replace('CODEBLOCK_PLACEHOLDER_' + i + '_END', block);
+      });
 
       return html;
     }
