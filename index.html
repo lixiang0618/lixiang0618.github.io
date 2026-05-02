@@ -6,13 +6,18 @@
   <script>
     (function() {
       const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      const isChineseBrowser = navigator.language && navigator.language.toLowerCase().includes('zh');
       if (isMobile && window.location.pathname.indexOf('index-mobile.html') === -1) {
-        window.location.href = 'index-mobile.html';
+        if (isChineseBrowser) {
+          window.location.href = 'zh/index-mobile.html';
+        } else {
+          window.location.href = 'index-mobile.html';
+        }
       }
     })();
   </script>
   <title>Li Xiang | Personal Website</title>
-  <meta name="description" content="Li Xiang — Information Management & Information System undergraduate. GNN, Data Science, AIoT.">
+  <meta name="description" content="Li Xiang �?Information Management & Information System undergraduate. GNN, Data Science, AIoT.">
   <meta name="author" content="Li Xiang">
   <meta name="color-scheme" content="light dark">
   <link rel="icon" href="Resources/微信头像.jpg">
@@ -116,7 +121,7 @@
       <div class="row education-row">
         <div class="row-text">
           <h3>Nanyang Technological University (NTU) | Singapore</h3>
-          <div class="meta-inline">Aug. 2026 – Present</div>
+          <div class="meta-inline">Aug. 2026 �?Present</div>
           <ul>
             <li>Candidate for Master of Science in Modeling & Simulation </li>
             <!-- <li>Major Average Mark: 89.18/100; Rank: 1/32</li>
@@ -128,7 +133,7 @@
       <div class="row education-row">
         <div class="row-text">
           <h3>Central China Normal University (CCNU) | Wuhan, China</h3>
-          <div class="meta-inline">Sept. 2022 – Jun. 2026</div>
+          <div class="meta-inline">Sept. 2022 �?Jun. 2026</div>
           <ul>
             <li>Bachelor of Management in Information Management & Information System</li>
             <li>Major Average Mark: 89.18/100; Rank: 1/32</li>
@@ -140,7 +145,7 @@
       <div class="row education-row">
         <div class="row-text">
           <h3>Wuzhou Senior High School (WSHS) | Wuzhou, China</h3>
-          <div class="meta-inline">Sept. 2019 – Jun. 2022</div>
+          <div class="meta-inline">Sept. 2019 �?Jun. 2022</div>
           <ul>
             <!-- <li>Optional Subject: Physics, Chemistry, Biology</li>
             <li>University Entrance Exam (GaoKao) Rank: 1/56 in class</li> -->
@@ -164,7 +169,7 @@
         <li>Preparing for an exciting cruise trip soon.</li>
         
       </ul>
-      <h2>• • • • • • • • </h2>
+      <h2>�?�?�?�?�?�?�?�?</h2>
     </section> -->
 
 
@@ -173,7 +178,7 @@
       <div class="row">
         <div class="row-text">
           <h3>Cost-Sensitive Guided Graph Neural Network on Healthy Insurance Network</h3>
-          <div class="meta-inline">Mentored by Dr. Fei Xiao, CCNU · Apr. 2024 – Present</div>
+          <div class="meta-inline">Mentored by Dr. Fei Xiao, CCNU · Apr. 2024 �?Present</div>
           <ul>
             <li>Constructed a novel healthcare network using coupling mechanism and cost-sensitive learning </li>
             <!-- <li></li> -->
@@ -186,7 +191,7 @@
       <div class="row">
         <div class="row-text">
           <h3>InterLibrary Interaction among Major Universities in Hubei Province Based on Gravity Model and Social Network Analysis (SNA)</h3>
-          <div class="meta-inline">Mentored by Prof. Min Zhang, CCNU · Sept. 2024 – Jan. 2025</div>
+          <div class="meta-inline">Mentored by Prof. Min Zhang, CCNU · Sept. 2024 �?Jan. 2025</div>
           <ul>
             <li>Collected information on 50 university libraries in Hubei Province, constructed adjacency matrices, and built interaction networks using Ucinet and Gephi.</li>
             <li>Analyzed the structural patterns of inter-library relationships using SNA indicators</li>
@@ -215,7 +220,7 @@
       <div class="row_nus_aiot">
         <div class="row-text">
           <h3>Research Intern of AIoT project, School of Computing, National University of Singapore | Singapore</h3>
-          <div class="meta-inline">May 2025 – Jul. 2025</div>
+          <div class="meta-inline">May 2025 �?Jul. 2025</div>
           <ul>
             <li>Coordinated progress of a 4-member team, including hardware assembly, model training, UI design, and front-end development.</li>
             <li>Used ResNet for image feature extraction and LightGBM for food nutrient identification and validated via Raspberry Pi camera with 100% accuracy in the final demonstration session.</li>
@@ -240,7 +245,7 @@
       <div class="row">
         <div class="row-text">
           <h3>AI Development Intern, Sinolight (Guizhou) Industrial Internet Co., LTD. | Beijing, China</h3>
-          <div class="meta-inline">Jul. 2024 – Aug. 2024</div>
+          <div class="meta-inline">Jul. 2024 �?Aug. 2024</div>
           <ul>
             <li>Labeled performance indicators across subsidiaries and business units using LLMs and extracted corresponding data via SQL to support model queries.</li>
             <li>Built a knowledge graph with over 3,000 indicators using GraphRAG to extract and link indicator, business, and subsidiary.</li>
@@ -255,11 +260,11 @@
     <section id="projects" class="section">
       <h2 class="section-title">Project Experience</h2>
       <div class="row_learnGo">
-        <!-- 左侧：文字 -->
+        <!-- 左侧：文�?-->
         <div class="left-section">
           <div class="row-text">
             <h3>Team leader, LearnGo Development Project, 2025 Mobile Application Innovation Contest</h3>
-            <div class="meta-inline">May 2025 – Jul. 2025</div>
+            <div class="meta-inline">May 2025 �?Jul. 2025</div>
             <ul>
               <li>Software Copyright of LearnGo App V1.0 (Registration No.: 2025SR1265534).</li>
               <li>Led the design of the LearnGo prototype using Figma and improved user experience during implementation.</li>
@@ -271,7 +276,7 @@
           </div>
         </div>
       
-        <!-- 右侧：图片区域 - 左边一张大图，右边两张小图竖着排列 -->
+        <!-- 右侧：图片区�?- 左边一张大图，右边两张小图竖着排列 -->
         <div class="right-section-compact">
           <div class="compact-left">
             <img src="./Resources/project-learnGo-1.gif" alt="LearnGo main demo">
@@ -293,7 +298,7 @@
       <div class="row">
         <div class="row-text">
           <h3>Team member, IGO Data-Driven Project, Data Science Course of HKU Business School</h3>
-          <div class="meta-inline">Jan. 2024 – Feb. 2024</div>
+          <div class="meta-inline">Jan. 2024 �?Feb. 2024</div>
           <ul>
             <li>Conducted feature engineering and data cleaning based on RFM metrics to enhance model learning effectiveness.</li>
             <li>Compared Graph Attention Network (GAT) for supervised user classification with XGBoost and Random Forest, outperforming XGBoost and Random Forest and achieving 83% accuracy.</li>
@@ -453,7 +458,7 @@
       <span>© <span id="year"></span> Li Xiang</span>
       <!-- <a href="mailto:1767044318@qq.com">1767044318@qq.com</a> -->
     </div>
-    <button id="backToTop" class="back-to-top" aria-label="Back to top">↑</button>
+    <button id="backToTop" class="back-to-top" aria-label="Back to top">�?/button>
   </footer>
 </body>
 </html>
