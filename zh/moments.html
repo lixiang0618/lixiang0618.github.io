@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>李想 | 朋友圈</title>
+  <meta name="description" content="李想的朋友圈，分享日常生活">
+  <meta name="author" content="李想">
+  <link rel="icon" href="../Resources/微信头像.jpg">
+  <link rel="stylesheet" href="../styles.css">
+  <style>
+    .moments-container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 40px 28px;
+    }
+    .moments-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    .moments-header h1 {
+      font-size: 32px;
+      margin-bottom: 8px;
+      color: #111827;
+    }
+    .moments-header p {
+      color: #0b0b0b;
+      font-size: 16px;
+    }
+    .moment-card {
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 16px;
+      margin-bottom: 20px;
+      overflow: hidden;
+      transition: box-shadow 0.2s ease;
+    }
+    .moment-card:hover {
+      box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+    }
+    .moment-header {
+      display: flex;
+      align-items: center;
+      padding: 16px 16px 12px;
+      gap: 12px;
+    }
+    .moment-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background-image: url('../Resources/微信头像.jpg');
+      background-size: cover;
+      background-position: center;
+    }
+    .moment-info {
+      flex: 1;
+    }
+    .moment-name {
+      font-weight: 600;
+      color: #111827;
+    }
+    .moment-time {
+      font-size: 12px;
+      color: #0b0b0b;
+    }
+    .moment-content {
+      padding: 0 16px 12px;
+      color: #111827;
+      line-height: 1.6;
+    }
+    .moment-images {
+      display: grid;
+      gap: 4px;
+      padding: 0 16px;
+      margin-bottom: 12px;
+    }
+    .moment-images.triple {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .moment-images.quad {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .moment-images.single {
+      grid-template-columns: 1fr;
+    }
+    .moment-images img,
+    .moment-images video {
+      width: 100%;
+      aspect-ratio: 1;
+      object-fit: cover;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+    .moment-images img:hover,
+    .moment-images video:hover {
+      transform: scale(1.02);
+    }
+    .loading {
+      text-align: center;
+      padding: 60px 0;
+      color: #0b0b0b;
+    }
+    .empty-state {
+      text-align: center;
+      padding: 60px 0;
+      color: #0b0b0b;
+    }
+    .empty-state .icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+    }
+
+    @media (max-width: 768px) {
+      .moments-container {
+        padding: 24px 16px;
+      }
+      .moments-header h1 {
+        font-size: 26px;
+      }
+      .moments-header p {
+        font-size: 14px;
+      }
+      .moment-card {
+        margin-bottom: 16px;
+      }
+      .moment-header {
+        padding: 14px 14px 10px;
+      }
+      .moment-content {
+        padding: 0 14px 10px;
+        font-size: 15px;
+      }
+      .moment-images {
+        padding: 0 14px;
+        gap: 3px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .moments-header h1 {
+        font-size: 22px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="index.html" aria-label="首页">
+      <span class="brand-name">李想</span>
+    </a>
+    <nav class="site-nav" aria-label="主要导航">
+      <a href="index.html">个人主页</a>
+      <a href="blog.html">博客</a>
+      <a href="moments.html">朋友圈</a>
+      <a href="about.html">关于我</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="moments-container">
+      <div class="moments-header">
+        <h1>朋友圈</h1>
+        <p>分享生活点滴</p>
+      </div>
+
+      <div id="moments-list"></div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>© <span id="year">2025</span> 李想</span>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    function formatDate(dateStr) {
+      const date = new Date(dateStr);
+      const now = new Date();
+      const diff = now - date;
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+
+      if (days === 0) {
+        const hours = Math.floor(diff / (1000 * 60 * 60));
+        if (hours === 0) return '刚刚';
+        if (hours === 1) return '1小时前';
+        if (hours < 24) return `${hours}小时前`;
+        return date.toLocaleTimeString('zh-CN', { hour: 'numeric', minute: '2-digit' });
+      }
+      if (days === 1) return '昨天';
+      if (days < 7) return `${days}天前`;
+
+      return date.toLocaleDateString('zh-CN', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
+    }
+
+    function getImageClass(count) {
+      if (count === 1) return 'single';
+      if (count <= 4) return 'quad';
+      return 'triple';
+    }
+
+    function isVideo(filename) {
+      return filename.match(/\.(mp4|webm|ogg)$/i);
+    }
+
+    function loadMoments() {
+      const container = document.getElementById('moments-list');
+      console.log('Loading moments...');
+      console.log('Container:', container);
+
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', '/data/moments.json', true);
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4) {
+          console.log('XHR status:', xhr.status);
+          if (xhr.status === 200) {
+            try {
+              var moments = JSON.parse(xhr.responseText);
+              console.log('Loaded moments:', moments);
+
+              moments.sort(function(a, b) {
+                return new Date(b.date) - new Date(a.date);
+              });
+
+              if (moments.length > 0) {
+                container.innerHTML = moments.map(function(moment) {
+                  var imageClass = getImageClass(moment.images.length);
+                  var imagesHtml = moment.images.length > 0
+                    ? '<div class="moment-images ' + imageClass + '">' +
+                      moment.images.map(function(img) {
+                        if (isVideo(img)) {
+                          return '<video src="../' + img + '" controls preload="metadata"></video>';
+                        } else {
+                          return '<img src="../' + img + '" alt="Moment photo">';
+                        }
+                      }).join('') +
+                      '</div>'
+                    : '';
+                  var contentHtml = moment.content
+                    ? '<div class="moment-content">' + moment.content + '</div>'
+                    : '';
+
+                  return '<div class="moment-card">' +
+                    '<div class="moment-header">' +
+                    '<div class="moment-avatar"></div>' +
+                    '<div class="moment-info">' +
+                    '<div class="moment-name">李想</div>' +
+                    '<div class="moment-time">' + formatDate(moment.date) + '</div>' +
+                    '</div>' +
+                    '</div>' +
+                    contentHtml +
+                    imagesHtml +
+                    '</div>';
+                }).join('');
+              } else {
+                container.innerHTML = '<div class="empty-state"><div class="icon">📷</div><p>暂无动态</p><p>编辑 data/moments.json 添加动态</p></div>';
+              }
+            } catch (parseError) {
+              console.error('JSON parse error:', parseError);
+              container.innerHTML = '<div class="empty-state"><div class="icon">📷</div><p>解析动态数据失败。</p></div>';
+            }
+          } else {
+            console.error('XHR error:', xhr.status);
+            container.innerHTML = '<div class="empty-state"><div class="icon">📷</div><p>加载动态失败。状态: ' + xhr.status + '</p></div>';
+          }
+        }
+      };
+      xhr.send();
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', loadMoments);
+    } else {
+      loadMoments();
+    }
+  </script>
+</body>
+</html>

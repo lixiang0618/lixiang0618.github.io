@@ -196,6 +196,15 @@ body {
   gap: 10px;
   max-width: 1100px;
   margin: 6px auto;
+  width: 100%;
+  overflow: hidden;
+}
+
+.row_nus_aiot .row-text {
+  flex: 1 1 50%;
+  min-width: 0;
+  max-width: 50%;
+  box-sizing: border-box;
 }
 
 /* 右边图片区容器 */
@@ -203,8 +212,10 @@ body {
   display: flex;
   flex-direction: row;
   gap: 10px;
-  width: 150%;            /* 占总宽一半 */
-  /* max-width: 520px; */
+  width: 50%;
+  max-width: 480px;
+  flex-shrink: 0;
+  box-sizing: border-box;
 }
 
 /* 左侧大图 */
@@ -230,7 +241,16 @@ body {
   height: auto;
   border-radius: 8px;
   object-fit: cover;
-  /* max-height: 240px;    */
+}
+
+@media (max-width: 768px) {
+  .row_nus_aiot {
+    flex-direction: column;
+  }
+  .nus-aiot {
+    width: 100%;
+    flex-direction: column;
+  }
 }
 
 
@@ -406,8 +426,8 @@ body {
 /* ✅ 照片墙核心布局 */
 /* Masonry 照片墙风格 */
 .photo-wall {
-  column-count: 5;              /* 五列，更紧凑 */
-  column-gap: 8px;             /* 列间距减小 */
+  column-count: 3;
+  column-gap: 8px;
 }
 
 .photo-wall img {
@@ -416,7 +436,7 @@ body {
   margin-bottom: 8px;
   border-radius: 8px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  break-inside: avoid;          /* ✅ 关键，防止图片被分割 */
+  break-inside: avoid;
   box-shadow: 0 2px 6px rgba(0,0,0,0.15);
   cursor: pointer;
 }
@@ -426,20 +446,7 @@ body {
   box-shadow: 0 8px 24px rgba(0,0,0,0.3);
 }
 
-/* ✅ 手机端自动减少列数 */
-@media (max-width: 1100px) {
-  .photo-wall {
-    column-count: 4;
-  }
-}
-
-@media (max-width: 900px) {
-  .photo-wall {
-    column-count: 3;
-  }
-}
-
-@media (max-width: 600px) {
+@media (max-width: 768px) {
   .photo-wall {
     column-count: 2;
   }

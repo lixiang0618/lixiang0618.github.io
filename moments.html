@@ -19,7 +19,7 @@
   <title>Li Xiang | Moments</title>
   <meta name="description" content="Li Xiang's Moments - Daily life and updates">
   <meta name="author" content="Li Xiang">
-  <link rel="icon" href="Resources/Logo.png">
+  <link rel="icon" href="Resources/微信头像.jpg">
   <link rel="stylesheet" href="styles.css">
   <style>
     .moments-container {
@@ -100,7 +100,8 @@
     .moment-images.single {
       grid-template-columns: 1fr;
     }
-    .moment-images img {
+    .moment-images img,
+    .moment-images video {
       width: 100%;
       aspect-ratio: 1;
       object-fit: cover;
@@ -108,7 +109,8 @@
       cursor: pointer;
       transition: transform 0.2s ease;
     }
-    .moment-images img:hover {
+    .moment-images img:hover,
+    .moment-images video:hover {
       transform: scale(1.02);
     }
     .loading {
@@ -221,69 +223,79 @@
       return 'triple';
     }
 
-    const moments = [
-    {
-        "date": "2026-03-01 4:30",
-        "content": "想你们🏐",
-        "images": [
-            "Resources/sports-1.jpg",
-            "Resources/sports-2.jpg",
-            "Resources/sports-3.jpg",
-            "Resources/sports-4.jpg"
-        ]
-    },
-    {
-        "date": "2025-07-28 09:15",
-        "content": "喜欢绿色📸",
-        "images": [
-            "Resources/portrait-1.jpg"
-        ]
+    function isVideo(filename) {
+      return filename.match(/\.(mp4|webm|ogg)$/i);
     }
-];
-    
-    
-    
-    
-    
-    
-    
 
-    const container = document.getElementById('moments-list');
+    function loadMoments() {
+      const container = document.getElementById('moments-list');
+      console.log('Loading moments...');
+      console.log('Container:', container);
 
-    if (moments.length > 0) {
-      container.innerHTML = moments.map(moment => {
-        const imageClass = getImageClass(moment.images.length);
-        const imagesHtml = moment.images.length > 0
-          ? `<div class="moment-images ${imageClass}">
-              ${moment.images.map(img => `<img src="${img}" alt="Moment photo">`).join('')}
-            </div>`
-          : '';
-        const contentHtml = moment.content
-          ? `<div class="moment-content">${moment.content}</div>`
-          : '';
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', '/data/moments.json', true);
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4) {
+          console.log('XHR status:', xhr.status);
+          if (xhr.status === 200) {
+            try {
+              var moments = JSON.parse(xhr.responseText);
+              console.log('Loaded moments:', moments);
 
-        return `
-          <div class="moment-card">
-            <div class="moment-header">
-              <div class="moment-avatar">L</div>
-              <div class="moment-info">
-                <div class="moment-name">Li Xiang</div>
-                <div class="moment-time">${formatDate(moment.date)}</div>
-              </div>
-            </div>
-            ${contentHtml}
-            ${imagesHtml}
-          </div>
-        `;
-      }).join('');
+              moments.sort(function(a, b) {
+                return new Date(b.date) - new Date(a.date);
+              });
+
+              if (moments.length > 0) {
+                container.innerHTML = moments.map(function(moment) {
+                  var imageClass = getImageClass(moment.images.length);
+                  var imagesHtml = moment.images.length > 0
+                    ? '<div class="moment-images ' + imageClass + '">' +
+                      moment.images.map(function(img) {
+                        if (isVideo(img)) {
+                          return '<video src="' + img + '" controls preload="metadata"></video>';
+                        } else {
+                          return '<img src="' + img + '" alt="Moment photo">';
+                        }
+                      }).join('') +
+                      '</div>'
+                    : '';
+                  var contentHtml = moment.content
+                    ? '<div class="moment-content">' + moment.content + '</div>'
+                    : '';
+
+                  return '<div class="moment-card">' +
+                    '<div class="moment-header">' +
+                    '<div class="moment-avatar">L</div>' +
+                    '<div class="moment-info">' +
+                    '<div class="moment-name">Li Xiang</div>' +
+                    '<div class="moment-time">' + formatDate(moment.date) + '</div>' +
+                    '</div>' +
+                    '</div>' +
+                    contentHtml +
+                    imagesHtml +
+                    '</div>';
+                }).join('');
+              } else {
+                container.innerHTML = '<div class="empty-state"><div class="icon">📷</div><p>No moments yet.</p><p>Edit data/moments.json to add your moments</p></div>';
+              }
+            } catch (parseError) {
+              console.error('JSON parse error:', parseError);
+              container.innerHTML = '<div class="empty-state"><div class="icon">📷</div><p>Error parsing moments data.</p></div>';
+            }
+          } else {
+            console.error('XHR error:', xhr.status);
+            container.innerHTML = '<div class="empty-state"><div class="icon">📷</div><p>Error loading moments. Status: ' + xhr.status + '</p></div>';
+          }
+        }
+      };
+      xhr.send();
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', loadMoments);
     } else {
-      container.innerHTML = `
-        <div class="empty-state">
-          <div class="icon">📷</div>
-          <p>No moments yet.</p>
-          <p>Edit data/moments.json to add your moments</p>
-        </div>
-      `;
+      loadMoments();
     }
   </script>
 </body>

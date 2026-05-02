@@ -7,17 +7,17 @@ tags:
   - 随笔
 pinned: true
 ---
+## 关于 / This Blog 
+欢迎来到我的博客！Welcome to my blog!
 
-欢迎来到我的博客！这是一个简洁的博客系统。
 
-## 关于这个博客
 
-你可以在这里分享你的：
-- 学习心得
-- 生活点滴
-- 技术文章
+## 会分享 / Focus：
+- 学习心得 / Learning Experience
+- 生活点滴 / Daily Life Moments
+- 技术文章 / Technical Articles 
 
-持续更新中...
+持续更新中 / Continuous Updates...
 
 ---
 

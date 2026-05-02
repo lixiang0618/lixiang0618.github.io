@@ -14,8 +14,8 @@
     "pinned": true
   },
   {
-    "file": "test - 副本",
-    "title": "Test",
+    "file": "Python",
+    "title": "Python 笔记",
     "date": "2026-02-28",
     "categories": [
       "学习"
@@ -23,22 +23,53 @@
     "tags": [
       "学习"
     ],
-    "excerpt": "这是一个测试博客文章。  测试内容 这是为了测试博客系统是否正常工作。 你可以在这里写任何内容，支持Markdown语法！ 测试时间",
+    "excerpt": "这是本人大二上学期学习Python的笔记。需要可自取",
     "image": null,
-    "pinned": false
+    "pinned": false,
+    "pdf": "Python.pdf"
   },
   {
-    "file": "test",
-    "title": "Test",
-    "date": "2026-02-28",
+    "file": "C语言习题集",
+    "title": "C语言习题集",
+    "date": "2022-10-27",
     "categories": [
       "学习"
     ],
     "tags": [
       "学习"
     ],
-    "excerpt": "这是一个测试博客文章。  测试内容 这是为了测试博客系统是否正常工作。 你可以在这里写任何内容，支持Markdown语法！ 测试时间",
+    "excerpt": "这是本人大一上学期学习C语言的习题集。需要可自取。",
     "image": null,
-    "pinned": false
+    "pinned": false,
+    "pdf": "程序设计习题集-陈朔鹰.pdf"
+  },
+  {
+    "file": "DataStructure",
+    "title": "DataStructure 习题",
+    "date": "2023-04-27",
+    "categories": [
+      "学习"
+    ],
+    "tags": [
+      "学习"
+    ],
+    "excerpt": "这是本人大一上学期学习数据结构的习题集。需要可自取。",
+    "image": null,
+    "pinned": false,
+    "pdf": "数据结构1800题及答案.pdf"
+  },
+  {
+    "file": "Hot100",
+    "title": "Leetcode Hot100 笔记",
+    "date": "2026-05-02",
+    "categories": [
+      "学习"
+    ],
+    "tags": [
+      "学习"
+    ],
+    "excerpt": "这是本人Leetcode Hot100题目集的笔记。持续更新中。",
+    "image": null,
+    "pinned": true
   }
 ]

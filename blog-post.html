@@ -18,7 +18,7 @@
   </script>
   <title id="post-title">Blog Post</title>
   <meta name="description" content="Blog post">
-  <link rel="icon" href="Resources/Logo.png">
+  <link rel="icon" href="Resources/微信头像.jpg">
   <link rel="stylesheet" href="styles.css">
   <style>
     .post-container {
@@ -132,6 +132,29 @@
       border-radius: 6px;
       font-size: 13px;
     }
+    .post-pdf {
+      margin-top: 24px;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+    .post-pdf-header {
+      padding: 12px 16px;
+      background: var(--muted);
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .post-pdf iframe {
+      width: 100%;
+      height: 800px;
+      border: none;
+      display: block;
+    }
 
     @media (max-width: 768px) {
       .post-container {
@@ -161,6 +184,9 @@
       .post-meta {
         flex-wrap: wrap;
         gap: 12px;
+      }
+      .post-pdf iframe {
+        height: 500px;
       }
     }
   </style>
@@ -192,6 +218,8 @@
 
       <article id="post-content" class="post-content"></article>
 
+      <div id="post-pdf" class="post-pdf"></div>
+
       <div id="post-tags" class="post-tags"></div>
     </div>
   </main>
@@ -219,7 +247,7 @@
       html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
       html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
 
-      html = html.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1">');
+      html = html.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="./blogs/$2" alt="$1">');
       html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
 
       html = html.replace(/^- (.+)$/gm, '<li>$1</li>');
@@ -256,7 +284,8 @@
       }
 
       try {
-        const response = await fetch('./blogs/' + postFile + '.md');
+        const encodedFile = encodeURIComponent(postFile);
+        const response = await fetch('./blogs/' + encodedFile + '.md');
         if (!response.ok) {
           document.getElementById('post-content').innerHTML = '<p>Post not found.</p>';
           return;
@@ -267,24 +296,33 @@
         let frontMatter = {};
         let body = content;
 
-        if (lines[0] === '---') {
+        if (lines[0] === '---' || lines[0].trim() === '---') {
           let endIdx = -1;
           for (let i = 1; i < lines.length; i++) {
-            if (lines[i] === '---') {
+            if (lines[i] === '---' || lines[i].trim() === '---') {
               endIdx = i;
               break;
             }
           }
           if (endIdx > 0) {
             const yamlStr = lines.slice(1, endIdx).join('\n');
+            let currentKey = '';
             yamlStr.split('\n').forEach(line => {
               const match = line.match(/^(\w+):\s*(.*)$/);
               if (match) {
+                currentKey = match[1];
                 if (match[2].startsWith('-')) {
-                  frontMatter[match[1]] = match[2].replace(/^\s*-\s*/, '').split(',').map(s => s.trim());
+                  frontMatter[currentKey] = [match[2].replace(/^\s*-\s*/, '').trim()];
+                } else if (match[2].trim() === '') {
+                  frontMatter[currentKey] = [];
                 } else {
-                  frontMatter[match[1]] = match[2];
+                  frontMatter[currentKey] = match[2];
                 }
+              } else if (currentKey && line.trim().startsWith('-')) {
+                if (!Array.isArray(frontMatter[currentKey])) {
+                  frontMatter[currentKey] = [];
+                }
+                frontMatter[currentKey].push(line.trim().replace(/^\s*-\s*/, ''));
               }
             });
             body = lines.slice(endIdx + 1).join('\n');
@@ -300,6 +338,18 @@
         const tagsContainer = document.getElementById('post-tags');
         if (frontMatter.tags && Array.isArray(frontMatter.tags)) {
           tagsContainer.innerHTML = frontMatter.tags.map(tag => `<span class="post-tag">${tag}</span>`).join('');
+        }
+
+        const pdfContainer = document.getElementById('post-pdf');
+        if (frontMatter.pdf) {
+          const encodedPdf = encodeURIComponent(frontMatter.pdf);
+          pdfContainer.innerHTML = `
+            <div class="post-pdf-header">
+              <span>📄</span>
+              <span>Attachment: ${frontMatter.pdf}</span>
+            </div>
+            <iframe src="./blogs/${encodedPdf}" title="PDF Document"></iframe>
+          `;
         }
       } catch (error) {
         console.error('Error loading post:', error);

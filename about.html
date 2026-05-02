@@ -18,7 +18,7 @@
   </script>
   <title>Li Xiang | About Me</title>
   <meta name="description" content="About Li Xiang">
-  <link rel="icon" href="Resources/Logo.png">
+  <link rel="icon" href="Resources/微信头像.jpg">
   <link rel="stylesheet" href="styles.css">
   <style>
     .about-container {
@@ -132,12 +132,8 @@
       </div>
 
       <section>
-        <h2 class="section-title">Current Focus</h2>
-        <ul class="focus-list">
-          <li class="focus-item">毕业设计 ing</li>
-          <li class="focus-item">刷Leetcode题目 ing</li>
-          <li class="focus-item">找相关实习 ing</li>
-          <li class="focus-item">思考有没有必要读PhD</li>
+        <h2 class="section-title" id="focus-title">Current Focus</h2>
+        <ul class="focus-list" id="focus-list">
         </ul>
       </section>
     </div>
@@ -151,6 +147,22 @@
 
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
+    
+    // Load focus data from JSON
+    fetch('data/focus.json')
+      .then(response => response.json())
+      .then(data => {
+        const focusData = data.en;
+        document.getElementById('focus-title').textContent = focusData.title;
+        const focusList = document.getElementById('focus-list');
+        focusData.items.forEach(item => {
+          const li = document.createElement('li');
+          li.className = 'focus-item';
+          li.textContent = item;
+          focusList.appendChild(li);
+        });
+      })
+      .catch(error => console.error('Error loading focus data:', error));
   </script>
 </body>
 </html>

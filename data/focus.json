@@ -1,0 +1,20 @@
+{
+  "en": {
+    "title": "Current Focus",
+    "items": [
+      "Graduation Thesis ing",
+      "Leetcode Practice ing",
+      "Looking for Internship ing",
+      "Thinking about PhD"
+    ]
+  },
+  "zh": {
+    "title": "Current Focus",
+    "items": [
+      "毕业设计 ing",
+      "刷Leetcode题目 ing",
+      "找相关实习 ing",
+      "思考有没有必要读PhD"
+    ]
+  }
+}

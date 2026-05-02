@@ -1,7 +1,7 @@
 (function() {
   const backToTop = document.getElementById('backToTop');
   const yearEl = document.getElementById('year');
-  const resourceBase = 'Resources/';
+  const resourceBase = window.location.pathname.includes('/zh/') ? '../Resources/' : 'Resources/';
 
   if (yearEl) {
     yearEl.textContent = new Date().getFullYear();
@@ -146,9 +146,9 @@ const portrait = document.getElementById("portrait-img");
 
 // 两张头像路径（可自行替换）
 const portraits = [
-  "Resources/portrait-1.jpg",
-  "Resources/portrait-2.jpg",
-  "Resources/portrait-3.jpg"
+  resourceBase + "portrait-1.jpg",
+  resourceBase + "portrait-2.jpg",
+  resourceBase + "portrait-3.jpg"
 ];
 
 let current = 0;
