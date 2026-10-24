@@ -1103,3 +1103,61 @@ body {
   z-index: 1;
 }
 
+
+
+
+.back-to-top {
+  position: fixed;
+  right: 28px;
+  bottom: 28px;
+  width: 52px;
+  height: 52px;
+
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 16px;
+
+  background: linear-gradient(135deg, #ffb35c, #f47721);
+  color: #ffffff;
+
+  box-shadow:
+    0 6px 20px rgba(244, 119, 33, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+  z-index: 999;
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    background 0.25s ease;
+}
+
+.back-to-top:hover {
+  transform: translateY(-4px);
+  background: linear-gradient(135deg, #ffbd70, #f36a17);
+  box-shadow: 0 10px 28px rgba(244, 119, 33, 0.35);
+}
+
+.back-to-top:active {
+  transform: translateY(-1px) scale(0.96);
+}
+
+.back-to-top svg {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+}
+
+.back-to-top:focus-visible {
+  outline: 3px solid rgba(244, 119, 33, 0.45);
+  outline-offset: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .back-to-top {
+    transition: none;
+  }
+}
