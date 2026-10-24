@@ -1058,3 +1058,48 @@ body {
   font-weight: bolder;
 }
 
+/* === Research / Internship / Project 图片悬停轻微放大 === */
+/* 解除容器裁剪，避免放大后图片边缘被切掉 */
+.row-media,
+.row_nus_aiot {
+  overflow: visible;
+}
+
+.media-grid img,
+.nus-aiot img,
+.compact-left img,
+.compact-right img {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.media-grid img:hover,
+.nus-aiot img:hover,
+.compact-left img:hover,
+.compact-right img:hover {
+  transform: scale(1.08);
+  box-shadow:
+    0 0 0 2px rgba(248, 133, 104, 0.9),   /* 橙色边框环 */
+    0 0 24px rgba(248, 133, 104, 0.55),   /* 橙色模糊高光 */
+    0 12px 28px rgba(0, 0, 0, 0.18);      /* 浮起阴影 */
+  position: relative;
+  z-index: 1;
+}
+
+/* === Certificates & Awards 条目悬停效果（蓝色系，呼应条目主题色） === */
+.timeline-item {
+  transition: transform 0.3s ease, box-shadow 0.3s ease,
+              background 0.3s ease, border-left-color 0.3s ease;
+}
+
+.timeline-item:hover {
+  transform: scale(1.02);
+  background: rgba(0, 123, 255, 0.1);              /* 底色微微加深 */
+  border-left-color: #5b7fff;                      /* 左边条变亮蓝 */
+  box-shadow:
+    0 0 0 2px rgba(0, 123, 255, 0.75),   /* 蓝色边框环 */
+    0 0 24px rgba(91, 127, 255, 0.45),   /* 蓝色模糊高光 */
+    0 12px 28px rgba(0, 0, 0, 0.12);     /* 浮起阴影 */
+  position: relative;
+  z-index: 1;
+}
+

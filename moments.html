@@ -61,7 +61,10 @@
       width: 44px;
       height: 44px;
       border-radius: 50%;
-      background: linear-gradient(135deg, var(--primary), var(--accent));
+      /* background: linear-gradient(135deg, var(--primary), var(--accent)); */
+      background-image: url('Resources/微信头像.jpg');
+      background-size: cover;       /* 让图片缩放铺满圆形 */
+      background-position: center;  /* 以图片中心为基准裁剪 */
       display: flex;
       align-items: center;
       justify-content: center;
@@ -266,9 +269,10 @@
 
                   return '<div class="moment-card">' +
                     '<div class="moment-header">' +
-                    '<div class="moment-avatar">L</div>' +
+                    // '<div class="moment-avatar">L</div>' +
+                    '<div class="moment-avatar"></div>' +
                     '<div class="moment-info">' +
-                    '<div class="moment-name">Li Xiang</div>' +
+                    '<div class="moment-name">Lee Soeng</div>' +
                     '<div class="moment-time">' + formatDate(moment.date) + '</div>' +
                     '</div>' +
                     '</div>' +
