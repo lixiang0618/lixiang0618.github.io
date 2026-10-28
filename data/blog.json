@@ -1,17 +1,31 @@
 [
   {
-    "file": "hello-world",
-    "title": "Hello World",
-    "date": "2025-05-01",
+    "file": "Comments_MSMS_NTU",
+    "title": "Comments on MSMS NTU",
+    "date": "2026-10-28",
     "categories": [
-      "生活"
+      "学习"
     ],
     "tags": [
       "随笔"
     ],
-    "excerpt": "欢迎来到我的博客！这是一个简洁的博客系统。  关于这个博客 你可以在这里分享你的：  学习心得  生活点滴  技术文章 持续更新中... 欢迎来访！",
+    "excerpt": "本文记录我在南洋理工大学 26 Fall（NTU）MSc in Modelling and Simulation（MSMS）项目的真实就读体验，希望为未来考虑申请该项目的同学提供一些参考。",
     "image": null,
-    "pinned": true
+    "pinned": false
+  },
+  {
+    "file": "Hot100",
+    "title": "Hot100",
+    "date": "2026-10-28",
+    "categories": [
+      "未分类"
+    ],
+    "tags": [
+      "未分类"
+    ],
+    "excerpt": "title: Leetcode Hot100 笔记\r date: 20260502\r categories:\r    学习\r tags:\r    学习\r pinned: true\r \r \r  1.Tw...",
+    "image": null,
+    "pinned": false
   },
   {
     "file": "Python",
@@ -23,25 +37,23 @@
     "tags": [
       "学习"
     ],
-    "excerpt": "这是本人大二上学期学习Python的笔记。需要可自取",
+    "excerpt": "Python 笔记 这是本人大二上学期学习Python的笔记。  需要可自取 20260228",
     "image": null,
-    "pinned": false,
-    "pdf": "Python.pdf"
+    "pinned": false
   },
   {
-    "file": "C语言习题集",
-    "title": "C语言习题集",
-    "date": "2022-10-27",
+    "file": "hello-world",
+    "title": "Hello World",
+    "date": "2025-05-01",
     "categories": [
-      "学习"
+      "生活"
     ],
     "tags": [
-      "学习"
+      "随笔"
     ],
-    "excerpt": "这是本人大一上学期学习C语言的习题集。需要可自取。",
+    "excerpt": "关于 / This Blog  欢迎来到我的博客！Welcome to my blog!  会分享 / Focus：  学习心得 / Learning Experience  生活点滴 / Daily...",
     "image": null,
-    "pinned": false,
-    "pdf": "程序设计习题集-陈朔鹰.pdf"
+    "pinned": false
   },
   {
     "file": "DataStructure",
@@ -53,23 +65,22 @@
     "tags": [
       "学习"
     ],
-    "excerpt": "这是本人大一上学期学习数据结构的习题集。需要可自取。",
+    "excerpt": "DataStructure 习题 这是本人大一上学期学习数据结构的习题集。  需要可自取 20230427",
     "image": null,
-    "pinned": false,
-    "pdf": "数据结构1800题及答案.pdf"
+    "pinned": false
   },
   {
-    "file": "Hot100",
-    "title": "Leetcode Hot100 笔记",
-    "date": "2026-05-02",
+    "file": "C语言习题集",
+    "title": "C语言习题集",
+    "date": "2022-10-27",
     "categories": [
       "学习"
     ],
     "tags": [
       "学习"
     ],
-    "excerpt": "这是本人Leetcode Hot100题目集的笔记。持续更新中。",
+    "excerpt": "这是本人大一上学期学习C语言的习题集。需要可自取。 因为疫情原因后面就回家没法上课了，所以就只能自己学习了。 20221027",
     "image": null,
-    "pinned": true
+    "pinned": false
   }
 ]

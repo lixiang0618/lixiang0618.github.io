@@ -158,13 +158,26 @@
   </header>
 
   <main>
-    <div class="moments-container">
-      <div class="moments-header">
-        <h1>朋友圈</h1>
-        <p>分享生活点滴</p>
+    <div class="moments-layout">
+      <aside class="moments-sidebar moments-timeline" aria-label="时间轴">
+        <h2 class="sidebar-title">时间轴</h2>
+        <nav id="moments-timeline" aria-label="按月份浏览"></nav>
+      </aside>
+
+      <div class="moments-container">
+        <div class="moments-header">
+          <h1>朋友圈</h1>
+          <p>分享生活点滴</p>
+        </div>
+
+        <div id="moments-list"></div>
       </div>
 
-      <div id="moments-list"></div>
+      <aside class="moments-sidebar moments-diary" aria-label="快照">
+        <h2 class="sidebar-title">快照</h2>
+        <div id="snap-list" class="snap-grid"></div>
+        <p class="snap-note">收藏回忆</p>
+      </aside>
     </div>
   </main>
 
@@ -280,6 +293,165 @@
     } else {
       loadMoments();
     }
+
+    // 点击照片放大
+    var lightbox = document.createElement('div');
+    lightbox.className = 'image-lightbox';
+    lightbox.innerHTML = '<img alt="">';
+    document.body.appendChild(lightbox);
+
+    document.getElementById('moments-list').addEventListener('click', function (e) {
+      if (e.target.tagName === 'IMG' && e.target.closest('.moment-images')) {
+        lightbox.querySelector('img').src = e.target.src;
+        lightbox.classList.add('active');
+      }
+    });
+
+    lightbox.addEventListener('click', function () {
+      lightbox.classList.remove('active');
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') lightbox.classList.remove('active');
+    });
+
+    // 桌面端侧栏：时间轴 + 照片日记（中间动态流渲染逻辑保持不变）
+    (function () {
+      var list = document.getElementById('moments-list');
+      var timelineEl = document.getElementById('moments-timeline');
+      var snapEl = document.getElementById('snap-list');
+
+      function monthLabel(d) {
+        return d.toLocaleDateString('zh-CN', { month: 'short' });
+      }
+
+      function buildTimeline(moments) {
+        var groups = [];
+        var monthMeta = [];
+
+        moments.forEach(function (m, i) {
+          var d = new Date(m.date);
+          if (isNaN(d)) return;
+          var year = d.getFullYear();
+          var key = year + '-' + (d.getMonth() + 1);
+          var group = groups[groups.length - 1];
+          if (!group || group.year !== year) {
+            group = { year: year, months: [] };
+            groups.push(group);
+          }
+          var last = group.months[group.months.length - 1];
+          if (!last || last.key !== key) {
+            last = { key: key, label: monthLabel(d), index: i };
+            group.months.push(last);
+            monthMeta.push(last);
+          }
+        });
+
+        timelineEl.innerHTML = groups.map(function (g) {
+          return '<div class="timeline-group">' +
+                   '<div class="timeline-year">' + g.year + '</div>' +
+                   g.months.map(function (mo) {
+                     return '<button type="button" class="timeline-month" data-index="' + mo.index + '">' + mo.label + '</button>';
+                   }).join('') +
+                 '</div>';
+        }).join('');
+
+        monthMeta.forEach(function (mo) {
+          mo.btn = timelineEl.querySelector('.timeline-month[data-index="' + mo.index + '"]');
+        });
+
+        timelineEl.addEventListener('click', function (e) {
+          var btn = e.target.closest('.timeline-month');
+          if (!btn) return;
+          var card = list.querySelectorAll('.moment-card')[parseInt(btn.dataset.index, 10)];
+          if (!card) return;
+          var top = card.getBoundingClientRect().top + window.pageYOffset - 92;
+          window.scrollTo({ top: top, behavior: 'smooth' });
+        });
+
+        function setActive(index) {
+          monthMeta.forEach(function (mo) {
+            mo.btn.classList.toggle('active', mo.index === index);
+          });
+        }
+
+        function updateActive() {
+          var cards = list.querySelectorAll('.moment-card');
+          if (!cards.length || !monthMeta.length) return;
+          var current = monthMeta[0].index;
+          monthMeta.forEach(function (mo) {
+            var card = cards[mo.index];
+            if (card && card.getBoundingClientRect().top <= 140) current = mo.index;
+          });
+          setActive(current);
+        }
+
+        var ticking = false;
+        window.addEventListener('scroll', function () {
+          if (ticking) return;
+          ticking = true;
+          requestAnimationFrame(function () {
+            updateActive();
+            ticking = false;
+          });
+        }, { passive: true });
+
+        if (list.querySelector('.moment-card')) {
+          updateActive();
+        } else {
+          var observer = new MutationObserver(function () {
+            if (list.querySelector('.moment-card')) {
+              observer.disconnect();
+              updateActive();
+            }
+          });
+          observer.observe(list, { childList: true });
+        }
+      }
+
+      function buildSnaps(snaps) {
+        snapEl.innerHTML = snaps.map(function (s) {
+          var caption = s.caption ? '<figcaption class="snap-caption">' + s.caption + '</figcaption>' : '';
+          return '<figure class="snap-card">' +
+                   '<img src="../' + s.src + '" alt="快照" loading="lazy">' +
+                   caption +
+                 '</figure>';
+        }).join('');
+
+        snapEl.addEventListener('click', function (e) {
+          var card = e.target.closest('.snap-card');
+          if (!card) return;
+          lightbox.querySelector('img').src = card.querySelector('img').src;
+          lightbox.classList.add('active');
+        });
+      }
+
+      var snapReq = new XMLHttpRequest();
+      snapReq.open('GET', '../Resources/snapshots/snapshots.json', true);
+      snapReq.onload = function () {
+        if (snapReq.status !== 200) return;
+        try {
+          buildSnaps(JSON.parse(snapReq.responseText));
+        } catch (err) {
+          console.error('快照加载失败:', err);
+        }
+      };
+      snapReq.send();
+
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', '../data/moments.json', true);
+      xhr.onload = function () {
+        if (xhr.status !== 200) return;
+        try {
+          var moments = JSON.parse(xhr.responseText);
+          moments.sort(function (a, b) { return new Date(b.date) - new Date(a.date); });
+          buildTimeline(moments);
+        } catch (err) {
+          console.error('侧栏加载失败:', err);
+        }
+      };
+      xhr.send();
+    })();
   </script>
 </body>
 </html>
