@@ -4,7 +4,7 @@
   const API = 'https://api.lxiang.cc/api/comments';
   const zh = document.documentElement.lang.startsWith('zh');
   const words = zh ? {
-    comments:'评论', empty:'暂无评论', loading:'正在加载评论…', retry:'重试', error:'请求未完成，请重试。',
+    comments:'评论', loading:'正在加载评论…', retry:'重试', error:'请求未完成，请重试。',
     add:'发表评论', edit:'编辑评论', remove:'删除评论', nickname:'昵称', body:'评论正文', token:'删除凭证',
     cancel:'取消', send:'发送', save:'保存修改', confirm:'确认删除', close:'关闭', done:'完成', copy:'复制凭证',
     copied:'已复制', success:'评论发表成功！请妥善保存以下删除凭证。', backup:'此凭证用于未来修改或删除评论。更换设备、清除浏览器数据或丢失凭证后，可能无法修改或删除。请自行备份，本地保存不能替代备份。',
@@ -14,7 +14,7 @@
     hidden:'评论已不可见。', still:'评论仍然存在，删除未确认。请检查凭证后重试。', edited:'已编辑',
     deleteWarning:'确认删除这条评论？此操作无法撤销。', menu:'评论操作', copyFailed:'复制失败，请手动选择并复制凭证。'
   } : {
-    comments:'Comments', empty:'No comments yet', loading:'Loading comments…', retry:'Retry', error:'Request could not be completed. Please retry.',
+    comments:'Comments', loading:'Loading comments…', retry:'Retry', error:'Request could not be completed. Please retry.',
     add:'Post a comment', edit:'Edit comment', remove:'Delete comment', nickname:'Nickname', body:'Comment', token:'Deletion token',
     cancel:'Cancel', send:'Send', save:'Save changes', confirm:'Confirm deletion', close:'Close', done:'Done', copy:'Copy token',
     copied:'Copied', success:'Comment posted! Keep the deletion token below safe.', backup:'This token lets you edit or delete this comment. Changing devices, clearing site data or losing the token may prevent future changes. Back it up yourself; browser storage is only a convenience.',
@@ -59,11 +59,39 @@
   }
   function commentId(c) { return String(c.id ?? c.comment_id ?? ''); }
   function visible(c) { return c.status!=='deleted' && !c.deleted_at; }
-  function date(value) {
-    if(!value) return '';
-    // D1/SQLite timestamps are UTC; normalize explicitly for Safari and local display.
+  function parsedDate(value) {
+    if (!value) return null;
+    // D1/SQLite timestamps are UTC, including on Safari.
     const normalized=/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/.test(value)?value.replace(' ','T')+'Z':value;
-    const d=new Date(normalized); return isNaN(d) ? '' : d.toLocaleString(zh?'zh-CN':'en-US');
+    const d=new Date(normalized); return isNaN(d) ? null : d;
+  }
+  function date(value) {
+    const d=parsedDate(value); return d ? d.toLocaleString(zh?'zh-CN':'en-US') : '';
+  }
+  function relativeDate(value) {
+    const d=parsedDate(value); if (!d) return '';
+    const seconds=Math.max(0,Math.floor((Date.now()-d.getTime())/1000));
+    if (seconds<60) return zh?'刚刚':'now';
+    if (seconds<3600) return Math.floor(seconds/60)+(zh?'分钟前':'m');
+    if (seconds<86400) return Math.floor(seconds/3600)+(zh?'小时前':'h');
+    if (seconds<7*86400) return Math.floor(seconds/86400)+(zh?'天前':'d');
+    return d.toLocaleDateString(zh?'zh-CN':'en-US',{
+      month:zh?'numeric':'short',day:'numeric',
+      ...(d.getFullYear()!==new Date(Date.now()).getFullYear()?{year:'numeric'}:{})
+    });
+  }
+  function avatar(nickname) {
+    const name=String(nickname || '?').trim().normalize('NFC') || '?';
+    const node=el('span','comment-avatar'); node.setAttribute('aria-hidden','true');
+    const first=typeof Intl.Segmenter==='function'
+      ? new Intl.Segmenter(undefined,{granularity:'grapheme'}).segment(name)[Symbol.iterator]().next().value.segment
+      : Array.from(name)[0];
+    node.textContent=first.toLocaleUpperCase();
+    let hash=0; for (const ch of name) hash=(Math.imul(hash,31)+ch.codePointAt(0))|0;
+    const hue=(hash>>>0)%360;
+    node.style.backgroundColor='hsl('+hue+', 30%, 92%)';
+    node.style.color='hsl('+hue+', 24%, 32%)';
+    return node;
   }
   const dialog=el('dialog','comments-dialog'); dialog.setAttribute('aria-labelledby','comments-dialog-title');
   const panel=el('div','comments-dialog-panel'); dialog.append(panel); document.body.append(dialog);
@@ -184,8 +212,10 @@
     if(!open(words.menu,origin))return;
     panel.append(button(words.edit,()=>compose(s,origin,c,'PATCH')),button(words.remove,()=>compose(s,origin,c,'DELETE')));
   }
+  const mountedCards=new WeakSet();
   function mount(card,{type,id,actions:actionsRow}={}) {
-    if(!type || !id || card.querySelector('.comments-section')) return;
+    if(!type || !id || mountedCards.has(card)) return;
+    mountedCards.add(card);
     if(!actionsRow) { actionsRow=card.querySelector('.moment-actions'); if(!actionsRow){actionsRow=el('div','moment-actions');card.append(actionsRow);} }
     const section=el('section','comments-section');section.setAttribute('aria-label',words.comments);
     const notice=el('p','comments-status',words.loading);notice.setAttribute('role','status');
@@ -196,20 +226,35 @@
     trigger.innerHTML='<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5H4l-3 3V11.5a10 10 0 0 1 20 0Z"/></svg>';
     const count=el('span','','—');trigger.append(count);actionsRow.append(trigger);
     const s={type,id,comments:[],version:0,load:async(throwError=false)=>{
-      const version=++s.version;notice.textContent=words.loading;
+      const version=++s.version;
+      if(!section.isConnected) card.append(section);
+      notice.hidden=false;notice.textContent=words.loading;
       try {
         const data=await request('GET','?type='+encodeURIComponent(type)+'&id='+encodeURIComponent(id));
         if(!Array.isArray(data.comments) || data.content_type!==type || data.content_id!==id)throw Error('Invalid comments');
         if(version!==s.version)return;
         s.comments=data.comments.filter(visible);count.textContent=String(s.comments.length);list.replaceChildren();
-        notice.textContent=s.comments.length?'':words.empty;
+        notice.textContent='';
+        notice.hidden=true;
+        if(s.comments.length) { if(!section.isConnected) card.append(section); }
+        else section.remove();
         s.comments.forEach(c=>{
           const item=el('article','comment-item');item.tabIndex=0;
-          item.append(el('strong','comment-nickname',String(c.nickname || '')),el('p','comment-body',String(c.body || '')));
-          const time=el('small','comment-time',date(c.created_at));
-          if(c.edit_count>0)time.append(document.createTextNode(' · '+words.edited+(date(c.updated_at)?' · '+date(c.updated_at):'')));
+          const content=el('div','comment-content');
+          const meta=el('div','comment-meta');
+          const time=el('time','comment-time',relativeDate(c.created_at));
+          const created=parsedDate(c.created_at);
+          time.hidden=!created;
+          if(created) { time.dateTime=created.toISOString();time.title=date(c.created_at);time.setAttribute('aria-label',date(c.created_at)); }
+          meta.append(el('strong','comment-nickname',String(c.nickname || '')),time);
+          if(c.edit_count>0) {
+            const edited=el('span','comment-edited',words.edited);
+            edited.title=date(c.updated_at);
+            edited.setAttribute('aria-label',words.edited+(edited.title?' · '+edited.title:''));meta.append(edited);
+          }
+          content.append(meta,el('p','comment-body',String(c.body || '')));
           const menu=button('···',()=>actions(s,c,menu),'comment-menu-button');menu.setAttribute('aria-label',words.menu);
-          item.append(time,menu);
+          item.append(avatar(c.nickname),content,menu);
           item.addEventListener('contextmenu',e=>{if(e.target.closest('a,input,textarea'))return;e.preventDefault();actions(s,c,menu);});
           let timer,start;
           item.addEventListener('pointerdown',e=>{if(e.pointerType==='mouse'||e.target.closest('button'))return;start={x:e.clientX,y:e.clientY};timer=setTimeout(()=>actions(s,c,menu),600);});
@@ -219,7 +264,7 @@
           list.append(item);
         });
       } catch(error) {
-        if(version===s.version){notice.replaceChildren(document.createTextNode(words.error+' '),button(words.retry,()=>s.load()));}
+        if(version===s.version){notice.hidden=false;notice.replaceChildren(document.createTextNode(words.error+' '),button(words.retry,()=>s.load()));}
         if(throwError)throw error;
       }
     }};

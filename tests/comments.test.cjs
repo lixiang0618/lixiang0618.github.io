@@ -57,7 +57,7 @@ test('POST persists before fetch, shows backup, renders safe text; PATCH uses sa
  assert.equal(p.card.querySelector('.moment-like').textContent,'♡ 7');
  p.card.querySelector('.comment-menu-button').click();p.click('Edit comment');
  const f=p.fields();assert(f[2].value);f[1].value='Updated';p.click('Save changes');await tick();
- assert.equal(p.card.querySelector('.comment-body').textContent,'Updated');assert.match(p.card.querySelector('.comment-time').textContent,/Edited/);
+ assert.equal(p.card.querySelector('.comment-body').textContent,'Updated');assert.match(p.card.querySelector('.comment-meta').textContent,/Edited/);
  assert.equal(api.calls.find(c=>c.method==='PATCH').payload.expected_edit_count,0);
  p.card.querySelector('.comment-menu-button').click();p.click('Delete comment');p.click('Confirm deletion');await tick();
  assert.equal(p.card.querySelectorAll('.comment-item').length,0);assert.equal(p.card.querySelector('.comment-trigger span').textContent,'0');
@@ -104,11 +104,11 @@ test('edit conflict refreshes without overwriting and forces reopening; wrong cr
 });
 test('blocked storage prevents POST; invalid input prevents POST; list failures support retry; duplicate mount harmless',async()=>{
  const api=backend();const p=await setup(api);
- const section=p.card.querySelector('.comments-section');p.w.SiteComments.mount(p.card,{type:'moment',id:'moment-001'});assert.equal(p.card.querySelectorAll('.comments-section').length,1);
+ let section;p.w.SiteComments.mount(p.card,{type:'moment',id:'moment-001'});assert.equal(p.card.querySelectorAll('.comments-section').length,0);assert.equal(p.card.querySelectorAll('.comment-trigger').length,1);
  p.card.querySelector('.comment-trigger').click();p.click('Send');await tick();assert(!api.calls.some(c=>c.method==='POST'));
  p.fields()[0].value='Visitor';p.fields()[1].value='hello';Object.defineProperty(p.w,'localStorage',{get(){throw Error('blocked');}});
  p.click('Send');await tick();assert(!api.calls.some(c=>c.method==='POST'));assert.match(p.w.document.querySelector('dialog').textContent,/local storage/);
- p.click('Cancel');p.w.fetch=async()=>{throw Error('offline');};await p.s.load();assert.match(section.textContent,/Retry/);p.w.fetch=api.fetch;section.querySelector('button').click();await tick();assert.match(section.textContent,/No comments/);p.dom.window.close();
+ p.click('Cancel');p.w.fetch=async()=>{throw Error('offline');};await p.s.load();section=p.card.querySelector('.comments-section');assert.match(section.textContent,/Retry/);p.w.fetch=api.fetch;section.querySelector('button').click();await tick();assert(!p.card.querySelector('.comments-section'));assert(!section.textContent.includes('No comments'));p.dom.window.close();
 });
 test('AbortController timeout preserves POST identity and retry restores completion',async()=>{
  const api=backend();const p=await setup(api);const fetch=p.w.fetch;
@@ -171,4 +171,40 @@ test('PATCH response loss retains operation payload and does not overwrite a com
  p.w.fetch=fetch;p.click('Save changes');await tick();
  const writes=api.calls.filter(c=>c.method==='PATCH');assert.deepEqual(writes[0].payload,writes[1].payload);
  assert.equal(p.card.querySelector('.comment-body').textContent,'Saved on server');assert.equal(api.comments[0].edit_count,1);p.dom.window.close();
+});
+test('relative times use UTC correctly in both languages and keep full timestamps accessible',async()=>{
+ const now=Date.parse('2026-10-30T12:00:00Z');
+ for(const lang of ['en','zh']) {
+  const api=backend();api.comments.push({id:'time',nickname:'Reader',body:'Text',created_at:'2026-10-30 11:57:00',updated_at:'2026-10-30 11:58:00',edit_count:1});
+  const p=await setup(api,lang);p.w.Date.now=()=>now;
+  const cases=[[30,lang==='en'?'now':'刚刚'],[180,lang==='en'?'3m':'3分钟前'],[7200,lang==='en'?'2h':'2小时前'],[86400,lang==='en'?'1d':'1天前'],[6*86400,lang==='en'?'6d':'6天前']];
+  for(const [seconds,expected]of cases){
+   api.comments[0].created_at=new Date(now-seconds*1000).toISOString().slice(0,19).replace('T',' ');await p.s.load();
+   const time=p.card.querySelector('.comment-time');assert.equal(time.textContent,expected);assert(time.title);assert(time.getAttribute('aria-label'));assert.equal(time.dateTime,new Date(now-seconds*1000).toISOString());
+  }
+  api.comments[0].created_at='2026-10-20 12:00:00';await p.s.load();assert(!p.card.querySelector('.comment-time').textContent.includes('2026'));
+  api.comments[0].created_at='2025-12-20 12:00:00';await p.s.load();assert(p.card.querySelector('.comment-time').textContent.includes('2025'));
+  const meta=p.card.querySelector('.comment-meta');assert.equal(meta.querySelectorAll('.comment-edited').length,1);assert(meta.querySelector('.comment-edited').title);assert(!meta.textContent.includes('11:58'));
+  api.comments[0].created_at='invalid';await p.s.load();assert.equal(p.card.querySelector('.comment-time').textContent,'');p.dom.window.close();
+ }
+});
+test('avatars are local, deterministic, Unicode-aware and safe; empty lists leave no container or message',async()=>{
+ const api=backend();const p=await setup(api);
+ assert(!p.card.querySelector('.comments-section'));assert(!p.card.textContent.includes('No comments'));assert.equal(p.card.querySelector('.comment-trigger span').textContent,'0');
+ api.comments.push(...['张三','张三','👩🏽‍💻','<img src=x>'].map((nickname,i)=>({id:String(i),nickname,body:'hello',created_at:'2026-10-30 10:00:00',edit_count:0})));
+ await p.s.load();const avatars=p.card.querySelectorAll('.comment-avatar');assert.equal(avatars.length,4);assert.equal(avatars[0].textContent,'张');assert.equal(avatars[0].style.backgroundColor,avatars[1].style.backgroundColor);assert.equal(avatars[2].textContent,'👩🏽‍💻');assert.equal(avatars[3].textContent,'<');assert.equal(p.card.querySelectorAll('img').length,0);
+ const color=avatars[0].style.backgroundColor;await p.s.load();assert.equal(p.card.querySelector('.comment-avatar').style.backgroundColor,color);
+ api.comments.splice(0);await p.s.load();assert(!p.card.querySelector('.comments-section'));assert.equal(p.card.querySelector('.comment-trigger span').textContent,'0');p.dom.window.close();
+});
+test('both pages remove subtitles and retain shared compact spacing plus responsive columns',()=>{
+ const css=fs.readFileSync('styles.css','utf8');const {window}=new JSDOM('<style>'+css+'</style>');
+ assert(window.document.styleSheets[0].cssRules.length>0);window.close();
+ for(const name of ['moments.html','zh/moments.html']) {
+  const dom=new JSDOM(fs.readFileSync(name,'utf8'));const doc=dom.window.document;
+  assert.equal(doc.querySelector('.moments-header h1').textContent,name.startsWith('zh/')?'朋友圈':'Moments');assert.equal(doc.querySelector('.moments-header p'),null);
+  assert(doc.querySelector('.moments-timeline'));assert(doc.querySelector('.moments-diary'));dom.window.close();
+ }
+ assert.match(css,/grid-template-columns: 220px minmax\(0, 1fr\) 240px/);
+ assert.match(css,/@media \(max-width: 1199px\)/);assert.match(css,/@media \(max-width: 768px\)/);
+ assert.match(css,/\.moments-container \{ padding: 18px 16px 24px; \}/);
 });

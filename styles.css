@@ -1185,6 +1185,11 @@ body {
   border-radius: 4px;
 }
 
+/* Shared Moments heading; responsive font sizes remain in the pages. */
+.moments-container { max-width: 600px; min-width: 0; margin: 0 auto; padding: 24px 28px; }
+.moments-header { text-align: center; margin-bottom: 20px; }
+.moments-header h1 { font-size: 32px; font-weight: 700; margin: 0; color: var(--text); }
+
 /* Moments 桌面端三栏布局 */
 .moments-layout {
   max-width: 1200px;
@@ -1200,7 +1205,7 @@ body {
   position: sticky;
   top: 100px;
   align-self: start;
-  padding-top: 44px;
+  padding-top: 28px;
 }
 
 .moments-timeline {
@@ -1351,6 +1356,8 @@ body {
 
 /* 移动端：恢复原有单列 */
 @media (max-width: 768px) {
+  .moments-container { padding: 18px 16px 24px; }
+  .moments-header { margin-bottom: 16px; }
   .moments-layout {
     display: block;
     max-width: none;
@@ -1385,13 +1392,19 @@ body {
 @media (prefers-reduced-motion: reduce) { .moment-like { transition: none; } }
 
 /* Anonymous comments, shared by both language pages. */
-.comments-section { padding: 0 16px 16px; overflow-wrap: anywhere; }
+.comments-section { padding: 0 16px 14px; overflow-wrap: anywhere; }
+.comments-list { display: grid; gap: 14px; }
+.comments-status:empty, .comments-status[hidden] { display: none; }
 .comments-status { color: var(--subtle); font-size: 13px; }
-.comment-item { position: relative; border-top: 1px solid var(--border); padding: 12px 36px 12px 0; }
-.comment-nickname { font-size: 14px; }
-.comment-body { white-space: pre-wrap; margin: 5px 0; line-height: 1.6; }
-.comment-time { color: var(--subtle); font-size: 11px; }
-.comment-menu-button { position: absolute; top: 5px; right: -8px; min-width: 44px; min-height: 44px; background: none; border: 0; border-radius: 8px; font-size: 22px; color: var(--subtle); cursor: pointer; }
+.comment-item { position: relative; display: grid; grid-template-columns: 28px minmax(0, 1fr); align-items: start; gap: 10px; padding-right: 30px; }
+.comment-avatar { display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; font-size: 12px; font-weight: 600; line-height: 1; overflow: hidden; }
+.comment-content { min-width: 0; }
+.comment-meta { display: flex; align-items: baseline; flex-wrap: wrap; column-gap: 6px; line-height: 1.5; }
+.comment-time::before, .comment-edited::before { content: "·"; margin-right: 6px; }
+.comment-nickname { font-size: 14px; font-weight: 600; }
+.comment-body { white-space: pre-wrap; margin: 2px 0 0; line-height: 1.6; }
+.comment-time, .comment-edited { color: #6b7280; font-size: 12px; }
+.comment-menu-button { position: absolute; top: -10px; right: -8px; min-width: 44px; min-height: 44px; background: none; border: 0; border-radius: 8px; font-size: 22px; color: var(--subtle); cursor: pointer; }
 .comment-menu-button:hover { background: var(--muted); }
 .comments-dialog { width: min(480px, calc(100vw - 32px)); max-height: calc(100dvh - 40px); padding: 0; border: 1px solid var(--border); border-radius: 16px; background: var(--surface); color: var(--text); overflow-y: auto; box-sizing: border-box; }
 .comments-dialog::backdrop { background: rgb(0 0 0 / .38); }
