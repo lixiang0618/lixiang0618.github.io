@@ -187,6 +187,7 @@
     </div>
   </footer>
 
+  <script src="../js/moments-likes.js"></script>
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
 
@@ -272,6 +273,7 @@
                     imagesHtml +
                     '</div>';
                 }).join('');
+                if (window.MomentsLikes) window.MomentsLikes.mount(container, moments);
               } else {
                 container.innerHTML = '<div class="empty-state"><div class="icon">📷</div><p>暂无动态</p><p>编辑 data/moments.json 添加动态</p></div>';
               }
