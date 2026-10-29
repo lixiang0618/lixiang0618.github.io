@@ -207,6 +207,7 @@
     </div>
   </footer>
 
+  <script src="js/moments-likes.js"></script>
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
 
@@ -293,6 +294,7 @@
                     imagesHtml +
                     '</div>';
                 }).join('');
+                if (window.MomentsLikes) window.MomentsLikes.mount(container, moments);
               } else {
                 container.innerHTML = '<div class="empty-state"><div class="icon">📷</div><p>No moments yet.</p><p>Edit data/moments.json to add your moments</p></div>';
               }

@@ -1370,3 +1370,16 @@ body {
     transition: none;
   }
 }
+/* Shared Moments likes: keep controls inside the existing card width. */
+.moment-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 0 16px 12px; }
+.moment-like { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-width: 64px; min-height: 44px; padding: 8px 12px; border: 1px solid var(--border); border-radius: 999px; background: var(--surface); color: var(--subtle); font: inherit; cursor: pointer; touch-action: manipulation; transition: background .15s ease, transform .15s ease; }
+.moment-like svg { flex-shrink: 0; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linejoin: round; }
+.moment-like.is-liked { color: #d92d50; }
+.moment-like.is-liked svg { fill: currentColor; }
+.moment-like:hover:not(:disabled) { background: var(--muted); }
+.moment-like:active:not(:disabled) { transform: scale(.95); }
+.moment-like:focus-visible { outline: 2px solid var(--primary); outline-offset: 3px; }
+.moment-like:disabled { cursor: default; opacity: .6; }
+.moment-like-count { font-variant-numeric: tabular-nums; }
+.moment-like-message { color: var(--subtle); font-size: 12px; overflow-wrap: anywhere; }
+@media (prefers-reduced-motion: reduce) { .moment-like { transition: none; } }
