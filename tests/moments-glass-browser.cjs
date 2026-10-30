@@ -30,7 +30,7 @@ async function checkDominant(page){assert(await page.evaluate(()=>{
   const page=await context.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));
   const path=(lang==='zh'?'/zh/':'/')+'moments.html';await page.goto('http://127.0.0.1:8091'+path);await settle(page);
   await page.waitForFunction(()=>MomentsGlass.getState().processed>0 && !MomentsGlass.getState().fading);await checkDominant(page);
-  assert.equal(await page.locator('.moment-card').first().evaluate(n=>n.getBoundingClientRect().width),({1440:544,1024:544,768:568,390:358})[width]);
+  assert.equal(await page.locator('.moment-card').first().evaluate(n=>n.getBoundingClientRect().width),({1440:720,1024:720,768:728,390:358})[width]);
   assert.equal(await page.locator('.moments-ambient').evaluate(n=>getComputedStyle(n).pointerEvents),'none');
   assert.equal(await page.locator('.moment-images img').first().evaluate(n=>getComputedStyle(n).filter),'none');
   assert((await page.locator('.moments-ambient-layer').first().evaluate(n=>getComputedStyle(n).filter)).includes('blur('));

@@ -24,6 +24,7 @@
     layers[1-front].style.backgroundImage='none';
     if(desired!==shown)crossfade(desired);
   }
+  function fadeDuration(){const n=parseFloat(getComputedStyle(document.body).getPropertyValue('--moments-ambient-duration'));return Number.isFinite(n)?Math.max(0,n):700;}
   function crossfade(source) {
     desired=source;
     // While fading keep only the latest desired source, never a transition queue.
@@ -32,8 +33,9 @@
     layers[back].style.backgroundImage=source?'url("'+source+'")':'none';
     layers[back].style.opacity='1';layers[front].style.opacity='0';
     front=back;shown=source;ambient.dataset.neutral=String(source===null);
-    if(reduced.matches){finish();return;}
-    fading=true;timer=setTimeout(finish,740);
+    const duration=fadeDuration();
+    if(reduced.matches || duration===0){finish();return;}
+    fading=true;timer=setTimeout(finish,duration+40);
   }
   function waitForPhoto(image,signal) {
     if(signal.aborted)return Promise.resolve(false);
@@ -103,6 +105,10 @@
     container.addEventListener('load',queue,true);container.addEventListener('error',queue,true);
     window.addEventListener('scroll',queue,{passive:true});window.addEventListener('resize',queue,{passive:true});window.addEventListener('pageshow',queue);
     document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')queue();});
+    document.addEventListener('moments:appearance-change',event=>{
+      if(fading && event.detail?.keys?.includes('--moments-ambient-duration')){layers.forEach(layer=>layer.getAnimations?.().forEach(animation=>animation.finish()));finish();}
+      queue();
+    });
     reduced.addEventListener?.('change',()=>{if(reduced.matches && fading)finish();queue();});discover();
   }
   function mount(list,moments=[]) {
