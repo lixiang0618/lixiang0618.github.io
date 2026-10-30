@@ -30,15 +30,22 @@ async function checkDominant(page){assert(await page.evaluate(()=>{
   const page=await context.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));
   const path=(lang==='zh'?'/zh/':'/')+'moments.html';await page.goto('http://127.0.0.1:8091'+path);await settle(page);
   await page.waitForFunction(()=>MomentsGlass.getState().processed>0 && !MomentsGlass.getState().fading);await checkDominant(page);
-  assert.equal(await page.locator('.moment-card').first().evaluate(n=>n.getBoundingClientRect().width),({1440:544,1024:544,768:568,390:358})[width]);
+  assert.equal(await page.locator('.moment-card').first().evaluate(n=>n.getBoundingClientRect().width),({1440:574,1024:574,768:568,390:358})[width]);
   assert.equal(await page.locator('.moments-ambient').evaluate(n=>getComputedStyle(n).pointerEvents),'none');
   assert.equal(await page.locator('.moment-images img').first().evaluate(n=>getComputedStyle(n).filter),'none');
   assert((await page.locator('.moments-ambient-layer').first().evaluate(n=>getComputedStyle(n).filter)).includes('blur('));
   assert.equal(await page.locator('.moments-ambient-layer').count(),2);
+  // Start from an explicit different photo; compact cards may initially select 008.
+  await move(page,"moment-002");await page.waitForFunction(()=>MomentsGlass.getState().active==="moment-002" && !MomentsGlass.getState().fading);
   // A second photograph crossfades; no DOM layer is recreated.
-  await move(page,'moment-008');await page.waitForFunction(()=>MomentsGlass.getState().active==='moment-008' && MomentsGlass.getState().fading);
-  await page.waitForTimeout(150);const opacities=await page.locator('.moments-ambient-layer').evaluateAll(nodes=>nodes.map(n=>parseFloat(getComputedStyle(n).opacity)));assert(opacities.every(n=>n>0&&n<1));
-  await page.waitForFunction(()=>!MomentsGlass.getState().fading);await checkDominant(page);
+  // Slow only this transition probe to make intermediate-frame assertions
+  // deterministic on shared CI renderers; approved defaults are tested separately.
+  await page.evaluate(()=>document.body.style.setProperty("--moments-ambient-duration","1500ms"));
+  await page.evaluate(()=>{window.glassOpacityFrames=[];window.recordGlassFrames=true;const sample=()=>{glassOpacityFrames.push(Array.from(document.querySelectorAll('.moments-ambient-layer'),n=>parseFloat(getComputedStyle(n).opacity)));if(recordGlassFrames)requestAnimationFrame(sample);};requestAnimationFrame(sample);document.querySelector('[data-ambient-moment="moment-008"]').scrollIntoView({block:'center',behavior:'instant'});});
+  await page.waitForFunction(()=>glassOpacityFrames.some(values=>values.every(n=>n>0&&n<1)));
+  await page.waitForFunction(()=>MomentsGlass.getState().active==='moment-008' && !MomentsGlass.getState().neutral && !MomentsGlass.getState().fading);
+  const frames=await page.evaluate(()=>{window.recordGlassFrames=false;return glassOpacityFrames;});assert(frames.some(values=>values.every(n=>n>0&&n<1)),JSON.stringify({width,lang,frames:frames.filter((v,i)=>i%10===0)}));await checkDominant(page);
+  await page.evaluate(()=>document.body.style.removeProperty("--moments-ambient-duration"));
   // Large card/comments retain a single unified surface and interaction hierarchy.
   await move(page,'moment-009');await page.waitForFunction(()=>MomentsGlass.getState().active==='moment-009');
   const card=page.locator('[data-ambient-moment="moment-009"]');const like=card.locator('.moment-like:not(.comment-trigger)');await like.click();await page.waitForFunction(()=>document.querySelector('[data-ambient-moment="moment-009"] .moment-like').getAttribute('aria-pressed')==='true');await like.click();
