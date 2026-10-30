@@ -1,110 +1,74 @@
-# Moments Glass Studio：阶段一交付
+# Glass Studio：在 Vercel Preview 调参
 
-本轮是**可调预览**，不是最终视觉定稿。第一轮 `ff0ee16` 已合入 main，因此第二轮从最新 main 建立 `feature/moments-glass-studio`。阶段二必须等待用户提供或确认满意配置；本轮不会把本地调整自动写回源码、合并 main 或部署生产。
+## 当前确认配置
 
-## 打开真实页面上的 Studio
+桌面逐项采用用户提供的 JSON。手机保留用户 JSON 的原有值，**只将朋友圈正文字号从 15px 改成 17px**，没有改手机透明度、模糊、阴影、头像、评论、按钮、留白或过渡时间。
 
-在本地检出该分支、工作区干净后，从仓库根目录运行：
+- `dev/glass-user-config.json`：原始提交记录，保持用户提供的 desktop/mobile 值。
+- `dev/glass-review.json`：当前已确认配置，desktop 与提交记录完全相同，mobile 只有 bodySize=17 的差异。
+- `moments-glass.css`：已经按当前确认值整理默认变量；分支未合并，不等于正式网站已经更新。
+
+桌面关键值为：卡片不透明度 .49、玻璃模糊 18px、饱和度 1.79、圆角 28px、阴影强度 .225 / 模糊 48px / 扩散 9px，背景模糊 28px、亮度 .92、蒙层 .57、过渡 150ms；中栏最大宽度 600px，正文 17.5px。实际卡片约 574px（扣除中栏边距）。手机材质仍为原始 .68 / blur 10px，背景 blur 40px / 700ms，仅正文变为 17px。
+
+## 不必在本机启动服务器
+
+1. 打开现有 Vercel 项目的 Deployments。
+2. 选择分支 `feature/moments-glass-studio` 的**最新 Preview 部署**，等待构建 Ready。
+3. 点击 Visit，使用 Vercel 生成的 `*.vercel.app` 预览域名。
+4. 在预览地址后访问 `/moments.html` 或 `/zh/moments.html`。
+5. 点击导航里的「调参」。页面默认已加载当前确认配置，不必重新粘贴 JSON。
+
+旧的 localhost 地址是开发服务器地址，不是用户电脑能访问的云端预览地址。也不要在正式 `lxiang.cc` 上寻找面板；正式构建不包含 Studio。没有 `?studio=1` 之类的生产开启参数。
+
+## Preview / Production 隔离
+
+为让云端分支可直接预览，`vercel.json` 添加了构建命令 `node dev/build-vercel.js` 和静态输出目录 `dist`，不修改项目、域名或 API。
+
+- 只有 `VERCEL_ENV=preview` 时，构建才给两个 Moments HTML 注入 Studio，生成带完整确认配置的 JS/CSS，并复制所需开发资源。
+- Production、Development 或缺少明确 Preview 环境值时均排除 dev 目录，不注入工具。每次先清理生成目录，避免残留 Preview 资产。
+- 浏览器还检查显式 `vercel-preview` 构建标记和 `.vercel.app` 域名；正式域名拒绝面板，即使误用了 Preview HTML。
+- 普通 HTML 源文件仍不引用 dev 工具；正式页面也不读取 Studio 的本地保存值。
+- 此面板不是后台鉴权或账号权限系统，只有当前浏览器的视觉预览；不会写 Worker、D1 或正式默认参数。
+
+`dist/` 是忽略的生成目录。原照片、Markdown、JSON、点赞/评论脚本按原路径复制，构建不修改源文件。GitHub Pages 的既有 workflow 不变，其源 HTML 也不会加载 Studio。
+
+## 真实页面调参
+
+这不是静态 Demo。Studio 直接控制真实朋友圈和固定照片背景，按四组提供 41 项中文参数：卡片材质、动态照片背景、布局与阅读尺寸、细节尺寸与间距。
+
+- 拖动或输入数字后，下一帧更新已有 CSS 变量。不插入新 CSS 规则，不重建朋友圈，也不整卡 zoom/scale。
+- 玻璃背景模糊和照片背景模糊是两套独立变量；真实图库和 Lightbox 照片保持清晰。
+- 可切换「原始版本」「建议版本」「你的已确认配置」。原始快照来自第一轮 `ff0ee16` 实测；建议预设仅保留为对比起点，不覆盖当前确认默认值。
+- 「对比原始版本」临时显示旧版并保留调整值；「返回当前调整」恢复。对比时禁用滑块，防止误改。
+- 卡片内部间距会同步评论区与图库/按钮/评论底部留白；细节组仍可分别微调。
+- 桌面与手机参数分开，面板显示当前分组。缩小窗口到页面的 48rem 分界以下即可调手机参数。
+- 桌面抽屉为自己预留右侧空间，不遮挡卡片；窄屏改为页面上方正常文流内的面板。
+- 内容优先布局根据中栏、侧栏和间距的可用空间预算收起侧栏，不用挤窄正文换三栏。原始预设保留旧响应式规则。
+- 动态背景仍按实际可见面积、15% 滞后、首张照片、96px 缓存及两层交叉淡化工作。过渡定时器使用当前 CSS 时长。
+- 系统减少动态/透明度偏好保持优先。
+
+## 保存与导出
+
+「保存到本地」保存完整桌面/手机参数到 `lx_glass_studio_v1`；「恢复上次保存」显式恢复。不会改访客 UUID、点赞状态或评论 Token。保存按浏览器和预览域名隔离，换一个 Vercel 部署域名可能没有旧记录，请自行导出。
+
+「复制完整配置」提供 JSON，Clipboard 失败会选中导出框便于手动复制。「导出 JSON」「导出 CSS」会下载文件，CSS 包含桌面和手机覆盖。可导入完整 JSON，版本、字段与数值范围都经过验证。
+
+「你的已确认配置」始终恢复仓库里的确认快照，不会被本次临时调整覆盖。后续若还想改，导出 JSON 发回即可；工具不会自动把浏览器保存值写入源码或合并 main。
+
+## 本地开发仍可用
 
 ```sh
 python3 dev/serve-glass-studio.py --port 8092
 ```
 
-Windows 可使用 `py -3 dev/serve-glass-studio.py --port 8092`。
+本机浏览器访问 `http://127.0.0.1:8092/moments.html` 或中文路径。该服务器只绑定回环地址，显式注入 local 标记；普通静态服务器不启用面板。Windows 可用 `py -3`。若本地 API CORS 不允许请求，不要为调参修改 Worker；可用 Vercel Preview 检查真实业务。
 
-在本机浏览器输入：
+## 验证与限制
 
-- 英文：`http://127.0.0.1:8092/moments.html`
-- 中文：`http://127.0.0.1:8092/zh/moments.html`
+56 项单元/DOM 测试通过，包含构建 Preview/Production 隔离、无旧资产残留、桌面值精确保留、手机仅一个字号差异、配置/导出/验证及现有 Blog/Moments 回归。
 
-点击导航中的「调参」。这不是独立 Demo：服务器直接提供仓库的真实 HTML、Moments 数据、照片、点赞和评论模块，仅在这两个本地 HTML 响应末尾注入开发工具。
+构建产物在模拟 `.vercel.app` 来源的真实 Chromium 中验证了中英文 Studio、实时调参、已确认配置恢复，并确认正式域名不能通过构建标记/查询参数启用。完整生产输出检查了正常 HTML、媒体和业务脚本存在且 dev 工具不存在。
 
-服务器只绑定 `127.0.0.1`，没有开放公网绑定选项。普通静态服务器、Vercel Preview 和正式页面都不加载 Studio；`?studio=1` 等 URL 参数不会启用工具。即使误将开发脚本引入非回环域名，脚本也会拒绝启动。工具不是登录或后台管理权限系统，不含服务端凭证。
+另有完整 Studio 参数、保存恢复、导出、响应式布局及原有照片背景/点赞/评论/Lightbox 浏览器回归。API 写入全为 Mock，未操作生产评论。真实 Vercel 构建结果以平台部署状态为准；Safari/WebKit、低功耗手机帧率及真实网络 CORS 仍需用户验收。
 
-若 Worker 的 CORS 不允许 localhost，点赞/评论的网络请求可能显示错误；不要为调参修改 Worker/CORS。布局与真实照片背景仍能调节，线上业务可在正常 Preview 验收。自动测试使用 Mock API，没有修改生产评论。
-
-## 原始版与建议版
-
-原始值来自 `ff0ee16` 的 CSS 和 Chromium 1440/1024/390px 实测，不取自提示词示例。以下以当前默认根字号为基准：
-
-| 项目 | 原始桌面 | 建议桌面 | 原始手机 | 建议手机 |
-|---|---:|---:|---:|---:|
-| 中栏最大宽度（含中栏内边距） | 600px | 760px | 600px | 760px |
-| 实际卡片宽度（1440/390px 视口） | 544px | 720px | 358px | 358px |
-| 正文 | 16px | 18px | 15px | 17px |
-| 昵称 | 16px | 19px | 16px | 18px |
-| 用户头像 | 44px | 52px | 44px | 48px |
-| 评论正文 | 16px | 17px | 16px | 16.5px |
-| 按钮最小高度 | 44px | 48px | 44px | 48px |
-| 卡片背景不透明度 | .68 | .68 | .68 | .68 |
-| 玻璃模糊 | 18px | 18px | 10px | 10px |
-| 环境照片模糊 | 64px | 64px | 40px | 40px |
-| 环境蒙层 | .56 | .56 | .56 | .56 |
-| 过渡时间 | 700ms | 700ms | 700ms | 700ms |
-
-建议版仅提供更宽、更易读的起点；材质仍沿用实测原值，**没有选定最终透明度/模糊/阴影**。原始版还原旧响应式布局；调节宽度、栏间距等布局字段后转为自定义内容优先布局。
-
-新的方案 A 以中栏为优先：建议桌面侧栏为 10rem / 12rem，间距 1.5rem，整体最大宽度由中栏、侧栏、间距与留白相加得到，不靠单一固定屏宽强行挤三栏。当前基线在可用宽度约 1208px 时三栏、约 992px 时两栏，再小收成单栏。拖动中栏宽度后，这些预算自动重新计算。手机不为保持侧栏而缩小正文。
-
-## 实时调节与对比
-
-工具按「卡片材质」「动态照片背景」「布局与阅读尺寸」「细节尺寸与间距」分组，共 41 个可调参数。每项都有中文标签、滑块、数字输入及当前单位。
-
-- 「恢复原始版本」：恢复实测快照。
-- 「建议版本」：恢复本轮预览起点，不是最终定稿。
-- 「对比原始版本」：临时查看原始版，保留当前调整；再点「返回当前调整」恢复。对比时禁用滑块，避免误改。
-- 参数在下一帧直接写入 body 的现有 CSS 变量，不增加 CSS 规则，不重建朋友圈卡片，不使用 zoom 或整卡缩放。
-- 「玻璃背景模糊」只控制卡片后的磨砂；「照片背景模糊」只控制全屏环境图。图库照片与 Lightbox 始终清晰。
-- 卡片内部间距会同步评论区左右间距及图库/按钮/评论底部留白；之后可在细节组分别微调。
-- 时间轴和快照宽度字段用于自定义布局；原始版先遵从旧布局响应式规则。
-- 背景继续使用实际可见面积、15% 滞后、首图、96px 缓存和两层交叉淡化。过渡时间绑定 CSS/定时器；调时长会收束正在执行的过渡，随后使用新值。
-- 系统「减少动态/减少透明度」优先于调参值；工具会提示，不覆盖无障碍偏好。
-
-桌面展开后为抽屉预留 20rem 页面空间，按剩余空间收起侧栏，不遮住卡片或操作。关闭后恢复完整可用宽度。窄屏面板在页面上方的正常文流中，限制自身高度并滚动，不浮在正文或输入框上；完整调参优先建议桌面使用。
-
-桌面/手机参数分开保存，面板显示当前在调哪一组。分界跟随页面的 48rem 视口规则。桌面抽屉占空间导致单栏，不代表参数自动变成手机组。
-
-## 保存、恢复、复制、导出
-
-- 「保存到本地」保存当前完整预览，包括桌面、手机及布局模式。
-- 「恢复上次保存」显式载入。重载页面不会偷偷把保存值应用到生产页面。
-- 本地存储键为 `lx_glass_studio_v1`，不读取或覆盖访客 UUID、点赞状态、评论 Token。
-- 同一浏览器、同一 localhost 端口的中英文页面共用保存记录。更换端口或清除站点数据后，请用导出的 JSON 恢复。
-- 「复制完整配置」复制完整 JSON；Clipboard 被拒绝时会选中只读导出框，允许手动复制。
-- 「导出 JSON」「导出 CSS」下载配置，并在导出框保留内容。CSS 包含全部桌面变量和手机媒体覆盖。
-- 可选「导入完整 JSON」校验版本、完整字段、数值范围后应用；不接收任意 CSS 或 HTML。
-
-调好后把 JSON 文件或完整配置发给助手，再进入阶段二整理正式 CSS 默认值及必要清理。本轮不会自动读取下载文件并改仓库。
-
-## 文件与测试
-
-- `moments-glass.css`：可调变量、建议布局和尺寸、原始布局快照规则。
-- `js/moments-appearance.js`：可用空间预算、单位读取、变量应用；不包含调参 UI 或本地存储读取。
-- `js/moments-glass.js`：仅将背景过渡时间接入可调变量并处理调参通知；面积选择等核心逻辑保留。
-- `moments.html`、`zh/moments.html`：接入小型布局适配脚本，正常 HTML 不引用 dev 文件。
-- `dev/serve-glass-studio.py`、`dev/glass-model.js`、`dev/glass-studio.js`、`dev/glass-studio.css`：本地开发工具。
-- `tests/glass-studio.test.cjs`、`tests/glass-studio-browser.cjs`：预设、验证、隐藏、布局及完整 UI 流程。
-- `tests/moments-glass-browser.cjs`：原有交互回归，更新本轮明确要求改变的宽度断言。
-
-测试依赖安装在仓库外，不修改 package.json 或锁文件。运行单元/DOM 套件：
-
-```sh
-NODE_PATH=/tmp/lx-blog-tests/node_modules node --test tests/glass-studio.test.cjs tests/moments-glass.test.cjs tests/blog-reading.test.cjs tests/blog.test.cjs tests/comments.test.cjs tests/moments-likes.test.cjs
-```
-
-真实 Chromium 测试同时需要普通本地服务器 8091 和专用 Studio 服务器 8092：
-
-```sh
-python3 -m http.server 8091 --bind 127.0.0.1
-# 另一终端：
-python3 dev/serve-glass-studio.py --port 8092
-# 再一终端，使用仓库外的 playwright-core：
-NODE_PATH=/tmp/lx-blog-tests/node_modules node tests/glass-studio-browser.cjs
-NODE_PATH=/tmp/lx-blog-tests/node_modules node tests/moments-glass-browser.cjs
-```
-
-51 项单元/DOM 测试通过。Studio 两种语言完整流程通过，包括实际拖动、全部 41 项参数、原始/建议/对比、保存/重载/恢复、JSON/CSS 下载、Clipboard 与存储失败降级、数字限幅、桌面/手机分组、普通页面不加载工具。8 个宽度（320–1600px）的预览基线检查通过；参数数据与普通页面 CSS 对照通过。
-
-现有面积选择、背景交叉淡化、快速滚动、评论增高、点赞、评论编辑删除和 Lightbox 继续通过 Chromium 回归。所有 API 写入均 Mock。没有更改 Blog、原始 Moments 数据、Worker、D1、API、鉴权或部署配置。
-
-局限：尚无真实 iPhone Safari/WebKit 或低功耗手机的持续帧率测量；原始图库仍有较大文件。本地 CORS 与真实网络行为需要在用户浏览器中检查，工具不绕过 API 策略。极端透明度、模糊或字号是用户调参选择，不代表已通过最终可访问性/性能验收。
+可使用仓库外的 jsdom / playwright-core 运行 tests/glass-preview-build.test.cjs、tests/glass-preview-browser.cjs、tests/glass-studio.test.cjs、tests/glass-studio-browser.cjs 及原有回归。浏览器构建测试前运行 `VERCEL_ENV=preview node dev/build-vercel.js`。

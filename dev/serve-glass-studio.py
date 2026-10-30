@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Explicit local-only Studio entrypoint. Normal HTML and deployments stay untouched."""
 import argparse
+import json
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import urlsplit
@@ -18,6 +19,10 @@ class StudioHandler(SimpleHTTPRequestHandler):
             assets = ('<link rel="stylesheet" href="/dev/glass-studio.css">'
                       '<script src="/dev/glass-model.js"></script>'
                       '<script src="/dev/glass-studio.js" data-glass-studio="local"></script>')
+            review = ROOT / 'dev/glass-review.json'
+            if review.exists():
+                config = json.dumps(json.loads(review.read_text(encoding='utf-8')), ensure_ascii=True).replace('<', '\\u003c')
+                assets = assets.replace('<script src="/dev/glass-studio.js"', '<script>window.GlassStudioReview=' + config + ';</script><script src="/dev/glass-studio.js"')
             data = text.replace('</body>', assets + '\n</body>').encode('utf-8')
             self.send_response(200)
             self.send_header('Content-Type', 'text/html; charset=utf-8')

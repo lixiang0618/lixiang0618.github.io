@@ -1,0 +1,14 @@
+// Exercises a synthetic *.vercel.app origin using built files; no real deployment/API writes.
+const {chromium}=require('playwright-core'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
+(async()=>{const browser=await chromium.launch({executablePath:'/usr/bin/chromium',headless:true,args:['--no-sandbox']});try{
+ const context=await browser.newContext({viewport:{width:1600,height:1000}}),errors=[];
+ for(const host of ['studio-test.vercel.app','lxiang.cc'])await context.route('https://'+host+'/**',async route=>{const u=new URL(route.request().url()),file=path.resolve('dist','.'+decodeURIComponent(u.pathname));if(!file.startsWith(path.resolve('dist')+path.sep)||!fs.existsSync(file)||fs.statSync(file).isDirectory()){await route.fulfill({status:404,body:'Not found'});return;}const ext=path.extname(file),type={'.html':'text/html; charset=utf-8','.css':'text/css','.js':'application/javascript','.json':'application/json','.jpg':'image/jpeg','.png':'image/png','.svg':'image/svg+xml','.mp4':'video/mp4'}[ext]||'application/octet-stream';await route.fulfill({contentType:type,body:fs.readFileSync(file)});});
+ await context.route('https://api.lxiang.cc/**',route=>{const u=new URL(route.request().url());return route.fulfill({contentType:'application/json',headers:{'Access-Control-Allow-Origin':'*'},body:JSON.stringify({success:true,content_type:'moment',content_id:u.searchParams.get('id'),likes:0,liked:false,count:0,comments:[]})});});
+ const page=await context.newPage();page.on('pageerror',e=>errors.push(e.message));
+ for(const prefix of ['/','/zh/']){
+  await page.goto('https://studio-test.vercel.app'+prefix+'moments.html');await page.getByRole('button',{name:'展开 Glass Studio 开发调参面板',exact:true}).click();const number=page.locator('[data-number="bodySize"]');await number.fill('22');await page.waitForFunction(()=>getComputedStyle(document.querySelector('.moment-content')).fontSize==='22px');
+  await page.getByRole('button',{name:'你的已确认配置',exact:true}).click();await page.waitForFunction(()=>getComputedStyle(document.querySelector('.moment-content')).fontSize==='17.5px');await number.fill('22');await page.waitForFunction(()=>getComputedStyle(document.querySelector('.moment-content')).fontSize==='22px');await page.getByRole('button',{name:'保存到本地',exact:true}).click();assert.equal(await page.locator('.studio-field').count(),41);console.log('PASS Preview build Studio',prefix);
+ }
+ await page.goto('https://lxiang.cc/moments.html?studio=1');await page.locator('.moment-card').first().waitFor();assert.equal(await page.locator('.glass-studio,.glass-studio-launch').count(),0);assert.deepEqual(errors,[]);console.log('PASS production hostname rejects Preview tool even with injected artifact/query');
+ await context.close();
+}finally{await browser.close();}})().catch(e=>{console.error(e);process.exit(1);});

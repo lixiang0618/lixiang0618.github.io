@@ -1,1 +1,5 @@
-{"version":2}
+{
+  "version": 2,
+  "buildCommand": "node dev/build-vercel.js",
+  "outputDirectory": "dist"
+}

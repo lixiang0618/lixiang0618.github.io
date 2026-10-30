@@ -1,23 +1,48 @@
 /* Moments-only Photo-Adaptive Liquid Glass. Blog's Paper & Ink stays untouched. */
 .moments-glass {
-  /* Stage-one preview baseline, NOT a finalized visual design. */
-  --moments-glass-opacity: .68; --moments-glass-blur: 18px; --moments-glass-saturation: 1.08;
-  --moments-card-radius: 1rem; --moments-shadow-alpha: .07; --moments-shadow-blur: 28px;
-  --moments-shadow-spread: 0px; --moments-border-alpha: .72; --moments-highlight-alpha: .88;
-  --moments-ambient-blur: 4rem; --moments-ambient-saturation: .62;
-  --moments-ambient-brightness: 1.08; --moments-ambient-overlay: .56; --moments-ambient-duration: 700ms;
-  --moments-feed-max: 47.5rem; --moments-body-size: 1.125rem; --moments-name-size: 1.1875rem;
-  --moments-avatar-size: 3.25rem; --moments-comment-size: 1.0625rem; --moments-button-size: 3rem;
-  --moments-icon-size: 1.5rem; --moments-card-padding: 1.25rem;
-  --moments-feed-inset: 1.25rem; --moments-comment-avatar: 2rem; --moments-comment-name: .9375rem;
-  --moments-meta-size: .8125rem; --moments-comments-inset: 1.25rem;
-  --moments-media-space: 1rem; --moments-action-space: .875rem; --moments-comments-space: 1rem;
-  --moments-gallery-gap: .375rem;
-  --moments-side-left: 10rem; --moments-side-right: 12rem; --moments-column-gap: 1.5rem;
-  --moments-layout-padding: 1.5rem; --moments-legacy-layout: 0;
-  --moments-body-leading: 1.65; --moments-comment-leading: 1.65;
-  --moments-comment-avatar-font: .875rem; --moments-header-gap: .875rem;
-  --moments-comment-gap: .75rem; --moments-action-font: 1.0625rem;
+  /* Owner-selected defaults; Preview Studio overrides remain browser-local. */
+  --moments-glass-opacity: 0.49;
+  --moments-glass-blur: 18px;
+  --moments-glass-saturation: 1.79;
+  --moments-card-radius: 28px;
+  --moments-shadow-alpha: 0.225;
+  --moments-shadow-blur: 48px;
+  --moments-shadow-spread: 9px;
+  --moments-border-alpha: 0.21;
+  --moments-highlight-alpha: 0.75;
+  --moments-ambient-blur: 28px;
+  --moments-ambient-saturation: 0.62;
+  --moments-ambient-brightness: 0.92;
+  --moments-ambient-overlay: 0.57;
+  --moments-ambient-duration: 150ms;
+  --moments-feed-max: 600px;
+  --moments-body-size: 17.5px;
+  --moments-name-size: 16px;
+  --moments-avatar-size: 44px;
+  --moments-comment-size: 16.5px;
+  --moments-button-size: 50px;
+  --moments-icon-size: 24px;
+  --moments-card-padding: 13px;
+  --moments-feed-inset: 13px;
+  --moments-comment-avatar: 28px;
+  --moments-comment-name: 14px;
+  --moments-meta-size: 12px;
+  --moments-comments-inset: 13px;
+  --moments-media-space: 13px;
+  --moments-action-space: 9px;
+  --moments-comments-space: 10px;
+  --moments-gallery-gap: 6px;
+  --moments-side-left: 176px;
+  --moments-side-right: 240px;
+  --moments-column-gap: 40px;
+  --moments-layout-padding: 11px;
+  --moments-body-leading: 1.6;
+  --moments-comment-leading: 1.6;
+  --moments-comment-avatar-font: 12px;
+  --moments-header-gap: 12px;
+  --moments-comment-gap: 10px;
+  --moments-action-font: 16px;
+  --moments-legacy-layout: 0;
   --glass-surface: rgba(255,255,255,var(--moments-glass-opacity));
   --glass-edge: rgba(255,255,255,var(--moments-border-alpha));
   --glass-ink: #17232f; --glass-muted: #526170;
@@ -59,15 +84,48 @@
 }
 @media (max-width: 48rem) {
   .moments-glass {
-    --moments-glass-blur: 10px; --moments-glass-saturation: 1;
-    --moments-ambient-blur: 2.5rem; --moments-ambient-saturation: .58;
-    --moments-body-size: 1.0625rem; --moments-name-size: 1.125rem; --moments-avatar-size: 3rem;
-    --moments-comment-size: 1.03125rem; --moments-icon-size: 1.4375rem;
-    --moments-card-padding: 1.125rem; --moments-feed-inset: 1rem; --moments-comment-avatar: 1.875rem;
-    --moments-meta-size: .78125rem; --moments-comments-inset: 1.125rem;
-    --moments-media-space: .875rem; --moments-action-space: .875rem; --moments-comments-space: .875rem;
-    --moments-gallery-gap: .25rem; --moments-layout-padding: 0px;
-    --moments-comment-avatar-font: .8125rem; --moments-header-gap: .75rem; --moments-action-font: 1rem;
+  --moments-glass-opacity: 0.68;
+  --moments-glass-blur: 10px;
+  --moments-glass-saturation: 1;
+  --moments-card-radius: 16px;
+  --moments-shadow-alpha: 0.07;
+  --moments-shadow-blur: 28px;
+  --moments-shadow-spread: 0px;
+  --moments-border-alpha: 0.72;
+  --moments-highlight-alpha: 0.88;
+  --moments-ambient-blur: 40px;
+  --moments-ambient-saturation: 0.58;
+  --moments-ambient-brightness: 1.08;
+  --moments-ambient-overlay: 0.56;
+  --moments-ambient-duration: 700ms;
+  --moments-feed-max: 600px;
+  --moments-body-size: 17px;
+  --moments-name-size: 16px;
+  --moments-avatar-size: 44px;
+  --moments-comment-size: 16px;
+  --moments-button-size: 44px;
+  --moments-icon-size: 22px;
+  --moments-card-padding: 14px;
+  --moments-feed-inset: 16px;
+  --moments-comment-avatar: 28px;
+  --moments-comment-name: 14px;
+  --moments-meta-size: 12px;
+  --moments-comments-inset: 16px;
+  --moments-media-space: 12px;
+  --moments-action-space: 12px;
+  --moments-comments-space: 14px;
+  --moments-gallery-gap: 3px;
+  --moments-side-left: 220px;
+  --moments-side-right: 240px;
+  --moments-column-gap: 36px;
+  --moments-layout-padding: 0px;
+  --moments-body-leading: 1.6;
+  --moments-comment-leading: 1.6;
+  --moments-comment-avatar-font: 12px;
+  --moments-header-gap: 12px;
+  --moments-comment-gap: 10px;
+  --moments-action-font: 16px;
+  --moments-legacy-layout: 0;
   }
   .moments-ambient-layer { inset: -4rem; }
 }
