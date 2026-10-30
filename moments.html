@@ -139,8 +139,9 @@
       }
     }
   </style>
+  <link rel="stylesheet" href="moments-glass.css">
 </head>
-<body>
+<body class="moments-glass">
   <header class="site-header">
     <a class="brand" href="index.html" aria-label="Home">
       <span class="brand-name">Li Xiang</span>
@@ -184,6 +185,7 @@
 
   <script src="js/moments-likes.js"></script>
   <script src="js/comments.js"></script>
+  <script src="js/moments-glass.js"></script>
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
 
@@ -248,7 +250,7 @@
                         if (isVideo(img)) {
                           return '<video src="' + img + '" controls preload="metadata"></video>';
                         } else {
-                          return '<img src="' + img + '" alt="Moment photo">';
+                          return '<img src="' + img + '" alt="Moment photo" loading="lazy" decoding="async">';
                         }
                       }).join('') +
                       '</div>'
@@ -272,6 +274,7 @@
                 }).join('');
                 if (window.MomentsLikes) window.MomentsLikes.mount(container, moments);
                 if (window.SiteComments) window.SiteComments.mountMoments(container, moments);
+                if (window.MomentsGlass) window.MomentsGlass.mount(container, moments);
               } else {
                 container.innerHTML = '<div class="empty-state"><div class="icon">📷</div><p>No moments yet.</p><p>Edit data/moments.json to add your moments</p></div>';
               }
