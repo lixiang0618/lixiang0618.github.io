@@ -178,7 +178,7 @@
 .moments-glass .moment-images { padding-inline: var(--moments-card-padding); gap: var(--moments-gallery-gap); margin-bottom: var(--moments-media-space); }
 .moments-glass .moment-actions { padding: 0 var(--moments-card-padding) var(--moments-action-space); }
 .moments-glass .moment-like { min-height: var(--moments-button-size); min-width: max(64px, var(--moments-button-size)); font-size: var(--moments-action-font); }
-.moments-glass .moment-like svg { width: var(--moments-icon-size); height: var(--moments-icon-size); }
+.moments-glass .moment-like svg { width: calc(var(--moments-icon-size) * .85); height: calc(var(--moments-icon-size) * .85); }
 .moments-glass .comments-section { padding: 0 var(--moments-comments-inset) var(--moments-comments-space); }
 .moments-glass .comment-item { grid-template-columns: var(--moments-comment-avatar) minmax(0, 1fr); gap: var(--moments-comment-gap); }
 .moments-glass .comment-avatar { width: var(--moments-comment-avatar); height: var(--moments-comment-avatar); font-size: var(--moments-comment-avatar-font); }
