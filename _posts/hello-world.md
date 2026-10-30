@@ -3,7 +3,7 @@ title: Hello World
 date: 2026-05-01
 pin: true
 categories:
-  - 生活
+  - life
 tags:
   - 随笔
 ---

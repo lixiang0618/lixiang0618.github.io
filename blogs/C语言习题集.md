@@ -2,7 +2,7 @@
 title: C语言习题集
 date: 2022-10-27
 categories:
-  - 学习
+  - notes
 tags:
   - 学习
 pinned: false

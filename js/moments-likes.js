@@ -58,13 +58,13 @@
       const id = identity();
       // If identity changed in another tab, obtain its status before any mutation.
       if (id !== visitorId) { visitorId = id; method = 'GET'; }
-      const response = await fetch(API + '?type=moment&id=' + encodeURIComponent(state.id), {
+      const response = await fetch(API + '?type='+encodeURIComponent(state.type)+'&id=' + encodeURIComponent(state.id), {
         method, mode: 'cors', credentials: 'omit', cache: 'no-store',
         headers: { 'X-Visitor-ID': id }, signal: controller.signal
       });
       if (!response.ok) throw new Error('HTTP ' + response.status);
       const data = await response.json();
-      if (data.success !== true || data.content_type !== 'moment' || data.content_id !== state.id ||
+      if (data.success !== true || data.content_type !== state.type || data.content_id !== state.id ||
           !Number.isSafeInteger(data.likes) || data.likes < 0 || typeof data.liked !== 'boolean') {
         throw new Error('Invalid likes response');
       }
@@ -83,34 +83,39 @@
     }
   }
 
-  function mount(container, moments) {
-    const cards = container.querySelectorAll('.moment-card');
-    moments.forEach((moment, index) => {
-      const card = cards[index];
-      if (!card || card.querySelector('.moment-actions') || !/^moment-[a-zA-Z0-9-]+$/.test(moment.id || '')) return;
+  function mountControl(card, {type, id}) {
+    if(card.querySelector('.moment-like')) return;
       const actions = document.createElement('div');
       actions.className = 'moment-actions';
       actions.innerHTML = '<button type="button" class="moment-like" aria-pressed="false" disabled>' +
         '<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8Z"/></svg>' +
         '<span class="moment-like-count">—</span></button><span class="moment-like-message" role="status" aria-live="polite"></span>';
       card.appendChild(actions);
-      const state = { id: moment.id, button: actions.querySelector('button'),
+      const state = { id, type, button: actions.querySelector('button'),
         count: actions.querySelector('.moment-like-count'), message: actions.querySelector('.moment-like-message'),
         likes: 0, liked: false, known: false, pending: false, error: false };
-      controls.set(state.id, state);
+      controls.set(type+':'+id, state);
       state.button.addEventListener('click', () => request(state, state.known ? (state.liked ? 'DELETE' : 'PUT') : 'GET'));
       render(state);
       request(state, 'GET');
+    return state;
+  }
+  function mount(container, moments) {
+    const cards = container.querySelectorAll('.moment-card');
+    moments.forEach((moment, index) => {
+      const card = cards[index];
+      if (!card || card.querySelector('.moment-actions') || !/^moment-[a-zA-Z0-9-]+$/.test(moment.id || '')) return;
+      mountControl(card, {type:'moment', id:moment.id});
     });
   }
   function refresh() {
     controls.forEach(state => {
       if (state.button.isConnected) request(state, 'GET');
-      else controls.delete(state.id);
+      else controls.delete(state.type+':'+state.id);
     });
   }
   window.addEventListener('pageshow', event => { if (event.persisted) refresh(); });
   window.addEventListener('storage', event => { if (event.key === VISITOR_KEY || event.key === null) refresh(); });
   document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') refresh(); });
-  window.MomentsLikes = { mount };
+  window.MomentsLikes = { mount, mountControl, getVisitorId: identity };
 })();

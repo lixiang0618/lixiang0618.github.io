@@ -1,10 +1,24 @@
 [
   {
+    "file": "Hot100",
+    "title": "Leetcode Hot100 笔记",
+    "date": "2026-05-02",
+    "categories": [
+      "notes"
+    ],
+    "tags": [
+      "学习"
+    ],
+    "excerpt": "LeetCode Hot100 学习笔记，记录常见算法题的解题思路与 Python 实现。",
+    "image": null,
+    "pinned": true
+  },
+  {
     "file": "Comments_MSMS_NTU",
-    "title": "Comments on MSMS NTU",
+    "title": "Comments on MSMS NTU (Updating)",
     "date": "2026-10-28",
     "categories": [
-      "学习"
+      "life"
     ],
     "tags": [
       "随笔"
@@ -14,30 +28,16 @@
     "pinned": false
   },
   {
-    "file": "Hot100",
-    "title": "Hot100",
-    "date": "2026-10-28",
-    "categories": [
-      "未分类"
-    ],
-    "tags": [
-      "未分类"
-    ],
-    "excerpt": "title: Leetcode Hot100 笔记\r date: 20260502\r categories:\r    学习\r tags:\r    学习\r pinned: true\r \r \r  1.Tw...",
-    "image": null,
-    "pinned": false
-  },
-  {
     "file": "Python",
     "title": "Python 笔记",
     "date": "2026-02-28",
     "categories": [
-      "学习"
+      "notes"
     ],
     "tags": [
       "学习"
     ],
-    "excerpt": "Python 笔记 这是本人大二上学期学习Python的笔记。  需要可自取 20260228",
+    "excerpt": "这是本人大二上学期学习Python的笔记。",
     "image": null,
     "pinned": false
   },
@@ -46,12 +46,12 @@
     "title": "Hello World",
     "date": "2025-05-01",
     "categories": [
-      "生活"
+      "life"
     ],
     "tags": [
       "随笔"
     ],
-    "excerpt": "关于 / This Blog  欢迎来到我的博客！Welcome to my blog!  会分享 / Focus：  学习心得 / Learning Experience  生活点滴 / Daily...",
+    "excerpt": "欢迎来到我的博客！Welcome to my blog! 学习心得 / Learning Experience 生活点滴 / Daily Life Moments 技术文章 / Technical Articles 持续更新中 / Continuous Updates... 欢迎…",
     "image": null,
     "pinned": false
   },
@@ -60,12 +60,12 @@
     "title": "DataStructure 习题",
     "date": "2023-04-27",
     "categories": [
-      "学习"
+      "notes"
     ],
     "tags": [
       "学习"
     ],
-    "excerpt": "DataStructure 习题 这是本人大一上学期学习数据结构的习题集。  需要可自取 20230427",
+    "excerpt": "这是本人大一上学期学习数据结构的习题集。",
     "image": null,
     "pinned": false
   },
@@ -74,12 +74,12 @@
     "title": "C语言习题集",
     "date": "2022-10-27",
     "categories": [
-      "学习"
+      "notes"
     ],
     "tags": [
       "学习"
     ],
-    "excerpt": "这是本人大一上学期学习C语言的习题集。需要可自取。 因为疫情原因后面就回家没法上课了，所以就只能自己学习了。 20221027",
+    "excerpt": "这是本人大一上学期学习C语言的习题集。需要可自取。 因为疫情原因后面就回家没法上课了，所以就只能自己学习了。",
     "image": null,
     "pinned": false
   }

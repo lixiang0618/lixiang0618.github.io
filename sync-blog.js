@@ -1,11 +1,11 @@
 const fs = require('fs');
 const path = require('path');
 
-const blogsDir = './blogs';
-const blogJsonPath = './data/blog.json';
+const blogsDir = path.join(__dirname, 'blogs');
+const blogJsonPath = path.join(__dirname, 'data', 'blog.json');
 
 function parseFrontMatter(content) {
-  const lines = content.split('\n');
+  const lines = content.split(/\r?\n/);
   let frontMatter = {};
   let body = content;
 
@@ -62,10 +62,21 @@ function parseFrontMatter(content) {
   return { frontMatter, body };
 }
 
-function extractExcerpt(body, maxLength = 100) {
-  const text = body.replace(/[#*`>\-\[\]]/g, '').replace(/\n+/g, ' ').trim();
-  if (text.length <= maxLength) return text;
-  return text.substring(0, maxLength) + '...';
+// Derive prose only; code-heavy notes may deliberately have no generated excerpt.
+function extractExcerpt(body, maxLength = 140) {
+  const prose = body
+    .replace(/^\s*(```|~~~)[^\n]*\n[\s\S]*?(?:^\s*\1[^\n]*(?:\n|$)|(?![\s\S]))/gm, '')
+    .replace(/<(pre|code|script|style)\b[^>]*>[\s\S]*?<\/\1>/gi, '')
+    .replace(/!\[[^\]]*\]\([^)]*\)/g, '')
+    .replace(/<[^>]*>/g, '')
+    .replace(/`[^`]*`/g, '')
+    .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')
+    .split(/\r?\n/)
+    .filter(line => !/^\s*(?:#{1,6}\s|[-*_]{3,}\s*$|import\s|from\s+\S+\s+import\s|(?:def|class|function|const|let|var|return|if|else|for|while)\b|[A-Za-z_$][\w.$]*\s*(?:[=({]|\+=)|[{}[\];]|\/\/|\|)/.test(line))
+    .map(line => line.replace(/^\s*(?:>\s*|[-*+]\s+|\d+[.)]\s+)/, '').replace(/[*_~]/g, '').trim())
+    .filter(line => /[\p{L}\p{N}]/u.test(line) && !/^\d{4}-\d{2}-\d{2}$/.test(line))
+    .join(' ').replace(/\s+/g, ' ').trim();
+  return [...prose].length > maxLength ? [...prose].slice(0, maxLength).join('') + '…' : prose;
 }
 
 function syncBlogs() {
@@ -90,6 +101,7 @@ function syncBlogs() {
 
     const categories = Array.isArray(frontMatter.categories) ? frontMatter.categories :
                       (frontMatter.categories ? [frontMatter.categories] : ['未分类']);
+    if (!categories.every(c => ['notes','research','projects','life'].includes(c))) throw new Error('Use stable category IDs in '+file);
     const tags = Array.isArray(frontMatter.tags) ? frontMatter.tags :
                 (frontMatter.tags ? [frontMatter.tags] : categories);
 
@@ -99,7 +111,7 @@ function syncBlogs() {
       date: frontMatter.date || new Date().toISOString().split('T')[0],
       categories: categories,
       tags: tags,
-      excerpt: frontMatter.excerpt || extractExcerpt(body),
+      excerpt: typeof frontMatter.excerpt === 'string' && frontMatter.excerpt.trim() ? frontMatter.excerpt.trim() : extractExcerpt(body),
       image: frontMatter.image || null,
       pinned: frontMatter.pinned === 'true' || frontMatter.pinned === true || false
     };
@@ -119,4 +131,5 @@ function syncBlogs() {
   console.log(`\n完成！已同步 ${newData.length} 篇博客到 blog.json`);
 }
 
-syncBlogs();
+if (require.main === module) syncBlogs();
+module.exports = { syncBlogs, parseFrontMatter, extractExcerpt };

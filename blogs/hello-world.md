@@ -2,7 +2,7 @@
 title: Hello World
 date: 2025-05-01
 categories:
-  - 生活
+  - life
 tags:
   - 随笔
 pinned: false

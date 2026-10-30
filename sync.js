@@ -67,60 +67,7 @@ function getFirstImage(content) {
 }
 
 function syncPosts() {
-  console.log('📝 同步博客...\n');
-
-  if (!fs.existsSync(POSTS_DIR)) {
-    fs.mkdirSync(POSTS_DIR, { recursive: true });
-    console.log('📁 已创建 _posts 文件夹');
-    console.log('💡 把 .md 文件放进去，然后运行 node sync.js 即可');
-    fs.writeFileSync(BLOG_JSON_FILE, JSON.stringify([], null, 2));
-    return;
-  }
-
-  const files = fs.readdirSync(POSTS_DIR).filter(f => f.endsWith('.md'));
-
-  if (files.length === 0) {
-    console.log('📭 没有找到 .md 文件');
-    fs.writeFileSync(BLOG_JSON_FILE, JSON.stringify([], null, 2));
-    return;
-  }
-
-  console.log(`📄 找到 ${files.length} 篇文章\n`);
-
-  const posts = files.map(file => {
-    const content = fs.readFileSync(path.join(POSTS_DIR, file), 'utf8');
-    const { data, content: body } = parseFrontMatter(content);
-    const fileName = file.replace('.md', '');
-
-    const post = {
-      file: fileName,
-      title: data.title || fileName,
-      date: data.date || '2026-01-01',
-      categories: data.categories || [],
-      tags: data.tags || [],
-      excerpt: data.excerpt || generateExcerpt(body),
-      image: data.image || getFirstImage(body),
-      pinned: data.pin === true || data.pin === 'true'
-    };
-
-    console.log(`📄 ${post.title} (${post.date})`);
-    return post;
-  });
-
-  posts.sort((a, b) => {
-    if (a.pinned && !b.pinned) return -1;
-    if (!a.pinned && b.pinned) return 1;
-    return new Date(b.date) - new Date(a.date);
-  });
-
-  fs.writeFileSync(BLOG_JSON_FILE, JSON.stringify(posts, null, 2));
-  console.log('\n✅ 博客同步完成！');
-
-  let blogHtml = fs.readFileSync(BLOG_HTML_FILE, 'utf8');
-  const postsScript = `const posts = ${JSON.stringify(posts, null, 4)};`;
-  blogHtml = blogHtml.replace(/const posts = \[[\s\S]*?\];/s, postsScript + '\n    ');
-  fs.writeFileSync(BLOG_HTML_FILE, blogHtml);
-  console.log('📋 嵌入 blog.html 完成');
+  require('./sync-blog').syncBlogs();
 }
 
 function syncMoments() {
