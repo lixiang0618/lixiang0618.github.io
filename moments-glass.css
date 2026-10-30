@@ -1,0 +1,57 @@
+/* Moments-only Photo-Adaptive Liquid Glass. Blog's Paper & Ink stays untouched. */
+.moments-glass {
+  --glass-surface: rgba(255,255,255,.68);
+  --glass-edge: rgba(255,255,255,.72);
+  --glass-ink: #17232f;
+  --glass-muted: #526170;
+  background: #e9edf1;
+  isolation: isolate;
+}
+.moments-ambient { position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; background: #e9edf1; }
+.moments-ambient-layer {
+  position: absolute; inset: -6rem; background-color: #e9edf1;
+  background-size: cover; background-position: center;
+  filter: blur(4rem) saturate(.62) brightness(1.08);
+  transform: scale(1.12); transition: opacity 700ms cubic-bezier(.25,.1,.25,1);
+}
+.moments-ambient-veil { position: absolute; inset: 0; background: rgba(255,255,255,.56); }
+.moments-glass .moment-card {
+  background: var(--glass-surface); color: var(--glass-ink);
+  border: 1px solid var(--glass-edge); border-radius: 1rem;
+  -webkit-backdrop-filter: blur(18px) saturate(1.08);
+  backdrop-filter: blur(18px) saturate(1.08);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.88), 0 8px 28px rgba(31,46,65,.07);
+  transition: border-color .2s ease, box-shadow .2s ease;
+}
+.moments-glass :is(.moment-name,.moment-content,.comment-body,.comment-nickname) { color: var(--glass-ink); }
+.moments-glass :is(.moment-time,.comment-time,.comment-edited,.comments-status,.snap-note) { color: var(--glass-muted); }
+.moments-glass .moment-info, .moments-glass .moment-content { min-width: 0; overflow-wrap: anywhere; }
+.moments-glass .moment-like { background: rgba(255,255,255,.46); border-color: rgba(255,255,255,.78); }
+.moments-glass .moment-like:hover:not(:disabled) { background: rgba(255,255,255,.8); }
+.moments-glass .moment-like:not(.is-liked) { color: var(--glass-muted); }
+.moments-glass .comments-section { background: transparent; }
+.moments-glass .comment-item { border: 0; background: transparent; }
+.moments-glass .timeline-month { opacity: 1; color: var(--glass-ink); }
+.moments-glass .timeline-month.active { opacity: 1; }
+.moments-glass .snap-note { opacity: 1; color: var(--glass-ink); }
+.moments-glass .moment-images :is(img,video) { filter: none; }
+.moments-glass .moment-images :is(img,video):hover { transform: none; }
+.moments-glass .comments-dialog { background: rgba(255,255,255,.97); border-color: rgba(255,255,255,.85); }
+.moments-glass :is(.moment-like,.comment-menu-button,.moment-card):focus-visible { outline: 2px solid var(--primary); outline-offset: 3px; }
+@media (hover: hover) and (pointer: fine) {
+  .moments-glass .moment-card:hover { border-color: rgba(255,255,255,.95); box-shadow: inset 0 1px 0 #fff, 0 10px 30px rgba(31,46,65,.085); }
+}
+@media (max-width: 48rem) {
+  .moments-glass .moment-card { -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
+  .moments-ambient-layer { inset: -4rem; filter: blur(2.5rem) saturate(.58) brightness(1.08); }
+}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .moments-glass .moment-card { background: rgba(255,255,255,.95); }
+}
+@media (prefers-reduced-transparency: reduce) {
+  .moments-glass .moment-card { background: #f8fafc; -webkit-backdrop-filter: none; backdrop-filter: none; }
+  .moments-ambient-veil { background: rgba(255,255,255,.72); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .moments-ambient-layer, .moments-glass .moment-card { transition: none; }
+}
