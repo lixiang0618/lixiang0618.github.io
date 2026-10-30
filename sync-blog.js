@@ -1,11 +1,11 @@
 const fs = require('fs');
 const path = require('path');
 
-const blogsDir = './blogs';
-const blogJsonPath = './data/blog.json';
+const blogsDir = path.join(__dirname, 'blogs');
+const blogJsonPath = path.join(__dirname, 'data', 'blog.json');
 
 function parseFrontMatter(content) {
-  const lines = content.split('\n');
+  const lines = content.split(/\r?\n/);
   let frontMatter = {};
   let body = content;
 
@@ -90,6 +90,7 @@ function syncBlogs() {
 
     const categories = Array.isArray(frontMatter.categories) ? frontMatter.categories :
                       (frontMatter.categories ? [frontMatter.categories] : ['未分类']);
+    if (!categories.every(c => ['notes','research','projects','life'].includes(c))) throw new Error('Use stable category IDs in '+file);
     const tags = Array.isArray(frontMatter.tags) ? frontMatter.tags :
                 (frontMatter.tags ? [frontMatter.tags] : categories);
 
@@ -119,4 +120,5 @@ function syncBlogs() {
   console.log(`\n完成！已同步 ${newData.length} 篇博客到 blog.json`);
 }
 
-syncBlogs();
+if (require.main === module) syncBlogs();
+module.exports = { syncBlogs, parseFrontMatter };

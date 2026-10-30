@@ -2,7 +2,7 @@
 title: Python 笔记
 date: 2026-02-28
 categories:
-  - 学习
+  - notes
 tags:
   - 学习
 pinned: false

@@ -1,10 +1,24 @@
 [
   {
+    "file": "Hot100",
+    "title": "Leetcode Hot100 笔记",
+    "date": "2026-05-02",
+    "categories": [
+      "notes"
+    ],
+    "tags": [
+      "学习"
+    ],
+    "excerpt": "1.Two Sum !image_1.png(Hot100_files/image_1.png) python from typing import List class Solution:     ...",
+    "image": null,
+    "pinned": true
+  },
+  {
     "file": "Comments_MSMS_NTU",
-    "title": "Comments on MSMS NTU",
+    "title": "Comments on MSMS NTU (Updating)",
     "date": "2026-10-28",
     "categories": [
-      "学习"
+      "life"
     ],
     "tags": [
       "随笔"
@@ -14,25 +28,11 @@
     "pinned": false
   },
   {
-    "file": "Hot100",
-    "title": "Hot100",
-    "date": "2026-10-28",
-    "categories": [
-      "未分类"
-    ],
-    "tags": [
-      "未分类"
-    ],
-    "excerpt": "title: Leetcode Hot100 笔记\r date: 20260502\r categories:\r    学习\r tags:\r    学习\r pinned: true\r \r \r  1.Tw...",
-    "image": null,
-    "pinned": false
-  },
-  {
     "file": "Python",
     "title": "Python 笔记",
     "date": "2026-02-28",
     "categories": [
-      "学习"
+      "notes"
     ],
     "tags": [
       "学习"
@@ -46,7 +46,7 @@
     "title": "Hello World",
     "date": "2025-05-01",
     "categories": [
-      "生活"
+      "life"
     ],
     "tags": [
       "随笔"
@@ -60,7 +60,7 @@
     "title": "DataStructure 习题",
     "date": "2023-04-27",
     "categories": [
-      "学习"
+      "notes"
     ],
     "tags": [
       "学习"
@@ -74,7 +74,7 @@
     "title": "C语言习题集",
     "date": "2022-10-27",
     "categories": [
-      "学习"
+      "notes"
     ],
     "tags": [
       "学习"

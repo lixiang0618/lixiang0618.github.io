@@ -2,7 +2,7 @@
 title: Comments on MSMS NTU (Updating)
 date: 2026-10-28
 categories:
-  - 学习
+  - life
 tags:
   - 随笔
 excerpt: 本文记录我在南洋理工大学 26 Fall（NTU）MSc in Modelling and Simulation（MSMS）项目的真实就读体验，希望为未来考虑申请该项目的同学提供一些参考。

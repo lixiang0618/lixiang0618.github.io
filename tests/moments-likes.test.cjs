@@ -129,9 +129,9 @@ test('invalid server states never display negative counts or confirmed likes', a
 test('sync leaves both Moments pages and IDs untouched, including new content', () => {
   const tmp=fs.mkdtempSync(path.join(os.tmpdir(),'likes-sync-'));
   try {
-    for(const name of ['sync.js','moments.html','blog.html']) fs.copyFileSync(name,path.join(tmp,name));
+    for(const name of ['sync.js','sync-blog.js','moments.html','blog.html']) fs.copyFileSync(name,path.join(tmp,name));
     fs.mkdirSync(path.join(tmp,'zh')); fs.copyFileSync('zh/moments.html',path.join(tmp,'zh/moments.html'));
-    fs.cpSync('data',path.join(tmp,'data'),{recursive:true}); fs.cpSync('_posts',path.join(tmp,'_posts'),{recursive:true});
+    fs.cpSync('data',path.join(tmp,'data'),{recursive:true}); fs.cpSync('_posts',path.join(tmp,'_posts'),{recursive:true}); fs.cpSync('blogs',path.join(tmp,'blogs'),{recursive:true});
     const added=[...moments,{id:'moment-010',date:'2026-10-29',content:'New',images:[]}];
     fs.writeFileSync(path.join(tmp,'data/moments.json'),JSON.stringify(added));
     for(let i=0;i<2;i++) execFileSync(process.execPath,['sync.js'],{cwd:tmp});
