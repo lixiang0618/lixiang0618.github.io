@@ -9,7 +9,7 @@
     "tags": [
       "学习"
     ],
-    "excerpt": "1.Two Sum !image_1.png(Hot100_files/image_1.png) python from typing import List class Solution:     ...",
+    "excerpt": "LeetCode Hot100 学习笔记，记录常见算法题的解题思路与 Python 实现。",
     "image": null,
     "pinned": true
   },
@@ -37,7 +37,7 @@
     "tags": [
       "学习"
     ],
-    "excerpt": "Python 笔记 这是本人大二上学期学习Python的笔记。  需要可自取 20260228",
+    "excerpt": "这是本人大二上学期学习Python的笔记。",
     "image": null,
     "pinned": false
   },
@@ -51,7 +51,7 @@
     "tags": [
       "随笔"
     ],
-    "excerpt": "关于 / This Blog  欢迎来到我的博客！Welcome to my blog!  会分享 / Focus：  学习心得 / Learning Experience  生活点滴 / Daily...",
+    "excerpt": "欢迎来到我的博客！Welcome to my blog! 学习心得 / Learning Experience 生活点滴 / Daily Life Moments 技术文章 / Technical Articles 持续更新中 / Continuous Updates... 欢迎…",
     "image": null,
     "pinned": false
   },
@@ -65,7 +65,7 @@
     "tags": [
       "学习"
     ],
-    "excerpt": "DataStructure 习题 这是本人大一上学期学习数据结构的习题集。  需要可自取 20230427",
+    "excerpt": "这是本人大一上学期学习数据结构的习题集。",
     "image": null,
     "pinned": false
   },
@@ -79,7 +79,7 @@
     "tags": [
       "学习"
     ],
-    "excerpt": "这是本人大一上学期学习C语言的习题集。需要可自取。 因为疫情原因后面就回家没法上课了，所以就只能自己学习了。 20221027",
+    "excerpt": "这是本人大一上学期学习C语言的习题集。需要可自取。 因为疫情原因后面就回家没法上课了，所以就只能自己学习了。",
     "image": null,
     "pinned": false
   }

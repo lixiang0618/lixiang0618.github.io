@@ -4,7 +4,7 @@
 
 English and Chinese listing pages use `js/blog.js` and `blog.css`. Article pages
 retain their Markdown/PDF rendering and load the same files from `blogs/` in both
-languages. Titles/tags/excerpts are rendered as text; generated Markdown passes a
+languages. Titles/categories/excerpts are rendered as text; generated Markdown passes a
 small DOM allowlist that strips active elements, event attributes and unsafe URL
 schemes. It is a limited native Markdown renderer, not a full CommonMark engine.
 
@@ -66,7 +66,7 @@ npm install --prefix /tmp/lx-blog-tests --no-audit --no-fund jsdom@26 playwright
 NODE_PATH=/tmp/lx-blog-tests/node_modules node --test tests/blog.test.cjs tests/comments.test.cjs tests/moments-likes.test.cjs
 ```
 
-30 automated tests passed, including category/ordering/statistics limits, shared
+36 automated tests passed, including category/ordering/statistics limits, shared
 identity, Markdown/PDF paths and bilingual body equality, reply nesting/order and
 collapse, deleted-content redaction, independent tokens, backup/recovery,
 unauthorized edit rejection and POST retry identity. All 20 Moments regressions
@@ -109,3 +109,59 @@ PDF URL/embedding is verified; full PDF viewer rendering is not asserted.
 No production API mutations, Worker deployment, D1 migration, domain changes or
 production deployment are part of this change. Live Worker/D1 integration and
 Safari/real-device behavior are not verified by Mock tests. Merge remains manual.
+
+
+## Paper & Ink reading refinement
+
+Blog pages alone use warm Paper & Ink tokens and coordinated Dark Paper tokens.
+Global navigation and Moments styles/behavior are untouched. Legacy Front Matter
+and JSON tags remain stored but are not rendered or used for filtering. Excerpts
+prefer nonempty authored metadata; generated summaries omit fences, images, code
+and HTML. Hot100 has an authored summary; article bodies remain byte-identical.
+When no prose is suitable, the listing displays a localized neutral fallback.
+
+Before changing layout, Chromium measurements showed a 16px body, 1.8 standard
+line height and 662px desktop prose width. Those remain the baseline. Three columns
+are used only from 90rem, with the original 50rem outer reading column taking
+priority. Below that threshold, TOC/settings move above the content, and below
+48rem the existing comfortable padding is retained. There is no forced tablet
+sidebar layout. Font scaling affects only article content (87.5–137.5%, equivalent
+to 14–22px at the measured baseline). Spacing factors are relative to the measured
+standard line height; code/tables keep their own line height.
+
+`js/blog-reading.js` extracts H1/H2/H3 from rendered DOM, omits an article-title
+H1, and assigns deterministic unique anchors. Fewer than two relevant headings
+hide the TOC. Cached heading/content geometry plus passive requestAnimationFrame
+scroll updates keep TOC and article-only progress current. ResizeObserver handles
+images, settings and header height changes. Sticky offsets use the measured
+navigation height; narrow layouts get a thin progress bar below navigation.
+
+`lx_blog_theme` and `lx_blog_reading` store nonsecret local preferences independently
+of visitor IDs and management tokens. Storage errors fall back safely. The early
+Blog theme script avoids a theme flash. The listing can honor the same preference
+without an extra theme control. Native share dialogs restore focus and support
+Escape; clipboard failures expose/select a copyable URL/message.
+
+Canonical share links always use https://lxiang.cc and the validated metadata.file,
+with the current UI language path. X uses its official Web Intent with encoded
+parameters. Xiaohongshu explicitly asks visitors to copy/paste a message; no direct
+publishing is claimed. WeChat QR is generated locally with vendored
+qrcode-generator 1.4.4 (MIT; js/vendor/qrcode.LICENSE.txt), not a remote QR service.
+Images and PDF contents are never inverted or recolored.
+
+Reading-specific tests:
+
+```sh
+NODE_PATH=/tmp/lx-blog-tests/node_modules node --test tests/blog-reading.test.cjs tests/blog.test.cjs tests/comments.test.cjs tests/moments-likes.test.cjs
+NODE_PATH=/tmp/lx-blog-tests/node_modules node tests/blog-reading-browser.cjs
+```
+
+The 36 unit/DOM tests passed. The reading browser matrix passed EN/ZH at 320, 390,
+768, 820, 1024, 1200, 1366, 1440 and 1600px (18 cases), including maximum font,
+relative spacing, dark theme restoration, TOC active tracking/sticky offsets,
+article-only progress, share QR/URLs, clipboard fallback and no horizontal overflow.
+The existing four real-Chromium Blog interaction cases also passed after the
+layout change. All APIs in browser tests are mocked: no production comments were
+created, edited or deleted. Chromium viewport/touch emulation does not validate
+real Safari/Android, WeChat scanning, X or Xiaohongshu app behavior. PDF embedding
+is checked, not the third-party PDF viewer's raster output.

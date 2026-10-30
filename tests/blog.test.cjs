@@ -24,6 +24,7 @@ function api(seed=[]){
 async function page(name,backend,options={}){
  const dom=new JSDOM(fs.readFileSync(name,'utf8'),{url:'https://lxiang.cc/'+name+(options.query||''),runScripts:'outside-only'});const w=dom.window;
  w.HTMLDialogElement.prototype.showModal=function(){this.open=true;};w.HTMLDialogElement.prototype.close=function(){this.open=false;};
+ w.matchMedia=()=>({matches:false,addEventListener(){}});
  w.console.error=()=>{};w.localStorage.setItem('lx_visitor_id','12345678-1234-4234-8234-123456789abc');
  if(options.storage)for(const [k,v]of Object.entries(options.storage))w.localStorage.setItem(k,v);
  w.fetch=async(url,o={})=>{
@@ -65,7 +66,7 @@ test('article Markdown/media/PDF same across languages; heart uses existing visi
   const backend=api();const p=await page(name,backend,{query:'?p=Python'});
   assert(p.doc.querySelector('#post-content').textContent.includes('Python'));bodies.push(p.doc.querySelector('#post-content').textContent);
   assert.equal(new URL(p.doc.querySelector('#post-pdf iframe').src).pathname,'/blogs/Python.pdf');
-  assert.equal(p.doc.querySelector('.blog-heart').previousElementSibling.id,'post-tags');assert.equal(p.doc.querySelector('.blog-heart').nextElementSibling.className,'blog-discussion');
+  assert.equal(p.doc.querySelector('.blog-heart').previousElementSibling.id,'post-pdf');assert.equal(p.doc.querySelector('.blog-heart').nextElementSibling.className,'blog-discussion');
   const heart=p.doc.querySelector('.blog-heart button');heart.click();await tick();assert.equal(heart.getAttribute('aria-pressed'),'true');heart.click();await tick();assert.equal(heart.getAttribute('aria-pressed'),'false');
   assert(backend.calls.filter(c=>c.url.includes('/likes')).every(c=>c.headers['X-Visitor-ID']==='12345678-1234-4234-8234-123456789abc'));
   assert(p.doc.querySelector('.blog-comment-form textarea'));p.w.close();

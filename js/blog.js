@@ -2,8 +2,8 @@
 (function () {
   'use strict';
   const zh=document.documentElement.lang.startsWith('zh');
-  const labels=zh?{all:'全部',notes:'笔记',research:'研究',projects:'项目',life:'生活',read:'阅读全文 →',empty:'暂无文章',error:'加载失败，请刷新重试',likes:'赞',comments:'评论',unavailable:'暂不可用'}:
-    {all:'All',notes:'Notes',research:'Research',projects:'Projects',life:'Life',read:'Read More →',empty:'No posts yet',error:'Unable to load posts. Please refresh.',likes:'likes',comments:'comments',unavailable:'unavailable'};
+  const labels=zh?{all:'全部',notes:'笔记',research:'研究',projects:'项目',life:'生活',read:'阅读全文 →',empty:'暂无文章',error:'加载失败，请刷新重试',likes:'赞',comments:'评论',unavailable:'暂不可用',excerptFallback:'阅读文章，了解更多。'}:
+    {all:'All',notes:'Notes',research:'Research',projects:'Projects',life:'Life',read:'Read More →',empty:'No posts yet',error:'Unable to load posts. Please refresh.',likes:'likes',comments:'comments',unavailable:'unavailable',excerptFallback:'Open the article to read more.'};
   const prefix=zh?'../':'./';
   const node=(tag,cls,text)=>{const n=document.createElement(tag);if(cls)n.className=cls;if(text!==undefined)n.textContent=text;return n;};
   const category=p=>(p.categories || []).map(c=>labels[c] || c).join(' · ');
@@ -21,7 +21,6 @@
     return template.innerHTML;
   }
   const escape=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  function renderTags(container,tags) {container.replaceChildren();(Array.isArray(tags)?tags:[]).forEach(t=>container.append(node('span','post-tag',t)));}
   function renderPDF(container,file) {
     container.replaceChildren();if(!file)return;
     const heading=node('div','post-pdf-header',(zh?'附件：':'Attachment: ')+file);
@@ -60,8 +59,7 @@
         const meta=node('div','blog-meta');meta.append(node('span','',post.date),node('span','blog-category',category(post)));
         const title=node('h2','blog-title',(post.pinned?'📌 ':'')+post.title);card.append(meta,title);
         if(post.image&&safeURL(post.image)){const img=node('img','blog-cover');img.src=new URL(post.image,new URL(prefix,location.href)).href;img.alt='';img.loading='lazy';card.append(img);}
-        card.append(node('p','blog-excerpt',post.excerpt));
-        const tags=node('div','post-tags');renderTags(tags,post.tags);card.append(tags);
+        card.append(node('p','blog-excerpt',post.excerpt?.trim() || labels.excerptFallback));
         const footer=node('div','blog-card-footer');const link=node('a','blog-read-more',labels.read);link.href='blog-post.html?p='+encodeURIComponent(post.file);footer.append(link);
         const stats=node('div','blog-stats');
         for(const kind of ['likes','comments']) {
@@ -81,8 +79,9 @@
     window.MomentsLikes.mountControl(heart,{type:'blog',id:post.file});
     const discussion=node('section','blog-discussion');parent.append(discussion);
     window.BlogComments.mount(discussion,post.file);
+    window.BlogReading?.mount(post);
   }
   document.getElementById('year').textContent=new Date().getFullYear();
-  window.BlogUI={category,sanitizeMarkdown,escape,renderTags,renderPDF,mountArticle};
+  window.BlogUI={category,sanitizeMarkdown,escape,renderPDF,mountArticle};
   listing();
 })();

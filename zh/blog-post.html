@@ -1,7 +1,8 @@
 <!doctype html>
-<html lang="zh">
+<html class="blog-document" lang="zh">
 <head>
   <meta charset="utf-8">
+  <script src="../js/blog-theme.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script>
     (function() {
@@ -119,19 +120,6 @@
       margin: 16px 0;
       color: var(--subtle);
     }
-    .post-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 24px;
-    }
-    .post-tag {
-      padding: 4px 10px;
-      background: rgba(15, 103, 255, 0.08);
-      color: var(--primary);
-      border-radius: 6px;
-      font-size: 13px;
-    }
     .post-pdf {
       margin-top: 24px;
       background: #fff;
@@ -192,7 +180,7 @@
   </style>
   <link rel="stylesheet" href="../blog.css">
 </head>
-<body>
+<body class="blog-page">
   <header class="site-header">
     <a class="brand" href="/zh/index.html" aria-label="Home">
       <span class="brand-name">李想</span>
@@ -205,7 +193,8 @@
     </nav>
   </header>
 
-  <main>
+  <main class="reading-layout">
+    <aside class="reading-toc-slot"></aside>
     <div class="post-container">
       <a href="/zh/blog.html" class="post-back">← 返回博客</a>
 
@@ -217,12 +206,13 @@
         <h1 id="post-title-text" class="post-title"></h1>
       </div>
 
+      <div class="reading-mobile-controls"></div>
       <article id="post-content" class="post-content"></article>
 
       <div id="post-pdf" class="post-pdf"></div>
 
-      <div id="post-tags" class="post-tags"></div>
     </div>
+    <aside class="reading-tools-slot"></aside>
   </main>
 
   <footer class="site-footer">
@@ -234,6 +224,8 @@
   <script src="../js/moments-likes.js"></script>
   <script src="../js/comments.js"></script>
   <script src="../js/blog-comments.js"></script>
+  <script src="../js/vendor/qrcode.js"></script>
+  <script src="../js/blog-reading.js"></script>
   <script src="../js/blog.js"></script>
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
@@ -356,7 +348,6 @@
         document.getElementById('post-category').textContent = BlogUI.category(post);
         document.getElementById('post-content').innerHTML = parseMarkdown(body);
 
-        BlogUI.renderTags(document.getElementById('post-tags'),post.tags);
         BlogUI.renderPDF(document.getElementById('post-pdf'),frontMatter.pdf);
         BlogUI.mountArticle(post);
       } catch (error) {
