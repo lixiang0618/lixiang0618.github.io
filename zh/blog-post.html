@@ -190,6 +190,7 @@
       }
     }
   </style>
+  <link rel="stylesheet" href="../blog.css">
 </head>
 <body>
   <header class="site-header">
@@ -230,6 +231,10 @@
     </div>
   </footer>
 
+  <script src="../js/moments-likes.js"></script>
+  <script src="../js/comments.js"></script>
+  <script src="../js/blog-comments.js"></script>
+  <script src="../js/blog.js"></script>
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
 
@@ -241,7 +246,7 @@
       const codeBlocks = [];
       let html = text.replace(/```(\w*)\n([\s\S]*?)```/g, function(match, lang, code) {
         const placeholder = 'CODEBLOCK_PLACEHOLDER_' + codeBlocks.length + '_END';
-        codeBlocks.push('<pre><code class="language-' + lang + '">' + code.trim() + '</code></pre>');
+        codeBlocks.push('<pre><code class="language-' + lang + '">' + BlogUI.escape(code.trim()) + '</code></pre>');
         return placeholder;
       });
 
@@ -276,7 +281,7 @@
         html = html.replace('CODEBLOCK_PLACEHOLDER_' + i + '_END', block);
       });
 
-      return html;
+      return BlogUI.sanitizeMarkdown(html);
     }
 
     function formatDate(dateStr) {
@@ -295,7 +300,12 @@
       }
 
       try {
-        const encodedFile = encodeURIComponent(postFile);
+        const metadataResponse=await fetch('../data/blog.json');
+        if(!metadataResponse.ok) throw Error('metadata');
+        const metadata=await metadataResponse.json();
+        const post=metadata.find(p=>p.file===postFile);
+        if(!post) throw Error('Unknown article');
+        const encodedFile = encodeURIComponent(post.file);
         const response = await fetch('../blogs/' + encodedFile + '.md');
         if (!response.ok) {
           document.getElementById('post-content').innerHTML = '<p>文章未找到。</p>';
@@ -340,28 +350,15 @@
           }
         }
 
-        document.getElementById('post-title').textContent = (frontMatter.title || postFile) + ' | 李想';
-        document.getElementById('post-title-text').textContent = frontMatter.title || postFile;
-        document.getElementById('post-date').textContent = formatDate(frontMatter.date || '2026-01-01');
-        document.getElementById('post-category').textContent = frontMatter.categories || '未分类';
+        document.getElementById('post-title').textContent = post.title + ' | 李想';
+        document.getElementById('post-title-text').textContent = post.title;
+        document.getElementById('post-date').textContent = formatDate(post.date);
+        document.getElementById('post-category').textContent = BlogUI.category(post);
         document.getElementById('post-content').innerHTML = parseMarkdown(body);
 
-        const tagsContainer = document.getElementById('post-tags');
-        if (frontMatter.tags && Array.isArray(frontMatter.tags)) {
-          tagsContainer.innerHTML = frontMatter.tags.map(tag => `<span class="post-tag">${tag}</span>`).join('');
-        }
-
-        const pdfContainer = document.getElementById('post-pdf');
-        if (frontMatter.pdf) {
-          const encodedPdf = encodeURIComponent(frontMatter.pdf);
-          pdfContainer.innerHTML = `
-            <div class="post-pdf-header">
-              <span>📄</span>
-              <span>附件: ${frontMatter.pdf}</span>
-            </div>
-            <iframe src="../blogs/${encodedPdf}" title="PDF 文档"></iframe>
-          `;
-        }
+        BlogUI.renderTags(document.getElementById('post-tags'),post.tags);
+        BlogUI.renderPDF(document.getElementById('post-pdf'),frontMatter.pdf);
+        BlogUI.mountArticle(post);
       } catch (error) {
         console.error('加载文章出错:', error);
         document.getElementById('post-content').innerHTML = '<p>加载文章出错。</p>';

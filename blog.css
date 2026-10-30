@@ -1,0 +1,64 @@
+/* Blog-specific presentation, separate from Moments. */
+.blog-container { max-width: 900px; margin: 0 auto; padding: 24px 28px; }
+.blog-header { text-align: center; margin-bottom: 18px; }
+.blog-header h1 { margin: 0; font-size: 32px; }
+.blog-filters { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: 22px; }
+.filter-btn { padding: 8px 17px; min-height: 40px; border: 1px solid var(--border); border-radius: 20px; background: var(--surface); color: var(--text); font: inherit; font-size: 14px; cursor: pointer; }
+.filter-btn.active { background: var(--primary); border-color: var(--primary); color: white; }
+.blog-post { border: 1px solid var(--border); border-radius: 16px; padding: 24px; margin-bottom: 18px; background: var(--surface); }
+.blog-meta { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; font-size: 13px; color: #6b7280; }
+.blog-category { color: var(--primary); }
+.blog-title { margin: 10px 0; font-size: 23px; line-height: 1.35; overflow-wrap: anywhere; }
+.blog-excerpt { margin: 8px 0 14px; line-height: 1.7; overflow-wrap: anywhere; }
+.blog-cover { width: 100%; max-height: 240px; object-fit: cover; border-radius: 10px; margin-top: 12px; }
+.blog-card-footer { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+.blog-read-more { color: var(--primary); font-weight: 600; text-decoration: none; }
+.blog-stats { display: flex; gap: 14px; font-size: 13px; color: #6b7280; }
+.blog-state { text-align: center; color: #6b7280; }
+.blog-post .post-tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0 16px; }
+.blog-post .post-tag { padding: 2px 8px; background: var(--muted); border-radius: 6px; font-size: 12px; }
+.blog-heart { display: flex; justify-content: center; margin: 26px 0; }
+.blog-heart .moment-actions { padding: 0; justify-content: center; }
+.blog-heart .moment-like { flex-direction: column; color: #d92d50; min-width: 88px; min-height: 88px; border: 0; border-radius: 50%; background: #fff5f6; }
+.blog-heart .moment-like svg { width: 32px; height: 32px; }
+.blog-heart .moment-like-message { flex-basis: 100%; text-align: center; }
+.blog-discussion { border-top: 1px solid var(--border); margin-top: 24px; padding-top: 24px; overflow-wrap: anywhere; }
+.blog-discussion h2 { margin: 0 0 18px; font-size: 23px; }
+.blog-comment-total { font-size: 15px; color: #6b7280; }
+.blog-guidelines { padding: 16px; border-radius: 12px; background: var(--muted); margin-bottom: 22px; }
+.blog-guidelines h3 { font-size: 15px; margin: 0 0 10px; }
+.blog-guidelines ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 9px; }
+.blog-guidelines li { display: grid; grid-template-columns: 18px minmax(0,1fr); gap: 9px; font-size: 13px; line-height: 1.55; }
+.blog-guidelines svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.blog-comment-form { margin-bottom: 28px; }
+.blog-discussion button { min-height: 40px; border-radius: 8px; padding: 7px 12px; border: 1px solid var(--border); background: var(--surface); color: var(--text); cursor: pointer; font: inherit; }
+.blog-discussion .comments-primary { background: var(--primary); color: white; border-color: var(--primary); }
+.blog-thread-order { font-size: 13px; color: #6b7280; margin: 0 0 12px; }
+.blog-thread { padding: 18px 0; border-top: 1px solid var(--border); }
+.blog-comment { display: flex; gap: 10px; min-width: 0; }
+.blog-comment .comment-avatar { flex-shrink: 0; }
+.blog-comment-content { min-width: 0; flex: 1; }
+.blog-replies { margin-left: 38px; display: grid; gap: 16px; margin-top: 16px; }
+.blog-replies:empty { display: none; }
+.blog-deleted { color: #6b7280; font-size: 14px; background: var(--muted); padding: 12px; border-radius: 8px; margin: 0; flex: 1; }
+.blog-reply-label, .blog-reply-target { color: #6b7280; font-size: 13px; margin: 3px 0; }
+.blog-comment-controls { display: flex; gap: 8px; align-items: start; }
+.blog-discussion .blog-text-button { border: 0; background: transparent; font-size: 13px; color: var(--primary); padding: 5px 0; margin-right: 12px; }
+.blog-expand { margin-left: 38px; }
+.blog-comment-menu summary { cursor: pointer; min-height: 40px; min-width: 40px; list-style: none; text-align: center; }
+.blog-recovery { font-size: 13px; color: #6b7280; margin-top: 22px; }
+.blog-recovery summary { cursor: pointer; padding: 10px 0; }
+.blog-token-backup { padding: 16px; margin-top: 14px; border: 1px solid var(--border); border-radius: 12px; }
+.blog-token-backup h3 { font-size: 16px; }
+.blog-discussion button:disabled { opacity: .55; cursor: wait; }
+.blog-discussion :focus-visible, .blog-container :focus-visible { outline: 2px solid var(--primary); outline-offset: 3px; }
+.blog-post [hidden], .blog-discussion [hidden] { display: none; }
+@media (max-width: 768px) {
+  .blog-container { padding: 18px 16px; }
+  .blog-header h1 { font-size: 26px; }
+  .blog-post { padding: 18px; }
+  .blog-title { font-size: 21px; }
+  .blog-replies { margin-left: 20px; }
+  .blog-expand { margin-left: 20px; }
+  .blog-guidelines { padding: 12px; }
+}

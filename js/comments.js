@@ -277,5 +277,5 @@
       mount(card,{type:'moment',id:m.id,actions:row});
     });
   }
-  window.SiteComments={mount,mountMoments};
+  window.SiteComments={mount,mountMoments, manage:compose, core:{el,button,uuid,token,key,read,write,forget,request,commentId,visible,date,relativeDate,avatar,words}};
 })();
