@@ -2,6 +2,8 @@
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8">
+  <link rel="stylesheet" href="../editorial-curtain.css">
+  <script src="../js/editorial-curtain.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>李想 | 个人网站（手机版）</title>
   <meta name="description" content="李想  -  华中师范大学信息管理与信息系统专业本科生。图网络、数据科学、AIoT。">
@@ -276,6 +278,7 @@
       window.location.href = 'index.html';
     }
   </script>
+  <link rel="stylesheet" href="../profile-editorial.css">
 </head>
 <body>
   <header class="site-header">
@@ -299,12 +302,10 @@
         <div class="hero-text">
           <h1 id="intro-title">李想 / LI XIANG</h1>
           <div class="chips">
-            <span class="chip">图网络学习</span>
-            <span class="chip">社交网络分析</span>
-            <span class="chip">建模与仿真</span>
-            <span class="chip">排球（二传）</span>
-            <span class="chip">羽毛球</span>
-            <span class="chip">旅行与摄影</span>
+            <span class="chip"><span class="chip-label">图神经网络</span></span>
+            <span class="chip"><span class="chip-label">社交网络分析</span></span>
+            <span class="chip"><span class="chip-label">搜索、广告与推荐</span></span>
+            <span class="chip"><span class="chip-label">排球（二传）</span></span>
           </div>
           
           <div class="social-links">
@@ -326,7 +327,7 @@
             </a>
           </div>
           <div class="contact-row">
-            <span>📩 邮箱: <a class="contact-link" href="mailto:leisoeng618@gmail.com">leisoeng618@gmail.com</a></span>
+            <span><svg class="profile-email-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg> 邮箱: <a class="contact-link" href="mailto:leisoeng618@gmail.com">leisoeng618@gmail.com</a></span>
           </div>
         </div>
       </div>
@@ -412,11 +413,9 @@
           <h3>AIoT项目研究实习生，新加坡国立大学计算机学院 | 新加坡</h3>
           <div class="meta-inline">2025年5月  -  2025年7月</div>
           <ul>
-            <li>产品为运动手表，能实现食物识别、运动类型识别，进而进行卡路里管理</li>
-            <!-- <li>使用ResNet进行图像特征提取，LightGBM进行食物营养识别</li>
-            <li>使用前馈网络进行IMU传感器数据收集，实现实时运动分类</li>
-            <li>独立设计React Web界面，包含数据仪表盘、食物分析和运动分析模块</li>
-            <li>开发简化的TCP滑动窗口协议，解决Micro Bit中IMU传感器传输问题</li> -->
+            <li>协调4人团队开发融合硬件、机器学习与 Web 应用的 AIoT 系统。</li>
+            <li>使用 ResNet 和 LightGBM 实现食物营养估算，并使用神经网络实现基于 IMU 的运动识别。</li>
+            <li>构建支持 WebSocket 实时通信的 React 数据仪表盘，并实现可靠的传感器数据传输。</li>
           </ul>
         </div>
       </div>
@@ -426,10 +425,9 @@
           <h3>AI开发实习生，保利中轻工业互联网有限公司 | 北京，中国</h3>
           <div class="meta-inline">2024年7月  -  2024年8月</div>
           <ul>
-            <li>使用LLM标注各子公司和业务单元的绩效指标，通过SQL提取数据支持模型查询</li>
-            <li>使用GraphRAG构建包含3000多个指标的知识图谱，提取和关联指标、业务和子公司</li>
-            <li>调整少样本示例和模型参数以提高数值推理能力，减少数据驱动响应中的幻觉</li>
-            <li>使用Gephi可视化指标网络，动态高亮异常区域</li>
+            <li>开发基于大语言模型的系统，用于查询各子公司的经营绩效指标。</li>
+            <li>使用 GraphRAG 构建知识图谱，关联超过3,000个指标、业务单元与子公司。</li>
+            <li>通过少样本提示提升数值推理能力，并使用 Gephi 可视化业务关系。</li>
           </ul>
         </div>
       </div>
