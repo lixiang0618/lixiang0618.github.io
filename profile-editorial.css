@@ -1,0 +1,120 @@
+/* Profile's left-hand introduction only. Keep existing layout and box spacing. */
+.hero-text .chip {
+  position: relative;
+  isolation: isolate;
+  color: #414141;
+  font-weight: 500;
+  background: none;
+  border-color: transparent;
+  box-shadow: none;
+  transform: none;
+  transition: color 250ms ease-out;
+}
+
+.hero-text .chip::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: 999px;
+  background: #DCA77F;
+  opacity: 0;
+  clip-path: inset(0 50% round 999px);
+  transition: clip-path 250ms ease-out, opacity 250ms ease-out;
+}
+
+.hero-text .chip-label {
+  position: relative;
+}
+
+.hero-text .chip-label::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  bottom: -4px;
+  height: 1px;
+  background: #d2cfcb;
+  transition: opacity 250ms ease-out;
+}
+
+.hero-text .chip:hover {
+  color: #47382E;
+}
+
+.hero-text .chip:hover::before {
+  opacity: 1;
+  clip-path: inset(0 0 round 999px);
+}
+
+.hero-text .chip:hover .chip-label::after {
+  opacity: 0;
+}
+
+.hero-text .social-link,
+.hero-text .social-link:hover,
+.hero-text .social-link:focus-visible {
+  background: none;
+  border-color: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+  transform: none;
+}
+
+.hero-text .social-link {
+  color: #414141;
+  transition: color 250ms ease-out;
+}
+
+.hero-text .social-link img {
+  transform: none;
+  transition: none;
+}
+
+.hero-text .social-link span {
+  position: relative;
+  display: inline;
+  font-weight: 500;
+  transition: color 250ms ease-out;
+}
+
+.hero-text .social-link span::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  bottom: -3px;
+  height: 1px;
+  background: currentColor;
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 250ms ease-out;
+}
+
+.hero-text .social-link:hover span,
+.hero-text .social-link:focus-visible span {
+  color: #47382E;
+}
+
+.hero-text .social-link:hover span::after,
+.hero-text .social-link:focus-visible span::after {
+  clip-path: inset(0);
+}
+
+.hero-text .contact-row {
+  color: #65615c;
+}
+
+.hero-text .profile-email-icon {
+  display: inline-block;
+  vertical-align: -3px;
+  margin-inline-end: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-text .chip,
+  .hero-text .chip::before,
+  .hero-text .chip-label::after,
+  .hero-text .social-link,
+  .hero-text .social-link span,
+  .hero-text .social-link span::after {
+    transition: none;
+  }
+}
