@@ -20,6 +20,10 @@
   color: var(--curtain-text);
   pointer-events: none;
   view-transition-name: editorial-curtain;
+  /* Stage the live element below the viewport. Otherwise pageswap can paint
+     a full yellow page while a heavier Profile document is being prepared.
+     Only the named snapshot's group performs the existing sweep below. */
+  transform: translateY(105%);
 }
 
 .editorial-curtain::before {

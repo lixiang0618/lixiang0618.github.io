@@ -69,11 +69,13 @@ const base=process.env.SITE_TEST_URL||'http://127.0.0.1:8091';
           const style=getComputedStyle(curtain);
           const animation=document.getAnimations().find(a=>a.animationName==='editorialCurtainSweep');
           return {text:curtain.textContent,bg:style.backgroundColor,color:style.color,accent:getComputedStyle(curtain,'::before').backgroundColor,
-            duration:animation.effect.getTiming().duration,frames:animation.effect.getKeyframes().map(f=>({offset:f.offset,transform:f.transform,easing:f.easing})),scroll:scrollY};
+            duration:animation.effect.getTiming().duration,frames:animation.effect.getKeyframes().map(f=>({offset:f.offset,transform:f.transform,easing:f.easing})),scroll:scrollY,
+            liveTop:curtain.getBoundingClientRect().top,height:innerHeight};
         });
         assert.equal(details.text,target.startsWith('index')?'PROFILE.':target==='blog.html'?'BLOG.':'MOMENTS.');
         assert.equal(details.bg,'rgb(255, 240, 189)');assert.equal(details.color,'rgb(104, 80, 38)');assert.equal(details.accent,'rgb(230, 186, 91)');
         assert.equal(details.duration,1050);
+        assert(details.liveTop>=details.height,'live curtain stays offscreen while its named snapshot animates');
         assert.deepEqual(details.frames.map(f=>f.offset),[0,.43,.57,1]);
         assert.deepEqual(details.frames.map(f=>f.transform),['translateY(105%)','translateY(0px)','translateY(0px)','translateY(-105%)']);
         assert(details.frames.every(f=>f.easing==='cubic-bezier(0.76, 0, 0.22, 1)'));
@@ -103,8 +105,7 @@ const base=process.env.SITE_TEST_URL||'http://127.0.0.1:8091';
       await page.locator('.site-nav a').filter({hasText:language?'博客':'Blog'}).click();
       await page.waitForURL(`${base}/${language}blog.html`);
       assert.equal(await page.locator('.editorial-curtain').count(),0,'reduced motion');
-      // This Profile error predates this change in script.js; do not hide new errors.
-      assert.deepEqual(errors.filter(e=>e!=='resourceBase is not defined'),[]);
+      assert.deepEqual(errors,[]);
       await context.close();
     }
     // Slow responses keep the real old page until the destination can be captured.

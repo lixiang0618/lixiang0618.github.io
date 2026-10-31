@@ -13,6 +13,16 @@ covers the viewport from 43% through 57%. The named curtain alone sweeps upward
 using the requested 1050ms keyframes and easing. Keep its element until `finished`:
 removing it at `ready` cancels the live incoming snapshot in Chromium.
 
+The live curtain starts at `translateY(105%)`, below the viewport. Only its named
+snapshot group sweeps across the screen. Previously the live element was inserted
+at `inset: 0` during `pageswap`, so it could paint a full yellow source frame while
+the next document was being prepared, before the actual sweep. This was visible
+on returning to the heavier Profile (including scroll restoration and media
+initialization). A compositor recording reproduced that extra yellow frame before
+`pagereveal`/`ready`; it was not a second animation or a different Profile theme.
+Staging only the curtain offscreen removes that preparation flash without hiding
+the page, adding delays or changing any snapshot keyframes, colors or timing.
+
 The three Butter colors are fixed, independent of page themes. There is no fetched
 HTML replacement, framework, loading overlay, page scaling or fade. Unsupported
 APIs, unavailable session storage and reduced motion use normal navigation.
@@ -31,6 +41,7 @@ NODE_PATH=/workspace/.onboarding/lx-tests/node_modules node --test tests/*.test.
 python3 -m http.server 8091 --bind 127.0.0.1
 # In a separate terminal:
 NODE_PATH=/workspace/.onboarding/lx-tests/node_modules node tests/butter-curtain-browser.cjs
+NODE_PATH=/workspace/.onboarding/lx-tests/node_modules node tests/butter-curtain-flash-browser.cjs
 NODE_PATH=/workspace/.onboarding/lx-tests/node_modules node tests/blog-browser.cjs
 ```
 
@@ -43,7 +54,26 @@ slow responses, unsupported APIs and an unavailable destination. Optional
 Production API calls in tests are mocked. Actual Safari and Firefox are not
 covered by the Chromium matrix; feature detection preserves native navigation.
 
-The baseline Profile `script.js` already throws `resourceBase is not defined`
-because the portrait switcher references a variable scoped inside a previous
-IIFE. The browser test explicitly tolerates that one pre-existing error and fails
-on any new page errors. This navigation change does not alter that script.
+The flash regression records actual Chromium compositor frames for Blog and
+Moments returning to Profile in both languages and at both viewport sizes. It
+rejects yellow frames before animation readiness, multiple sweeps, residual
+overlays, page errors and local image 404s. `SITE_TEST_URL` can point both curtain
+tests at the local `dist/` server to exercise a Vercel Preview build. External
+requests are blocked or mocked in these tests.
+
+## Profile media fixes
+
+The portrait switcher and language-indicator setup now share the original IIFE
+with `resourceBase`. Previously the switcher referenced that private variable
+outside its scope and threw before registering its click handler. The browser
+matrix now requires no page errors, and tests exercise all three portrait files.
+
+Gallery requests use exactly the five files already displayed by the old loader:
+`research-gnn-2.png`, `research-sna-2.png`, `research-asrs-1.png`,
+`internship-sinolight-1.png` and `project-igo-1.png`. All are tracked under
+`Resources/` and copied unchanged into `dist/Resources/`. Numbering gaps and
+nonexistent `.jpg` variants were speculative probes, not missing required photos.
+The intentionally differently named `deleteresearch-gnn-1.png` is not added to a
+gallery. Existing selections, ordering and containers remain intact. Optional
+skill/social icons may use an explicit Resources-relative `data-icon` filename;
+there are no active `data-skill` or `data-social` elements in the current HTML.
