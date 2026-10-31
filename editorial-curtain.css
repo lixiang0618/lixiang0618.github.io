@@ -1,0 +1,93 @@
+@view-transition {
+  navigation: auto;
+}
+
+:root {
+  --curtain-bg: #FFF0BD;
+  --curtain-text: #685026;
+  --curtain-accent: #E6BA5B;
+}
+
+.editorial-curtain {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483647;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 24px;
+  background: var(--curtain-bg);
+  color: var(--curtain-text);
+  pointer-events: none;
+  view-transition-name: editorial-curtain;
+}
+
+.editorial-curtain::before {
+  content: "";
+  width: 45px;
+  height: 3px;
+  border-radius: 3px;
+  background: var(--curtain-accent);
+}
+
+.editorial-curtain strong {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: clamp(44px, 12.5vw, 180px);
+  font-weight: 850;
+  letter-spacing: clamp(-5px, -0.4vw, -1.5px);
+  line-height: 1;
+}
+
+/* Unmarked navigations, history and reduced motion keep native page behavior. */
+::view-transition-group(*) {
+  animation: none;
+}
+::view-transition-old(root) {
+  display: none;
+}
+::view-transition-new(root) {
+  animation: none;
+}
+
+@keyframes editorialCurtainSweep {
+  0% { transform: translateY(105%); }
+  43% { transform: translateY(0); }
+  57% { transform: translateY(0); }
+  100% { transform: translateY(-105%); }
+}
+
+@keyframes editorialOldPage {
+  0%, 49.999% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  :root:active-view-transition-type(editorial)::view-transition-group(root) {
+    animation-duration: 1050ms;
+  }
+  :root:active-view-transition-type(editorial)::view-transition-old(root) {
+    display: block;
+    z-index: 1;
+    animation: editorialOldPage 1050ms linear both;
+    mix-blend-mode: normal;
+  }
+  :root:active-view-transition-type(editorial)::view-transition-new(root) {
+    mix-blend-mode: normal;
+  }
+  :root:active-view-transition-type(editorial)::view-transition-group(editorial-curtain) {
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    animation: editorialCurtainSweep 1050ms cubic-bezier(.76, 0, .22, 1) both;
+  }
+  :root:active-view-transition-type(editorial)::view-transition-old(editorial-curtain) {
+    display: none;
+  }
+  :root:active-view-transition-type(editorial)::view-transition-new(editorial-curtain) {
+    animation: none;
+    height: 100%;
+    object-fit: fill;
+    mix-blend-mode: normal;
+  }
+}
