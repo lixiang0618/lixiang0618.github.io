@@ -24,7 +24,7 @@
   function activeIndex(positions,scroll,offset){let active=0;positions.forEach((position,i)=>{if(position<=scroll+offset+16)active=i;});return active;}
   function headings(content,title){
     const used=new Set();
-    return Array.from(content.querySelectorAll('h1,h2,h3')).filter(h=>h.textContent.trim() && !(h.tagName==='H1' && h.textContent.trim()===title.trim())).map(h=>{
+    return Array.from(content.querySelectorAll('h1,h2,h3,h4,h5,h6')).filter(h=>h.textContent.trim() && !(h.tagName==='H1' && h.textContent.trim()===title.trim())).map(h=>{
       const slug=h.textContent.trim().normalize('NFC').toLowerCase().replace(/[^\p{L}\p{N}]+/gu,'-').replace(/^-|-$/g,'')||'section';
       let id='section-'+slug,count=1;while(used.has(id))id='section-'+slug+'-'+(++count);used.add(id);h.id=id;return h;
     });
