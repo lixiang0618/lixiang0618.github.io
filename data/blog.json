@@ -1,7 +1,7 @@
 [
   {
     "file": "Hot100",
-    "title": "Leetcode Hot100 笔记",
+    "title": "Leetcode Hot100 笔记 (Updating)",
     "date": "2026-05-02",
     "categories": [
       "notes"
@@ -11,7 +11,7 @@
     ],
     "excerpt": "LeetCode Hot100 学习笔记，记录常见算法题的解题思路与 Python 实现。",
     "image": null,
-    "pinned": true
+    "pinned": false
   },
   {
     "file": "Comments_MSMS_NTU",
@@ -24,6 +24,20 @@
       "随笔"
     ],
     "excerpt": "本文记录我在南洋理工大学 26 Fall（NTU）MSc in Modelling and Simulation（MSMS）项目的真实就读体验，希望为未来考虑申请该项目的同学提供一些参考。",
+    "image": null,
+    "pinned": false
+  },
+  {
+    "file": "SAR_Note",
+    "title": "Search Ads & Recommendation Learning Note (Updating)",
+    "date": "2026-10-28",
+    "categories": [
+      "notes"
+    ],
+    "tags": [
+      "学习"
+    ],
+    "excerpt": "记录搜广推（Search, Ads & Recommendation）的学习过程，涵盖推荐系统架构、召回与排序算法、CTR/CVR 预估、广告机制及相关工程实践，持续更新。",
     "image": null,
     "pinned": false
   },
