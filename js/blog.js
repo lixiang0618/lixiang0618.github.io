@@ -10,13 +10,18 @@
   function safeURL(value) {try {const u=new URL(value,location.href);return ['http:','https:','mailto:'].includes(u.protocol);}catch(_){return false;}}
   function sanitizeMarkdown(html) {
     const template=document.createElement('template');template.innerHTML=html;
-    const allowed=new Set(['P','BR','H1','H2','H3','H4','H5','H6','STRONG','EM','CODE','PRE','UL','OL','LI','BLOCKQUOTE','A','IMG','HR','TABLE','THEAD','TBODY','TR','TH','TD','DEL']);
+    const allowed=new Set(['P','BR','H1','H2','H3','H4','H5','H6','STRONG','EM','CODE','PRE','UL','OL','LI','BLOCKQUOTE','A','IMG','HR','TABLE','THEAD','TBODY','TR','TH','TD','DEL','INPUT']);
     for(const item of Array.from(template.content.querySelectorAll('*'))) {
-      if(!allowed.has(item.tagName)){item.replaceWith(document.createTextNode(item.textContent));continue;}
+      if(!allowed.has(item.tagName) || (item.tagName==='INPUT'&&item.getAttribute('type')!=='checkbox')){item.replaceWith(document.createTextNode(item.textContent));continue;}
       for(const attr of Array.from(item.attributes)) {
-        const permitted=(item.tagName==='A'&&attr.name==='href')||(item.tagName==='IMG'&&['src','alt','title'].includes(attr.name))||(item.tagName==='CODE'&&attr.name==='class'&&/^language-[\w-]*$/.test(attr.value));
+        const permitted=(item.tagName==='A'&&['href','title'].includes(attr.name))||(item.tagName==='IMG'&&['src','alt','title'].includes(attr.name))||
+          (item.tagName==='CODE'&&attr.name==='class'&&/^language-[\w+.#-]+$/.test(attr.value))||
+          (['TH','TD'].includes(item.tagName)&&attr.name==='align'&&['left','center','right'].includes(attr.value))||
+          (item.tagName==='OL'&&attr.name==='start'&&/^\d{1,9}$/.test(attr.value))||
+          (item.tagName==='INPUT'&&['type','checked','disabled'].includes(attr.name));
         if(!permitted || (['src','href'].includes(attr.name)&&!safeURL(attr.value)))item.removeAttribute(attr.name);
       }
+      if(item.tagName==='INPUT')item.disabled=true;
     }
     return template.innerHTML;
   }

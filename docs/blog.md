@@ -6,7 +6,62 @@ English and Chinese listing pages use `js/blog.js` and `blog.css`. Article pages
 retain their Markdown/PDF rendering and load the same files from `blogs/` in both
 languages. Titles/categories/excerpts are rendered as text; generated Markdown passes a
 small DOM allowlist that strips active elements, event attributes and unsafe URL
-schemes. It is a limited native Markdown renderer, not a full CommonMark engine.
+schemes. Both article pages use the same local Marked 18.1.2 CommonMark/GFM parser
+and `js/blog-markdown.js`; no parser CDN or runtime dependency install is needed.
+
+## Markdown rendering
+
+The article loader still validates the requested file against `data/blog.json`,
+then fetches that file from `blogs/`. `BlogMarkdown.parseDocument` normalizes
+BOM/CRLF and separates the existing front-matter fields from the body. Metadata
+continues to supply the displayed title, date, categories and permanent article
+identity; the front-matter PDF attachment is preserved.
+
+`BlogMarkdown.render` parses the body with an isolated Marked instance configured
+with `gfm: true`, `breaks: false`, `pedantic: false` and synchronous rendering.
+This replaces the old duplicated regular-expression substitutions, which never
+implemented tables, tasks, ordered/nested lists or Markdown block boundaries.
+The resulting HTML passes the existing DOM allowlist before insertion. Only
+disabled checkbox inputs, validated table alignment, numeric list starts and
+restricted code-language classes are additionally allowed; active HTML, event
+handlers, arbitrary CSS and unsafe URL schemes remain blocked.
+
+Relative links and images resolve against the source Markdown file, consistently
+in EN/ZH; absolute URLs remain absolute, and fragment links stay in the current
+HTML article. Safe tables receive a keyboard-focusable horizontal-scroll wrapper
+via DOM operations. Task boxes are read-only. Article CSS keeps table borders,
+lists, quotes, separators and scrollable code in the existing Paper & Ink palette.
+The TOC still mounts after content insertion and uses the same stable anchors,
+scroll/highlight logic and resize measurements, now covering heading levels 1–6.
+
+Standard Markdown blank lines and list indentation are significant. A horizontal
+rule must occupy its own line (`---`); `--- A/B测试` is literal prose, not a valid
+rule or list marker, and is deliberately not rewritten by a special-case regex.
+Use separate lines/blank lines and `- A/B测试` when authoring an actual list.
+No article body or generated metadata is changed by this rendering fix. The
+independent regression fixture lives under `tests/fixtures/`, not `blogs/`.
+
+Vendored parser: `js/vendor/marked.js`, MIT/Markdown license in
+`js/vendor/marked.LICENSE.txt`. It is copied from the integrity-verified npm
+`marked@18.1.2` browser UMD build; only the unavailable source-map URL comment is
+removed. To update, inspect the npm release, copy the matching UMD/license, and
+rerun both the sanitizer and browser regressions.
+
+```sh
+NODE_PATH=/workspace/.onboarding/lx-tests/node_modules node --test tests/*.test.cjs
+python3 -m http.server 8091 --bind 127.0.0.1
+# In another terminal:
+NODE_PATH=/workspace/.onboarding/lx-tests/node_modules node tests/blog-markdown-browser.cjs
+NODE_PATH=/workspace/.onboarding/lx-tests/node_modules node tests/blog-reading-browser.cjs
+NODE_PATH=/workspace/.onboarding/lx-tests/node_modules node tests/blog-browser.cjs
+```
+
+The Markdown browser test routes only fixture metadata and the fixture Markdown
+in memory; existing articles load from disk. It checks EN/ZH at 1600, 1024, 390
+and 320px, table/code horizontal scrolling, tasks, all heading levels, TOC anchors
+and active tracking, maximum font size, dark theme and all six existing articles
+on desktop/mobile. `SITE_TEST_URL` can target a local Vercel `dist/` server, and
+`MARKDOWN_ARTIFACT_DIR` optionally saves screenshots to an existing directory.
 
 The shared taxonomy is `notes`, `research`, `projects`, `life`. Only visible labels
 are translated. Lists filter categories, not tags; tags retain their original

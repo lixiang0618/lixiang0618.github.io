@@ -91,17 +91,35 @@
   color: var(--text); font-size: var(--reading-font-size, inherit); line-height: var(--reading-line-height, 1.8);
   padding: 2.5rem; min-width: 0; overflow-wrap: break-word;
 }
-.blog-page .post-content :is(h1,h2,h3) { font-family: Georgia, "Noto Serif SC", "Songti SC", serif; scroll-margin-top: calc(var(--blog-header-height, 4.5rem) + 1rem); line-height: 1.4; }
+.blog-page .post-content :is(h1,h2,h3,h4,h5,h6) { font-family: Georgia, "Noto Serif SC", "Songti SC", serif; scroll-margin-top: calc(var(--blog-header-height, 4.5rem) + 1rem); line-height: 1.4; }
 .blog-page .post-content h1 { font-size: 2em; }
 .blog-page .post-content h2 { font-size: 1.5em; }
 .blog-page .post-content h3 { font-size: 1.17em; }
+.blog-page .post-content :is(h4,h5,h6) { margin: 2rem 0 1rem; }
+.blog-page .post-content h4 { font-size: 1.05em; }
+.blog-page .post-content :is(h5,h6) { font-size: 1em; }
+.blog-page .post-content h6 { color: var(--subtle); }
+.blog-page .post-content :is(p,ul,ol,blockquote,pre) { margin-top: 0; margin-bottom: 1em; }
+.blog-page .post-content :is(ul,ol) { padding-inline-start: 1.75em; }
+.blog-page .post-content li { margin-bottom: .4em; }
+.blog-page .post-content li > :is(ul,ol) { margin-top: .4em; margin-bottom: 0; }
+.blog-page .post-content li > p { margin-bottom: .5em; }
+.blog-page .post-content .task-list-item { list-style: none; }
+.blog-page .post-content .task-list-item input[type="checkbox"] { font: inherit; width: 1em; height: 1em; margin: 0 .5em 0 -1.5em; vertical-align: -.1em; accent-color: var(--primary); }
+.blog-page .post-content blockquote { margin-inline: 0; padding-inline-start: 1em; border-inline-start: 2px solid var(--border); color: var(--subtle); }
+.blog-page .post-content blockquote > :last-child { margin-bottom: 0; }
+.blog-page .post-content hr { height: 0; border: 0; border-top: 1px solid var(--border); margin: 2em 0; }
 .blog-page .post-content :is(pre,code) { background: var(--muted); color: var(--text); line-height: 1.6; }
-.blog-page .post-content pre { max-width: 100%; overflow-x: auto; font-size: .875em; }
+.blog-page .post-content pre { max-width: 100%; overflow-x: auto; font-size: .875em; white-space: pre; overflow-wrap: normal; }
 .blog-page .post-content pre code { background: none; padding: 0; font-size: inherit; }
 .blog-page .post-content :is(img,video) { max-width: 100%; height: auto; }
-.blog-page .post-content table { display: block; width: max-content; max-width: 100%; overflow-x: auto; border-collapse: collapse; line-height: 1.6; }
-.blog-page .post-content :is(th,td) { border: 1px solid var(--border); padding: .5em .75em; }
-.blog-page .post-content th { background: var(--muted); }
+.blog-page .post-content .markdown-table-scroll { max-width: 100%; overflow-x: auto; margin: 1.25em 0; overscroll-behavior-inline: contain; }
+.blog-page .post-content table { display: table; width: 100%; min-width: max-content; max-width: none; border-collapse: collapse; line-height: 1.6; }
+.blog-page .post-content :is(th,td) { border: 1px solid var(--border); padding: .6em .8em; text-align: left; }
+.blog-page .post-content :is(th,td)[align="center"] { text-align: center; }
+.blog-page .post-content :is(th,td)[align="right"] { text-align: right; }
+.blog-page .post-content th { background: var(--muted); font-weight: 600; }
+.blog-page .post-content .markdown-table-scroll:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
 .blog-page .post-content a { color: var(--primary); text-underline-offset: .2em; }
 .blog-page .post-pdf { background: var(--surface); border-color: var(--border); border-radius: .35rem; }
 .blog-page .post-pdf:empty { display: none; }
@@ -117,6 +135,10 @@
 .reading-toc nav { max-height: min(50vh, 28rem); overflow-y: auto; scrollbar-width: thin; padding: .75rem 0; }
 .reading-toc ol { list-style: none; margin: 0; padding: 0; }
 .reading-toc li:not([data-level="0"]) { padding-left: .75rem; }
+.reading-toc li[data-level="2"] { padding-left: 1.5rem; }
+.reading-toc li[data-level="3"] { padding-left: 2.25rem; }
+.reading-toc li[data-level="4"] { padding-left: 3rem; }
+.reading-toc li[data-level="5"] { padding-left: 3.75rem; }
 .reading-toc a { display: block; padding: .4rem .5rem; color: var(--subtle); text-decoration: none; border-left: 2px solid transparent; overflow-wrap: anywhere; }
 .reading-toc a[aria-current] { border-left-color: var(--primary); color: var(--primary); font-weight: 600; }
 .reading-tools-panel { display: grid; gap: .9rem; padding: .75rem 0; }
