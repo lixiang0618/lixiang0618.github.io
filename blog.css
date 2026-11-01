@@ -186,3 +186,9 @@
 @media (prefers-reduced-motion: reduce) {
   .blog-document { scroll-behavior: auto; }
 }
+
+/* Math shares the article ink and paper; only long equations scroll. */
+.blog-page .post-content .blog-math-display { position: relative; display: block; max-width: 100%; min-width: 0; overflow-x: auto; overflow-y: hidden; margin: 1.25em 0; overscroll-behavior-inline: contain; }
+.blog-page .post-content .blog-math-display .katex-display { margin: .25em 0; }
+.blog-page .post-content .blog-math-display .katex-display > .katex { display: block; width: max-content; min-width: 100%; text-align: center; }
+.blog-page .post-content .blog-math-display:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
