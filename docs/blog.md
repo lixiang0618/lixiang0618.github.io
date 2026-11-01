@@ -220,3 +220,41 @@ layout change. All APIs in browser tests are mocked: no production comments were
 created, edited or deleted. Chromium viewport/touch emulation does not validate
 real Safari/Android, WeChat scanning, X or Xiaohongshu app behavior. PDF embedding
 is checked, not the third-party PDF viewer's raster output.
+
+## Mathematical notation
+
+The existing Marked GFM instance recognizes inline `$...$` / `\(...\)` and
+ display `$$...$$` / `\[...\]` tokens, including list and table content. TeX is
+captured before Markdown can consume its backslashes. Random, per-render code
+placeholders pass through the unchanged HTML sanitizer, then only those generated
+nodes are replaced with KaTeX output (`trust: false`, bounded macro expansion).
+Code fences, inline code, escaped dollars and ordinary currency remain literal;
+malformed TeX falls back visibly without stopping the rest of the article.
+No article files, front matter or generated indexes are rewritten.
+
+Both language pages load local KaTeX 0.16.25 JS, CSS and fonts from
+`js/vendor/katex/` (MIT license included), copied from the npm integrity-verified
+release. No second Markdown parser or external math CDN is used. Display equations
+are centered and keyboard-scrollable within the article, without extra decoration.
+The positioning context also contains KaTeX's accessible MathML on narrow screens.
+
+```sh
+NODE_PATH=/workspace/scratch/blog-math-tools/node_modules node tests/blog-markdown.test.cjs
+# With the static server running on port 8091:
+NODE_PATH=/workspace/scratch/blog-math-tools/node_modules node tests/blog-math-browser.cjs
+```
+
+Math validation covers four delimiter forms, fractions, sums, roots, intersections,
+sets, scripts, paragraphs, lists, tables, code preservation, untrusted commands and
+malformed formulas. Chromium checks EN/ZH at 1600/390/320px, actual centering and
+horizontal scrolling, maximum font size, dark mode, loaded assets and TOC presence.
+GFM (8 cases) and reading controls/TOC (18 cases) browser regressions also pass.
+
+At the current main baseline, three `blog.test.cjs` checks already fail: two
+assume six posts instead of seven, and one expects regenerated metadata to match
+the stale checked-in index. The old interaction browser test similarly assumes
+four notes instead of five. These failures were reproduced on an unmodified main
+copy. This change preserves all notes and the index instead of regenerating them.
+The interaction browser flow was additionally checked using an external temporary
+copy whose category-count expectation follows the current index. APIs are mocked;
+no production likes or comments are changed.
