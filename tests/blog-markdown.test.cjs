@@ -9,7 +9,7 @@ function setup(language='en') {
   const dom=new JSDOM(`<!doctype html><html lang="${language}"><body><article id="content"></article><span id="year"></span></body></html>`,
     {url:`https://preview.example/${prefix}blog-post.html?p=fixture`,runScripts:'outside-only'});
   const w=dom.window;
-  for(const file of ['js/blog.js','js/vendor/marked.js','js/blog-markdown.js','js/blog-reading.js'])w.eval(fs.readFileSync(file,'utf8'));
+  for(const file of ['js/blog.js','js/vendor/marked.js','js/vendor/katex/katex.min.js','js/blog-markdown.js','js/blog-reading.js'])w.eval(fs.readFileSync(file,'utf8'));
   const content=w.document.getElementById('content');
   const render=source=>{content.innerHTML=w.BlogMarkdown.render(source,new URL('https://preview.example/blogs/fixture.md'));return content;};
   return{w,content,render,close:()=>w.close()};
@@ -131,5 +131,39 @@ test('all six existing article bodies retain every parsed heading, code block an
       assert.deepEqual([...root.querySelectorAll('h1,h2,h3,h4,h5,h6')].map(el=>Number(el.tagName[1])),headings,file+' headings');
       assert(!root.querySelector('p > ul,p > ol,p > table,p > pre'),file+' valid block structure');
     }
+  }finally{p.close();}
+});
+
+for(const language of ['en','zh'])test(`${language}: math delimiters, commands, lists and tables use KaTeX`,()=>{
+  const p=setup(language);try{
+    const root=p.render(fs.readFileSync('tests/fixtures/markdown-math.md','utf8'));
+    assert.equal(root.querySelectorAll('.katex').length,10);
+    assert.equal(root.querySelectorAll('.katex-error').length,0);
+    assert.equal(root.querySelectorAll('.blog-math-display').length,4);
+    assert.equal(root.querySelectorAll('li .katex').length,2);
+    assert.equal(root.querySelectorAll('td .katex').length,2);
+    assert(root.querySelector('.mfrac'));assert(root.querySelector('.msupsub'));
+    assert.equal(root.querySelectorAll('math annotation').length,10);
+    assert([...root.querySelectorAll('.blog-math-display')].every(el=>el.tabIndex===0));
+    assert(!root.textContent.includes('blog-math-'));
+    const headings=p.w.BlogReading.headings(root,'Fixture');assert.equal(headings.length,2);
+  }finally{p.close();}
+});
+
+test('code, escaped dollars, currency and unclosed delimiters stay literal; unsafe TeX stays inert',()=>{
+  const p=setup();try{
+    const root=p.render(String.raw`Code \`$x$\` and escaped \$y\$; costs $5 and $10. Unclosed $z.
+
+\`\`\`tex
+$$\frac{1}{2}$$
+\`\`\`
+
+$\href{javascript:alert(1)}{bad}$ $\htmlClass{evil}{x}$ $\notACommand{x}$`.replaceAll('\\`','`'));
+    assert.equal(root.querySelector('p code').textContent,'$x$');
+    assert.equal(root.querySelector('pre code').textContent,'$$\\frac{1}{2}$$\n');
+    assert(root.textContent.includes('$5 and $10'));assert(root.textContent.includes('$y$'));
+    assert(!root.querySelector('a[href^="javascript:"],.evil,script,[onclick]'));
+    assert(p.render('$\\frac{$').querySelector('.katex-error'));
+    assert.equal(p.render('$x$').querySelectorAll('.katex').length,1);
   }finally{p.close();}
 });
