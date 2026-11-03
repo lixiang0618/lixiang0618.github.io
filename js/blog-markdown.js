@@ -97,5 +97,24 @@
     }
     return template.innerHTML;
   }
-  window.BlogMarkdown={parseDocument,render};
+  function containMath(content) {
+    const formulas=Array.from(content.querySelectorAll('.blog-math-inline')).filter(n=>!n.closest('table'));
+    function measure() {
+      // Read first, then write. Tables already have their own scroll container.
+      const states=formulas.map(n=>{
+        const parent=n.closest('p,li,h1,h2,h3,h4,h5,h6,blockquote')||content,style=getComputedStyle(parent);
+        const available=parent.clientWidth-parseFloat(style.paddingLeft)-parseFloat(style.paddingRight);
+        return [n,(n.querySelector('.katex')?.getBoundingClientRect().width||0)>available+1];
+      });
+      for(const [n,wide] of states) {
+        n.classList.toggle('is-scrollable',wide);
+        if(wide){n.tabIndex=0;n.setAttribute('role','region');n.setAttribute('aria-label',zh?'数学公式，可横向滚动':'Mathematical formula, horizontally scrollable');}
+        else {n.removeAttribute('tabindex');n.removeAttribute('role');n.removeAttribute('aria-label');}
+      }
+    }
+    measure();document.fonts?.ready.then(measure);
+    if(window.ResizeObserver){const observer=new ResizeObserver(measure);observer.observe(content);}
+    else window.addEventListener('resize',measure,{passive:true});
+  }
+  window.BlogMarkdown={parseDocument,render,containMath};
 })();

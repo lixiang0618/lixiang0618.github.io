@@ -79,6 +79,7 @@
     }catch(_){container.replaceChildren(node('p','blog-state',labels.error));}
   }
   function mountArticle(post) {
+    window.BlogMarkdown?.containMath(document.getElementById('post-content'));
     const parent=document.querySelector('.post-container');
     const heart=node('div','blog-heart');parent.append(heart);
     window.MomentsLikes.mountControl(heart,{type:'blog',id:post.file});

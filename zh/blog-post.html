@@ -180,6 +180,7 @@
   </style>
   <link rel="stylesheet" href="../js/vendor/katex/katex.min.css">
   <link rel="stylesheet" href="../blog.css">
+  <link rel="stylesheet" href="../404.css">
 </head>
 <body class="blog-page">
   <header class="site-header">
@@ -231,6 +232,7 @@
   <script src="../js/vendor/marked.js"></script>
   <script src="../js/vendor/katex/katex.min.js"></script>
   <script src="../js/blog-markdown.js"></script>
+  <script src="../js/404.js"></script>
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
 
@@ -248,7 +250,7 @@
 
     async function loadPost() {
       if (!postFile) {
-        document.getElementById('post-content').innerHTML = '<p>文章未找到。</p>';
+        document.dispatchEvent(new Event('site:not-found'));
         return;
       }
 
@@ -257,13 +259,14 @@
         if(!metadataResponse.ok) throw Error('metadata');
         const metadata=await metadataResponse.json();
         const post=metadata.find(p=>p.file===postFile);
-        if(!post) throw Error('Unknown article');
+        if(!post) { document.dispatchEvent(new Event('site:not-found')); return; }
         const encodedFile = encodeURIComponent(post.file);
         const response = await fetch('../blogs/' + encodedFile + '.md');
-        if (!response.ok) {
-          document.getElementById('post-content').innerHTML = '<p>文章未找到。</p>';
+        if (response.status === 404) {
+          document.dispatchEvent(new Event('site:not-found'));
           return;
         }
+        if (!response.ok) throw Error('Article HTTP ' + response.status);
 
         const content = await response.text();
         const {frontMatter,body} = BlogMarkdown.parseDocument(content);
