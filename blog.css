@@ -1,4 +1,7 @@
 /* Paper & Ink is scoped to Blog; global navigation and other pages keep their theme. */
+/* Paint the root canvas too, including the area revealed by browser zoom-out. */
+.blog-document { background-color: #F4F0E8; }
+.blog-document[data-blog-theme="dark"] { background-color: #252320; }
 .blog-page {
   --paper-bg: #F4F0E8; --paper-surface: #FFFEFC; --paper-border: #E6DED2;
   --ink: #28241F; --ink-secondary: #65594D; --paper-accent: #8D6347;
@@ -85,6 +88,7 @@
 .blog-page .post-container { width: 100%; max-width: 50rem; min-width: 0; padding: 2rem 1.75rem; }
 .blog-page .post-header { margin-bottom: 1.5rem; }
 .blog-page .post-title { color: var(--text); }
+.blog-page .post-title { overflow-wrap: anywhere; }
 .blog-page .post-category { color: var(--subtle); background: transparent; padding: 0; border-radius: 0; }
 .blog-page .post-content {
   background: var(--surface); border-color: var(--border); border-radius: .35rem;
@@ -192,3 +196,7 @@
 .blog-page .post-content .blog-math-display .katex-display { margin: .25em 0; }
 .blog-page .post-content .blog-math-display .katex-display > .katex { display: block; width: max-content; min-width: 100%; text-align: center; }
 .blog-page .post-content .blog-math-display:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+/* Only oversized inline math is promoted to a scroll container; short formulas
+   retain their original inline baseline and line height. */
+.blog-page .post-content .blog-math-inline.is-scrollable { display: inline-block; max-width: 100%; overflow-x: auto; vertical-align: bottom; overscroll-behavior-inline: contain; }
+.blog-page .post-content .blog-math-inline.is-scrollable:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }

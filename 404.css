@@ -1,0 +1,74 @@
+/* The little drama stays inside its stage; no global layout or zoom rules. */
+.not-found-document { background: #F4F0E8; }
+.not-found-page { --nf-paper:#F4F0E8; --nf-ink:#28241F; --nf-muted:#65594D; --nf-line:#D6CCBD; --nf-orange:#DA6539; background:var(--nf-paper); color:var(--nf-ink); }
+.not-found-document[data-blog-theme="dark"] { background:#252320; }
+[data-blog-theme="dark"] .not-found-page { --nf-paper:#252320; --nf-ink:#E8E1D7; --nf-muted:#C5B9AA; --nf-line:#65594D; --nf-orange:#F09666; }
+.not-found-page .site-header { position:relative; background:var(--nf-paper); border-color:var(--nf-line); color:var(--nf-ink); }
+.not-found-page .brand,.not-found-page .site-nav a { color:var(--nf-ink); }
+.nf-main,.nf-main-fallback { max-width:60rem; margin:auto; padding:2rem 1rem 4rem; text-align:center; }
+.nf-kicker { margin:1rem 0 0; font-size:.75rem; letter-spacing:.18em; text-transform:uppercase; color:var(--nf-muted); }
+.nf-stage { position:relative; isolation:isolate; display:flex; align-items:flex-end; justify-content:center; height:1.85em; padding-bottom:.12em; overflow:hidden; font-family:Georgia,"Noto Serif SC","Songti SC",serif; font-size:clamp(7rem,26vw,16rem); line-height:1; }
+.nf-digit { display:block; width:.66em; flex:none; transform-origin:50% 85%; animation-duration:24s; animation-iteration-count:infinite; animation-timing-function:cubic-bezier(.22,.75,.3,1); }
+.nf-left { animation-name:nf-left; }
+.nf-zero { color:var(--nf-orange); animation-name:nf-zero; }
+.nf-right { animation-name:nf-right; }
+.nf-ghost { position:absolute; bottom:.12em; left:calc(50% - .28em); width:.56em; height:.8em; border:1px dashed var(--nf-line); border-radius:50%; opacity:0; animation:nf-ghost 24s infinite; }
+.nf-bubble { position:absolute; top:.75rem; left:50%; width:max-content; max-width:calc(100% - 2rem); padding:.55rem .85rem; border:1px solid var(--nf-line); border-radius:.6rem .6rem .6rem 0; background:var(--nf-paper); color:var(--nf-muted); font:400 clamp(.8rem,2.7vw,.95rem)/1.5 ui-sans-serif,system-ui,sans-serif; opacity:0; transform:translateX(-50%); animation:24s infinite both; }
+.nf-bubble:nth-of-type(1) { animation-name:nf-say-one; }
+.nf-bubble:nth-of-type(2) { animation-name:nf-say-two; }
+.nf-bubble:nth-of-type(3) { animation-name:nf-say-three; }
+.nf-bubble:nth-of-type(4) { animation-name:nf-say-four; }
+.nf-bubble:nth-of-type(5) { animation-name:nf-say-five; }
+.nf-bubble:nth-of-type(6) { animation-name:nf-say-six; }
+.nf-copy { animation:nf-copy .8s 1.7s both; }
+.nf-copy h1,.nf-main-fallback h1 { font:400 clamp(1.35rem,3vw,2rem)/1.5 Georgia,"Noto Serif SC","Songti SC",serif; margin:1rem 0 1.75rem; text-wrap:balance; }
+.nf-links { display:flex; flex-wrap:wrap; gap:.8rem 1.5rem; justify-content:center; }
+.nf-links a { padding:.65rem .1rem; min-height:44px; color:var(--nf-ink); text-decoration:none; border-bottom:1px solid var(--nf-orange); font-size:.9rem; }
+.nf-links a:hover { color:var(--nf-orange); }
+.nf-main :focus-visible { outline:2px solid var(--nf-orange); outline-offset:5px; }
+.nf-pause { display:block; margin:2rem auto 0; min-height:44px; padding:.5rem; border:0; background:transparent; color:var(--nf-muted); font:inherit; font-size:.75rem; cursor:pointer; }
+.nf-pause[hidden] { display:none; }
+.not-found-page .site-footer { background:var(--nf-paper); border-color:var(--nf-line); }
+.not-found-page .footer-inner { color:var(--nf-muted); }
+.nf-main.is-paused :is(.nf-digit,.nf-bubble,.nf-ghost,.nf-copy) { animation-play-state:paused; }
+@keyframes nf-left {
+  0% { transform:translateX(-1.5em) rotate(-18deg); } 5%,8% { transform:none; }
+  10% { transform:translateX(-.12em) rotate(-9deg); } 14%,22% { transform:none; }
+  25%,28% { transform:rotate(8deg); } 31%,36% { transform:none; }
+  39% { transform:translateX(-.13em) rotate(-18deg); } 43% { transform:rotate(6deg); } 46%,50% { transform:none; }
+  52% { transform:rotate(-7deg); } 53% { transform:rotate(7deg); } 54% { transform:rotate(-6deg); } 55% { transform:rotate(5deg); }
+  58% { transform:rotate(-10deg); } 62% { transform:rotate(9deg); } 66% { transform:none; }
+  70%,77% { transform:translateX(.06em) rotate(14deg); } 82% { transform:rotate(-8deg); } 88%,100% { transform:none; }
+}
+@keyframes nf-right {
+  0%,1% { transform:translateX(1.5em) rotate(16deg); } 6%,8% { transform:none; }
+  11% { transform:translateX(.13em) rotate(12deg); } 16%,32% { transform:none; }
+  35% { transform:translateX(.15em) rotate(20deg); } 39% { transform:rotate(-5deg); } 41% { transform:none; }
+  44%,47% { transform:rotate(-11deg); } 50%,55% { transform:none; }
+  59% { transform:rotate(13deg); } 63% { transform:rotate(-12deg); } 67% { transform:none; }
+  72%,79% { transform:translateX(-.05em) rotate(-13deg); } 85% { transform:rotate(7deg); } 90%,100% { transform:none; }
+}
+@keyframes nf-zero {
+  0%,6% { transform:translateY(-1.5em) rotate(-25deg); opacity:0; } 7% { opacity:1; }
+  9% { transform:translateY(.04em) scale(1.08,.9); } 11% { transform:translateY(-.3em) rotate(12deg); }
+  13% { transform:translateY(0) scale(1.04,.96); } 15% { transform:translateY(-.12em) rotate(-7deg); } 18%,22% { transform:none; }
+  24% { transform:rotate(-9deg); } 26% { transform:rotate(10deg); } 28%,31% { transform:none; }
+  34% { transform:translate(.43em,-.2em) rotate(30deg); } 37% { transform:translateY(-.1em) rotate(-10deg); } 38% { transform:none; }
+  41% { transform:translateX(-.43em) rotate(-150deg); } 45% { transform:translateX(.05em) rotate(-360deg); } 48% { transform:rotate(-360deg); }
+  52% { transform:translate(.35em,-.65em) rotate(-190deg); } 55% { transform:translate(.06em,-.2em) rotate(-70deg); }
+  58% { transform:translate(-.32em,-.5em) rotate(90deg); } 62% { transform:translate(.16em,-.15em) rotate(300deg); } 65% { transform:rotate(360deg); opacity:1; }
+  68% { transform:translate(.6em,-1.7em) rotate(560deg); opacity:0; } 77% { transform:translate(1.3em,-.05em) rotate(650deg); opacity:0; }
+  79% { opacity:1; } 84% { transform:translate(.12em,0) rotate(350deg); } 87% { transform:rotate(370deg); } 90%,100% { transform:rotate(360deg); opacity:1; }
+}
+@keyframes nf-ghost { 0%,69%,80%,100% { opacity:0; } 71%,78% { opacity:.6; } }
+@keyframes nf-say-one { 0%,16%,23%,100% { opacity:0; } 18%,21% { opacity:1; } }
+@keyframes nf-say-two { 0%,34%,39%,100% { opacity:0; } 35%,38% { opacity:1; } }
+@keyframes nf-say-three { 0%,42%,49%,100% { opacity:0; } 44%,47% { opacity:1; } }
+@keyframes nf-say-four { 0%,54%,63%,100% { opacity:0; } 56%,61% { opacity:1; } }
+@keyframes nf-say-five { 0%,70%,80%,100% { opacity:0; } 72%,78% { opacity:1; } }
+@keyframes nf-say-six { 0%,86%,95%,100% { opacity:0; } 88%,93% { opacity:1; } }
+@keyframes nf-copy { from { opacity:0; transform:translateY(.4rem); } to { opacity:1; transform:none; } }
+@media (prefers-reduced-motion:reduce) {
+  .nf-main :is(.nf-digit,.nf-bubble,.nf-ghost,.nf-copy) { animation:none; }
+  .nf-bubble,.nf-ghost,.nf-pause { display:none; }
+}
