@@ -22,7 +22,7 @@
     const previous=document.querySelector('main');if(previous)previous.replaceWith(main);else document.body.append(main);
     document.querySelectorAll('.reading-progress-mobile,.reading-share').forEach(n=>n.remove());
     // Root-relative links also work when the host serves this file at a deep URL.
-    document.querySelectorAll('[data-nf-home]').forEach(n=>{n.href=prefix+'index.html';n.textContent=t.name;});
+    document.querySelectorAll('[data-nf-home]').forEach(n=>{n.href=prefix+'index.html';n.setAttribute('aria-label',t.name+' — '+t.home);const img=n.querySelector('img');if(img){img.src='/assets/branding/'+(zh?'xiangology-zh':'xiangology')+'.svg';img.alt=t.name;}else n.textContent=t.name;});
     document.querySelectorAll('[data-nf-language]').forEach(n=>{n.href=zh?'/404.html':'/zh/404.html';n.textContent=zh?'EN':'中文';});
     const pause=main.querySelector('.nf-pause'),motion=matchMedia('(prefers-reduced-motion: reduce)');let paused=false;
     function sync(){main.classList.toggle('is-paused',document.hidden||paused);pause.hidden=motion.matches;pause.textContent=paused?t.play:t.pause;pause.setAttribute('aria-pressed',String(paused));}

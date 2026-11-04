@@ -1,0 +1,13 @@
+/* Shared brand assets; menus, labels and destinations retain their existing UI. */
+.site-header > .brand { flex-shrink:0; line-height:0; }
+.site-header .site-brand-logo { display:block; width:216px; height:auto; max-width:none; object-fit:contain; }
+html[lang^="zh"] .site-header .site-brand-logo { width:196px; }
+.site-header { column-gap:16px; }
+@media (max-width:600px) {
+  .site-header { flex-wrap:wrap; row-gap:6px; }
+  .site-header .site-brand-logo { width:180px; }
+  html[lang^="zh"] .site-header .site-brand-logo { width:160px; }
+  .site-header > .site-nav { flex-wrap:wrap; justify-content:center; }
+}
+/* Keep the supplied brown/orange artwork legible on the dark error-page header. */
+[data-blog-theme="dark"] .not-found-page .brand { background:#F4F0E8; border-radius:4px; padding:4px; }
