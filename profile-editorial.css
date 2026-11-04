@@ -118,3 +118,13 @@
     transition: none;
   }
 }
+
+/* A quiet two-line detail under Email; reserve its space while the request loads. */
+.hero-text .profile-contact { row-gap:10px; justify-content:flex-start; }
+.hero-text .profile-location { flex:0 0 100%; min-width:0; min-height:4.25rem; display:grid; grid-template-columns:18px minmax(0,1fr); column-gap:10px; align-items:start; text-align:start; color:#65615c; font-size:14px; line-height:1.6; visibility:hidden; }
+.hero-text .profile-location[data-state="active"],.hero-text .profile-location[data-state="paused"],.hero-text .profile-location[data-state="stale"] { visibility:visible; }
+.profile-location-pin { color:#E47736; margin-top:3px; }
+.profile-location-copy { min-width:0; }
+.hero-text .profile-location-label { margin:0; overflow-wrap:anywhere; display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; overflow:hidden; }
+.hero-text .profile-location-updated { margin:3px 0 0; font-size:11.5px; color:#86817a; }
+.profile-location-updated[hidden] { display:none; }
