@@ -138,11 +138,6 @@
 .reading-toc > summary, .reading-tools > summary { min-height: 2.5rem; padding: .5rem .75rem; border: 1px solid var(--border); border-radius: .35rem; cursor: pointer; color: var(--text); }
 .reading-toc nav { max-height: min(50vh, 28rem); overflow-y: auto; scrollbar-width: thin; padding: .75rem 0; }
 .reading-toc ol { list-style: none; margin: 0; padding: 0; }
-.reading-toc li:not([data-level="0"]) { padding-left: .75rem; }
-.reading-toc li[data-level="2"] { padding-left: 1.5rem; }
-.reading-toc li[data-level="3"] { padding-left: 2.25rem; }
-.reading-toc li[data-level="4"] { padding-left: 3rem; }
-.reading-toc li[data-level="5"] { padding-left: 3.75rem; }
 .reading-toc a { display: block; padding: .4rem .5rem; color: var(--subtle); text-decoration: none; border-left: 2px solid transparent; overflow-wrap: anywhere; }
 .reading-toc a[aria-current] { border-left-color: var(--primary); color: var(--primary); font-weight: 600; }
 .reading-tools-panel { display: grid; gap: .9rem; padding: .75rem 0; }
@@ -200,3 +195,24 @@
    retain their original inline baseline and line height. */
 .blog-page .post-content .blog-math-inline.is-scrollable { display: inline-block; max-width: 100%; overflow-x: auto; vertical-align: bottom; overscroll-behavior-inline: contain; }
 .blog-page .post-content .blog-math-inline.is-scrollable:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+
+/* Nested native lists retain heading hierarchy; arrows never navigate the page. */
+.reading-toc li { padding:0; }
+.reading-toc li > ol { padding-inline-start:.85rem; }
+.reading-toc ol[hidden] { display:none; }
+.reading-toc-row { display:flex; align-items:start; min-width:0; }
+.reading-toc-row > a { flex:1; min-width:0; }
+.reading-toc-toggle { flex:none; width:1.5rem; min-height:2rem; padding:.25rem; border:0; background:transparent; color:var(--primary); font:inherit; cursor:pointer; }
+.reading-toc-toggle[aria-expanded="true"] { transform:rotate(90deg); }
+.blog-page .post-content :is(h2,h3,h4,h5,h6) { position:relative; padding-inline-end:1.25rem; }
+.reading-heading-copy { position:absolute; inset-inline-end:-.75rem; top:0; display:inline-flex; align-items:center; justify-content:center; width:1.75rem; height:1.75rem; border:0; border-radius:.2rem; padding:0; color:var(--primary); background:transparent; cursor:pointer; opacity:0; }
+.post-content :is(h2,h3,h4,h5,h6):hover .reading-heading-copy,.reading-heading-copy:focus-visible { opacity:1; }
+.reading-announcement { position:fixed; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); }
+.reading-copy-fallback { position:fixed; top:0; left:0; opacity:0; }
+@media (hover:none), (max-width:48rem) {
+  .reading-heading-copy { opacity:1; width:2rem; height:2rem; }
+  .reading-toc-toggle { min-width:2rem; min-height:2rem; }
+}
+.reading-heading-copy[data-feedback]::after { content:attr(data-feedback); position:absolute; bottom:100%; inset-inline-end:0; padding:.3rem .5rem; background:var(--muted); color:var(--text); font:400 .75rem/1.5 system-ui,sans-serif; white-space:nowrap; border-radius:.2rem; }
+/* Native hash scrolling/scroll anchoring must not race the bounded restoration. */
+.blog-document.reading-restoring { scroll-behavior:auto; overflow-anchor:none; }
