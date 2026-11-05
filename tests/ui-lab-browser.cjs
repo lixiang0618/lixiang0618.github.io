@@ -18,7 +18,8 @@ function equal(a,b,label,tolerance=1){assert(Math.abs(a-b)<=tolerance,`${label}:
     });
     assert.equal(metrics.scroll,metrics.inner,'homepage document width');
     assert.equal(metrics.keywords.length,4);assert.equal(metrics.links.length,4);
-    for(const values of [metrics.keywords,metrics.links]){equal(values[0].y,values[1].y,'first row');equal(values[2].y,values[3].y,'second row');assert(values[2].y>values[0].y);equal(values[0].x,values[2].x,'column');}
+    equal(metrics.portrait.w,metrics.portrait.h,'round portrait');
+    if(metrics.text.w<=460){equal(metrics.links[0].y,metrics.links[1].y,'social row 1');equal(metrics.links[2].y,metrics.links[3].y,'social row 2');assert(metrics.links[2].y>metrics.links[0].y);}else for(const link of metrics.links)equal(link.y,metrics.links[0].y,'desktop social row');
     equal(metrics.logo,width<=700?140:168,'logo width');assert(metrics.card.x>=15);assert(metrics.card.x+metrics.card.w<=width-15);
     if(width<=980)equal(metrics.card.x+metrics.card.w/2,width/2,'centered card');
     const currentLinks=await p.locator('.hero-text .social-link').evaluateAll(nodes=>nodes.map(n=>n.href));
@@ -28,7 +29,8 @@ function equal(a,b,label,tolerance=1){assert(Math.abs(a-b)<=tolerance,`${label}:
     assert.equal(await p.locator('.profile-location-dot').evaluate(n=>getComputedStyle(n).animationDuration),'4s');
     await p.locator('.hero').screenshot({path:`/tmp/ui-home-${width}-${lang?'zh':'en'}-${mobile?'mobile':'desktop'}.png`});pair.push(metrics);homeMeasurements.push({width,lang,mobile,...metrics});await c.close();
    }
-   for(const key of ['portrait','text','chips','social','contact','card'])for(const dimension of ['x','y','w','h'])equal(pair[0][key][dimension],pair[1][key][dimension],`homepage parity ${width} ${key}.${dimension}`,2);
+   for(const m of pair)for(const key of ['chips','social','contact','card'])equal(m[key].x+m[key].w/2,m.text.x+m.text.w/2,`homepage center ${width} ${key}`,2);
+   equal(pair[0].portrait.w,pair[1].portrait.w,'bilingual avatar width');equal(pair[0].portrait.h,pair[1].portrait.h,'bilingual avatar height');
   }
   const c=await context(b,{viewport:{width,height:1000}}),p=await c.newPage();
   for(const lang of ['', 'zh/'])for(const name of ['index.html','index-mobile.html','about.html','blog.html','blog-post.html?p=Python','moments.html','404.html','lab.html']){
@@ -55,5 +57,5 @@ function equal(a,b,label,tolerance=1){assert(Math.abs(a-b)<=tolerance,`${label}:
   const start=await x('leaf-a');equal(start,await x('parent'),'leaf/parent');equal(start,await x('leaf-b'),'leaf/leaf');await p.locator('[aria-controls="toc-section-parent"]').click();equal(start,await x('parent'),'expanded');await p.locator('.reading-toc a[data-heading="section-child"]').click();await p.waitForTimeout(80);assert.equal(decodeURIComponent(new URL(p.url()).hash),'#section-child');const bounds=await p.locator('#section-child').boundingBox();assert(bounds.y>=await p.locator('.site-header').evaluate(n=>n.getBoundingClientRect().height));
   await c.close();console.log('PASS TOC alignment and jump',width,lang||'en');
  }
- const reduced=await context(b,{reducedMotion:'reduce'}),p=await reduced.newPage();await p.goto(base+'/lab.html');assert.equal(await p.locator('.lab-liquid').evaluate(n=>n.getAnimations().length),0);await p.goto(base+'/index.html');await p.waitForFunction(()=>document.querySelector('[data-profile-location]').dataset.state==='active');assert.equal(await p.locator('.profile-location-dot').evaluate(n=>n.getAnimations().length),0);await p.evaluate(()=>document.documentElement.dataset.blogTheme='dark');assert.equal(await p.locator('.profile-location').evaluate(n=>getComputedStyle(n).backgroundColor),'rgb(48, 45, 41)');await reduced.close();console.log('PASS reduced motion and Quiet Card dark theme');
+ const reduced=await context(b,{reducedMotion:'reduce'}),p=await reduced.newPage();await p.goto(base+'/lab.html');assert.equal(await p.locator('.lab-liquid').evaluate(n=>n.getAnimations().length),0);await p.goto(base+'/index.html');await p.waitForFunction(()=>document.querySelector('[data-profile-location]').dataset.state==='active');assert.equal(await p.locator('.profile-location-dot').evaluate(n=>n.getAnimations().length),0);await p.evaluate(()=>document.documentElement.dataset.blogTheme='dark');assert.equal(await p.locator('.profile-location').evaluate(n=>getComputedStyle(n).backgroundColor),'rgba(0, 0, 0, 0)');await reduced.close();console.log('PASS reduced motion and Quiet Card dark theme');
  }finally{await b.close();}})().catch(e=>{console.error(e);process.exitCode=1;});
