@@ -90,3 +90,30 @@ Updated: `index.html`, `zh/index.html`, `index-mobile.html`, `zh/index-mobile.ht
 `profile-editorial.css`, `tests/ui-lab-browser.cjs`.
 New: `js/profile-layout.js`, `tests/homepage-centered-browser.cjs`,
 `docs/homepage-centered-layout.md`.
+
+## Selected full-height Hero and capsule invitation
+
+Follow-up on the same branch: the introduction now has a minimum viewport height
+minus the *measured* header, with 100svh and a 100vh fallback. The existing content
+keeps its typography, circle and column proportions; flexible free space centers
+it vertically. Education starts after the Hero, so its heading is not visible on
+entry. Short/mobile screens naturally extend the Hero when content needs more
+room; nothing is scaled down or covered by a fixed overlay.
+
+The selected light-orange capsule sits in normal flow at the Hero bottom, 24px
+from the edge: localized label, small orange dot and down arrow, thin warm border,
+soft fill and restrained shadow. Its 46px hit area works with keyboard/modified
+clicks. The arrow moves 4px over a three-second cycle, repeats three times then
+stops, and pauses in hidden documents. Reduced-motion disables animation and uses
+immediate scrolling. Clicking scrolls to Education with header clearance and a
+normal #education URL. Header resize is observed by the existing layout helper;
+there is no fixed nav-height guess after initialization, scroll listener or timer.
+The API/location code remains untouched.
+
+Added `tests/homepage-scroll-cue-browser.cjs`: six screen sizes, both languages and
+both entrypoint types (24 checks), first-viewport exclusion of Education, pill
+bounds/centering/hit area, circle preservation, URL target/header clearance,
+responsive header measurement, reduced motion and keyboard activation. This is
+also exercised against the static build. Existing homepage center/preservation
+checks and all 86 unit tests retain their prior outcomes. Real mobile browser
+chrome/Safari hardware remains for manual testing.
