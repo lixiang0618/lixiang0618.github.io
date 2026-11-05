@@ -1,5 +1,9 @@
 # Branding and Blog reading navigation
 
+> Current UI update: both languages now use the unchanged English SVG at 168px
+> desktop / 140px mobile. See [UI and Lab Beta](ui-lab-beta.md). The asset/import
+> measurements below record the earlier branding implementation.
+
 ## Brand assets and header scope
 
 The uploaded originals are stored as `assets/branding/xiangology.svg` and

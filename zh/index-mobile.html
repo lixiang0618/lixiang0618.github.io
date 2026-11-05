@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="zh-CN">
+<html class="profile-home" lang="zh-CN">
 <head>
   <meta charset="utf-8">
   <link rel="stylesheet" href="../editorial-curtain.css">
@@ -22,18 +22,6 @@
       min-width: 0 !important;
     }
     .container {
-      max-width: 100% !important;
-      width: 100% !important;
-      min-width: 0 !important;
-    }
-    .hero-inner {
-      max-width: 100% !important;
-      width: 100% !important;
-      min-width: 0 !important;
-      padding: 0 !important;
-    }
-    .hero {
-      padding: 30px 16px 20px !important;
       max-width: 100% !important;
       width: 100% !important;
       min-width: 0 !important;
@@ -80,51 +68,10 @@
       font-size: 13px;
       padding: 6px 8px;
     }
-    .hero {
-      padding: 30px 16px 20px;
-    }
-    .hero-inner {
-      grid-template-columns: 1fr;
-    }
-    .hero-media {
-      justify-content: center;
-    }
-    .hero-img {
-      width: 220px;
-      height: 220px;
-      border-radius: 50%;
-    }
-    .hero-text {
-      text-align: center;
-    }
-    .hero-text h1 {
-      font-size: 24px;
-    }
-    .chips {
-      justify-content: center;
-      gap: 6px;
-    }
-    .chip {
-      padding: 6px 10px;
-      font-size: 12px;
-    }
     .location-info {
       justify-content: center;
       text-align: center;
       font-size: 15px;
-    }
-    .social-links {
-      justify-content: center;
-      gap: 10px;
-    }
-    .social-link {
-      padding: 8px 10px;
-    }
-    .social-link span {
-      display: none;
-    }
-    .contact-row {
-      justify-content: center;
     }
     .section {
       padding: 24px 16px;
@@ -281,12 +228,14 @@
   <link rel="stylesheet" href="../profile-editorial.css">
   <link rel="stylesheet" href="/assets/branding/branding.css">
   <script defer src="../js/profile-location.js"></script>
+  <script defer src="../js/profile-layout.js"></script>
 </head>
 <body>
   <header class="site-header">
-    <a class="brand" href="/zh/index.html" aria-label="想想而已 — 首页"><img class="site-brand-logo" src="/assets/branding/xiangology-zh.svg" alt="想想而已" width="196" height="54"></a>
+    <a class="brand" href="/zh/index.html" aria-label="Xiangology — 首页"><img class="site-brand-logo" src="/assets/branding/xiangology.svg" alt="Xiangology" width="168" height="42"></a>
     <nav class="site-nav" aria-label="主要导航">
       <a href="/zh/index.html">个人主页</a>
+      <a href="/zh/lab.html">Lab <span class="nav-beta">Beta</span></a>
       <a href="/zh/blog.html">博客</a>
       <a href="/zh/moments.html">朋友圈</a>
       <a href="/zh/about.html">关于我</a>
@@ -296,9 +245,6 @@
   <main id="top">
     <section class="hero" aria-labelledby="intro-title">
       <div class="hero-inner">
-        <div class="hero-media">
-          <img src="../Resources/portrait-1.jpg" alt="照片" class="hero-img" id="portrait-img" />
-        </div>
         <div class="hero-text">
           <h1 id="intro-title">李想 / LI XIANG</h1>
           <div class="chips">
@@ -328,13 +274,21 @@
           </div>
           <div class="contact-row profile-contact">
             <span><svg class="profile-email-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg> 邮箱: <a class="contact-link" href="mailto:leisoeng618@gmail.com">leisoeng618@gmail.com</a></span>
-            <div class="profile-location" data-profile-location role="status" aria-live="polite" aria-atomic="true" aria-busy="true" aria-hidden="true">
-              <svg class="profile-location-pin" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 10c0 6-8 11-8 11S4 16 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg>
-              <div class="profile-location-copy"><p class="profile-location-label"></p><p class="profile-location-updated"><span></span><time></time></p></div>
-            </div>
+          </div>
+          <div class="profile-location-wrap">
+            <section class="profile-location" data-profile-location aria-busy="true" aria-hidden="true" aria-label="目前所在位置">
+              <header class="profile-location-heading" title="表示位置共享状态，不代表在线或持续追踪"><i class="profile-location-dot" aria-hidden="true"></i><span>目前所在位置</span><span class="profile-location-status"><span data-location-status></span></span></header>
+              <div class="profile-location-main"><svg class="profile-location-pin" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 11-8 11S4 16 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg><p class="profile-location-label"></p></div>
+              <p class="profile-location-updated"><span></span><time></time></p>
+            </section>
           </div>
         </div>
+
+        <div class="hero-media">
+          <img src="../Resources/portrait-1.jpg" alt="照片" class="hero-img" id="portrait-img" />
+        </div>
       </div>
+      <a class="hero-scroll-cue" href="#education"><span class="hero-scroll-dot" aria-hidden="true"></span><span>向下探索</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v15m-5-5 5 5 5-5"/></svg></a>
     </section>
 
     <section id="education" class="section">
