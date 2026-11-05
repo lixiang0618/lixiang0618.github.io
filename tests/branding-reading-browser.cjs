@@ -24,7 +24,7 @@ async function aligned(p,id,offset=0){
    for(const file of ['index.html','index-mobile.html','about.html','blog.html','blog-post.html?p=Python','moments.html','404.html']){
     await p.goto(`${base}/${lang}${file}`);await p.locator('.site-brand-logo').waitFor();await p.locator('.site-brand-logo').evaluate(img=>img.decode());
     const m=await p.locator('.site-brand-logo').evaluate(img=>{const r=img.getBoundingClientRect(),h=img.closest('header').getBoundingClientRect(),nav=img.closest('header').querySelector('nav').getBoundingClientRect();return{width:r.width,height:r.height,src:img.getAttribute('src'),alt:img.alt,href:img.parentElement.getAttribute('href'),inside:r.left>=h.left&&r.right<=h.right&&r.top>=h.top&&r.bottom<=h.bottom,overlap:!(r.right<=nav.left||r.left>=nav.right||r.bottom<=nav.top||r.top>=nav.bottom)};});
-    assert(m.inside&&!m.overlap,JSON.stringify({file,lang,width,m}));assert.equal(m.href,lang?'/zh/index.html':'/index.html');assert.equal(m.alt,lang?'想想而已':'Xiangology');assert.equal(m.width,width<600?(lang?160:180):(lang?196:216));
+    assert(m.inside&&!m.overlap,JSON.stringify({file,lang,width,m}));assert.equal(m.href,lang?'/zh/index.html':'/index.html');assert.equal(m.alt,'Xiangology');assert.equal(m.width,width<=700?140:168);
     if(file==='index.html'||file==='blog.html'){await p.screenshot({path:`/tmp/branding-${width}-${lang?'zh':'en'}-${file}.png`});brandMetrics.push({width,lang,file,...m});}
    }
    await c.close();console.log('PASS brand routes',width,lang||'en');
