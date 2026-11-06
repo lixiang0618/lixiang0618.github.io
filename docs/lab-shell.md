@@ -37,6 +37,8 @@ node dev/build-vercel.js
 
 ## 状态与交互边界
 
+后续仓储阶段已将 OR 与 warehouse 实验开放为 live；专用实现与最新测试见 [warehouse-playground.md](warehouse-playground.md)。下述五个 building 的描述为原 Phase 1 交付状态，其他项目仍保持预览。
+
 注册表允许 `live`、`building`、`concept`。当前五个主要项目、九个实验均为 `building`；三个 Horizon 项目为 `concept`。首页卡片与项目导航始终可以操作。Concept 页面只有方向说明，没有捏造实验。
 
 每个实验的流程、说明与 Under the Hood 正常阅读。只有 `.workspace-stage` 显示 In Development 锁层。预览控件同时使用 disabled fieldset、显式 disabled 与 inert，并从辅助技术树排除；锁定不依赖视觉模糊。浏览器不支持 backdrop-filter 时使用不透明底色。页面没有运行、上传、模型调用事件。

@@ -1,8 +1,8 @@
 const {test}=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
 const {JSDOM}=require('jsdom'),registry=require('../lab/shared/project-registry'),views=require('../lab/shared/lab-render'),{page}=require('../dev/build-lab-pages');
-test('registry defines eight stable bilingual destinations, five building projects and three concepts',()=>{
- assert.deepEqual(registry.statuses,['live','building','concept']);assert.equal(registry.projects.length,8);assert.equal(new Set(registry.projects.map(p=>p.id)).size,8);assert.equal(registry.projects.filter(p=>p.status==='building').length,5);assert.equal(registry.projects.filter(p=>p.status==='concept').length,3);
- for(const p of registry.projects){assert(p.description.en&&p.description.zh);assert(p.category.en&&p.category.zh);assert.equal(p.route,`/lab/projects/${p.id}/`);assert(p.status!=='live');if(p.status==='concept')assert.equal(p.experiments.length,0);else assert(p.experiments.length);for(const exp of p.experiments){assert.equal(exp.status,'building');assert(exp.preview);assert(exp.notes.en.length&&exp.notes.zh.length);assert.equal(exp.pipeline.en.length,exp.pipeline.zh.length);}}
+test('registry defines eight stable bilingual destinations, one live, four building projects and three concepts',()=>{
+ assert.deepEqual(registry.statuses,['live','building','concept']);assert.equal(registry.projects.length,8);assert.equal(new Set(registry.projects.map(p=>p.id)).size,8);assert.equal(registry.projects.filter(p=>p.status==='building').length,4);assert.equal(registry.projects.filter(p=>p.status==='live').length,1);assert.equal(registry.projects.filter(p=>p.status==='concept').length,3);
+ for(const p of registry.projects){assert(p.description.en&&p.description.zh);assert(p.category.en&&p.category.zh);assert.equal(p.route,`/lab/projects/${p.id}/`);if(p.status==='live')assert.equal(p.id,'or');if(p.status==='concept')assert.equal(p.experiments.length,0);else assert(p.experiments.length);for(const exp of p.experiments){assert.equal(exp.status,p.status);assert(exp.preview);assert(exp.notes.en.length&&exp.notes.zh.length);assert.equal(exp.pipeline.en.length,exp.pipeline.zh.length);}}
 });
 test('all 18 checked-in static documents reproduce from the same registry and template',()=>{
  for(const lang of ['en','zh'])for(const project of [null,...registry.projects]){
@@ -22,7 +22,7 @@ test('every building workspace has both a semantic lock and genuinely disabled c
 test('concept pages never fabricate experiments, pipelines or results',()=>{for(const p of registry.projects.filter(p=>p.status==='concept'))for(const lang of ['en','zh']){const dom=new JSDOM(views.projectPage(p,lang));assert.equal(dom.window.document.querySelectorAll('.lab-workspace,.experiment-tabs,.lab-pipeline').length,0);assert(dom.window.document.querySelector('.concept-note'));dom.window.close();}});
 test('LearnGo and research-specific previews retain uncertainty and never mark a fake implementation live',()=>{
  const lookup=id=>registry.projects.find(p=>p.id===id);assert.deepEqual(lookup('learngo').experiments.map(x=>x.title),['SuperChat','SuperNote','SuperScan']);assert.equal(lookup('wellife').experiments.length,2);assert.equal(lookup('cchan').experiments.length,2);
- const warehouse=views.projectPage(lookup('or'),'en');assert(warehouse.includes('Confidence interval'));assert(warehouse.includes('Gap ='));assert(warehouse.includes('<math'));
+ const warehouse=page('en',lookup('or'));assert(warehouse.includes('confidence interval'));assert(warehouse.includes('Absolute Gap ='));assert(warehouse.includes('b &gt; 2:'));assert(!warehouse.includes('experiment-lock'));
  assert(lookup('sna').overview.en.includes('not yet available'));assert.throws(()=>views.workspace({...lookup('or').experiments[0],status:'live'},'en'),/implemented, tested/);
 });
 test('registry strings are escaped in cards, notes, pipeline and workspace labels',()=>{
