@@ -13,6 +13,7 @@ const registry=require('../lab/shared/project-registry');const base=process.env.
    if(project.status==='concept'){assert.equal(await p.locator('.lab-workspace').count(),0);assert.equal(await p.locator('.concept-note').count(),1);continue;}
    if(project.id==='or'){assert(await p.locator('#warehouse-app').isVisible());assert.equal(await p.locator('.experiment-lock').count(),0);assert(await p.locator('#wh-run').isEnabled());continue;}
    if(project.id==='cchan'){assert(await p.locator('#cchan-app').isVisible());assert.equal(await p.locator('.experiment-lock').count(),0);assert(await p.locator('#cc-run').isEnabled());continue;}
+   if(project.id==='wellife'){await p.waitForSelector('#wellife-app[data-ready="partial"]');assert(await p.locator('#wf-add-food').isDisabled());assert(await p.locator('#wf-add-motion').isDisabled());continue;}
    if(project.id==='sna'){await p.waitForSelector('#sna-app[data-ready="true"]');assert.equal(await p.locator('#sna-core-network .sna-node').count(),26);assert.equal(await p.locator('#sna-core-network .sna-edge').count(),269);continue;}
    const buttons=p.locator('[role="tab"]');assert.equal(await buttons.count(),project.experiments.length);
    for(let i=0;i<project.experiments.length;i++){
