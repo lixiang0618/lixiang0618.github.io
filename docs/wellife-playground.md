@@ -49,3 +49,13 @@ Source: `{label: {en,zh}, url, accessed}`.
 - Mobile screenshot inspected with isolated fixture data; section-number wrapping and unknown nutrient totals corrected. Real food image composition awaits uploaded photographs. Food/MET workflows now use explicitly labeled demo data.
 
 No backend, Worker, D1, comments/likes or deployment settings modified. No merge, PR or manual deployment.
+
+## First-visit overview preview
+
+Empty demo diaries now show an explicitly labeled, unsaved example day: 200g rice, 150g chicken, 120g banana and a 30-minute walk at 70kg. The overview displays 614.3 kcal intake, 91.9 kcal active expenditure and 522.4 kcal difference. Example rows have preview badges, not edit/delete actions. No example entries are written to localStorage.
+
+The visitor can start with an empty day (choice persists) or restore the preview. Any real addition/edit/deletion dismisses the preview; real records always take precedence. Clearing actual records leaves the day empty. Existing diary data is never seeded or overwritten.
+
+Validation: 11 Wellife unit tests, 8 Lab template tests, static build, and targeted Chromium tests passed. Targeted tests include preview arithmetic, no storage write, empty-day preference after reload, preview replacement by a real record, supplied catalog calculations/persistence, and 375px/1440px layout screenshots. Mobile overview screenshot was inspected.
+
+Photo acquisition was retried: Wikimedia Commons HTTPS CONNECT returned HTTP 403 Forbidden from the environment proxy. No food photographs have been added or claimed complete. The saved domain configuration still requires user publication before these downloads can proceed.
