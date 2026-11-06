@@ -1,0 +1,64 @@
+/* Regenerate only the bilingual Lab shell documents. No dependencies or backend. */
+const fs=require('node:fs'),path=require('node:path');
+const registry=require('../lab/shared/project-registry');
+const views=require('../lab/shared/lab-render');
+const root=path.resolve(__dirname,'..');
+function page(lang,project){
+ const zh=lang==='zh',prefix=zh?'/zh/':'/',home=prefix+'lab.html',url=project?views.route(project,lang):home;
+ const opposite=project?views.route(project,zh?'en':'zh'):(zh?'/lab.html':'/zh/lab.html');
+ const title=project?`${project.title} · Lab · Xiangology`:'The Playground · Lab · Xiangology';
+ const description=project?views.t(project.description,lang):views.label(lang,'An interactive collection of AI applications, machine learning models, optimization algorithms, and research explorations.','汇集 AI 应用、机器学习模型、优化算法与研究探索的交互实验空间。');
+ const nav=[['index',zh?'个人主页':'Profile'],['lab','Lab <span class="nav-beta">Beta</span>'],['blog',zh?'博客':'Blog'],['moments',zh?'朋友圈':'Moments'],['about',zh?'关于我':'About Me']].map(([id,label])=>`      <a href="${prefix+id}.html"${id==='lab'?' aria-current="page"':''}>${label}</a>`).join('\n');
+ return `<!doctype html>
+<html lang="${zh?'zh-CN':'en'}" class="lab-document">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>${views.e(title)}</title>
+  <meta name="description" content="${views.e(description)}">
+  <link rel="canonical" href="https://lxiang.cc${url}">
+  <link rel="alternate" hreflang="en" href="https://lxiang.cc${project?project.route:'/lab.html'}">
+  <link rel="alternate" hreflang="zh-CN" href="https://lxiang.cc${project?'/zh'+project.route:'/zh/lab.html'}">
+  <link rel="alternate" hreflang="x-default" href="https://lxiang.cc${project?project.route:'/lab.html'}">
+  <meta property="og:title" content="${views.e(title)}">
+  <meta property="og:description" content="${views.e(description)}">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://lxiang.cc${url}">
+  <script src="/js/blog-theme.js"></script>
+  <link rel="icon" href="/Resources/微信头像.jpg">
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="/assets/branding/branding.css">
+  <link rel="stylesheet" href="/lab.css">
+  <script defer src="/lab/shared/project-registry.js"></script>
+  <script defer src="/lab/shared/lab-render.js"></script>
+  <script defer src="/js/lab.js"></script>
+</head>
+<body class="lab-page"${project?` data-project="${project.id}"`:''}>
+  <header class="site-header">
+    <a class="brand" href="${prefix}index.html" aria-label="Xiangology — ${zh?'首页':'Home'}"><img class="site-brand-logo" src="/assets/branding/xiangology.svg" alt="Xiangology" width="168" height="42"></a>
+    <nav class="site-nav" aria-label="${zh?'主要导航':'Primary'}">
+${nav}
+    </nav>
+  </header>
+  <div class="lab-options"><a class="lab-language" href="${opposite}" lang="${zh?'en':'zh-CN'}">${zh?'English':'中文'}</a><button type="button" data-lab-theme aria-pressed="false">${zh?'深色模式':'Dark mode'}</button></div>
+  <main class="lab-main" id="lab-main">
+    ${project?views.projectPage(project,lang):views.home(registry.projects,lang)}
+    <noscript><p class="lab-phase-note">${zh?'当前为静态预览。开启 JavaScript 可切换实验标签和主题；所有交互实验仍未开放。':'This is a static preview. Enable JavaScript to switch experiment tabs and theme; interactive experiments remain unavailable.'}</p></noscript>
+  </main>
+  <footer class="site-footer"><div class="footer-inner"><span>© <span id="year">2026</span> XIANG LI</span></div></footer>
+</body>
+</html>
+`;
+}
+function build(){
+ const documents=[];
+ // Render/validate all pages before touching any checked-in output.
+ for(const lang of ['en','zh']){
+  documents.push([path.join(root,lang==='zh'?'zh/lab.html':'lab.html'),page(lang)]);
+  for(const project of registry.projects)documents.push([path.join(root,views.route(project,lang),'index.html'),page(lang,project)]);
+ }
+ for(const [file,html] of documents){fs.mkdirSync(path.dirname(file),{recursive:true});fs.writeFileSync(file,html);}
+ console.log(`Generated ${documents.length} Lab pages from the shared registry and views.`);
+}
+if(require.main===module)build();
+module.exports={build,page};
