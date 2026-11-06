@@ -1,0 +1,268 @@
+{
+  "sources": [
+    {
+      "file": "第八组-李想.docx",
+      "sha256": "5544a2e04f12c0096467d1ca1a99387b26614074580964f27c504b62d2a1146b"
+    },
+    {
+      "file": "distances.xlsx",
+      "sha256": "0283f103428d27648f99bbce39c7cab9cd5d7c104fe4b3c99b47a6af0deb88cf"
+    },
+    {
+      "file": "社会网络分析.gephi",
+      "sha256": "16118a62f25f64da09e1eaa45c1489d52d48fb1fc3a9f8d86bf259e4592e60e6"
+    }
+  ],
+  "layout": {
+    "source": "Report Figure 6, word/media/image69.png",
+    "imageSha256": "96fae2be1c26025dab6ea7b7c6b5fe3e8bcdcd0129081f878bb12fb45dd284d2",
+    "pixelCenters": [
+      [
+        1367.5,
+        902.5
+      ],
+      [
+        1045.5,
+        818.5
+      ],
+      [
+        1129.5,
+        504.5
+      ],
+      [
+        901.5,
+        486.5
+      ],
+      [
+        761.5,
+        886.5
+      ],
+      [
+        1425.5,
+        706.5
+      ],
+      [
+        1183.5,
+        1048.5
+      ],
+      [
+        1909.5,
+        720.5
+      ],
+      [
+        1389.5,
+        500.5
+      ],
+      [
+        909.5,
+        1084.5
+      ],
+      [
+        783.5,
+        668.5
+      ],
+      [
+        1837.5,
+        190.5
+      ],
+      [
+        1771.5,
+        1328.5
+      ],
+      [
+        443.5,
+        1378.5
+      ],
+      [
+        2045.5,
+        1138.5
+      ],
+      [
+        1061.5,
+        44.5
+      ],
+      [
+        1519.5,
+        72.5
+      ],
+      [
+        2191.5,
+        908.5
+      ],
+      [
+        1133.5,
+        1500.5
+      ],
+      [
+        173.5,
+        1134.5
+      ],
+      [
+        469.5,
+        142.5
+      ],
+      [
+        1547.5,
+        1442.5
+      ],
+      [
+        2097.5,
+        392.5
+      ],
+      [
+        53.5,
+        894.5
+      ],
+      [
+        45.5,
+        598.5
+      ],
+      [
+        211.5,
+        364.5
+      ]
+    ],
+    "positions": [
+      [
+        485.247253,
+        319.285714
+      ],
+      [
+        387.93956,
+        293.901099
+      ],
+      [
+        413.324176,
+        199.010989
+      ],
+      [
+        344.423077,
+        193.571429
+      ],
+      [
+        302.115385,
+        314.450549
+      ],
+      [
+        502.774725,
+        260.054945
+      ],
+      [
+        429.642857,
+        363.406593
+      ],
+      [
+        649.038462,
+        264.285714
+      ],
+      [
+        491.895604,
+        197.802198
+      ],
+      [
+        346.840659,
+        374.285714
+      ],
+      [
+        308.763736,
+        248.571429
+      ],
+      [
+        627.28022,
+        104.120879
+      ],
+      [
+        607.335165,
+        448.021978
+      ],
+      [
+        206.016484,
+        463.131868
+      ],
+      [
+        690.137363,
+        390.604396
+      ],
+      [
+        392.774725,
+        60.0
+      ],
+      [
+        531.181319,
+        68.461538
+      ],
+      [
+        734.258242,
+        321.098901
+      ],
+      [
+        414.532967,
+        500.0
+      ],
+      [
+        124.423077,
+        389.395604
+      ],
+      [
+        213.873626,
+        89.615385
+      ],
+      [
+        539.642857,
+        482.472527
+      ],
+      [
+        705.851648,
+        165.164835
+      ],
+      [
+        88.159341,
+        316.868132
+      ],
+      [
+        85.741758,
+        227.417582
+      ],
+      [
+        135.906593,
+        156.703297
+      ]
+    ],
+    "transform": {
+      "scale": 0.3021978021978022,
+      "center": [
+        1118.5,
+        772.5
+      ]
+    },
+    "concorReferenceAvailable": false
+  },
+  "distance": {
+    "available": false,
+    "sheet": "Sheet1",
+    "range": "B2:AA27",
+    "emptyCells": 676,
+    "coordinateRows": 26,
+    "reason": "Only geographic coordinates and an empty matrix template; no transport-cost observations."
+  },
+  "cooperation": {
+    "available": false,
+    "reason": "No complete 26×26 source matrix found. Gephi workspace 图书馆微博(1) contains only 18 node records; no mapping of absent schools to zero is justified."
+  },
+  "qapReport": {
+    "source": "Report QAP results table, word/media/image80.wmf",
+    "distanceP": 0.083663,
+    "cooperationP": 0.0005,
+    "r2": 0.6686,
+    "coefficientType": "unstandardized",
+    "excelDistancePConflict": 0.073663
+  },
+  "threshold": {
+    "comparison": ">=",
+    "evidence": "Report equation after Figure 5: Symbol font byte B3 (greater-than-or-equal); 0 branch <.",
+    "denominator": 26,
+    "diagonalIncluded": true,
+    "removeSelfLoops": true,
+    "offDiagonalEqualsMean": 0
+  }
+}
