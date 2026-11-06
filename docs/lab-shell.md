@@ -37,6 +37,8 @@ node dev/build-vercel.js
 
 ## 状态与交互边界
 
+SNA 后续已使用来源核验的真实研究资料开放网络交互，见 [sna-playground.md](sna-playground.md)。其数据与 CCHAN 虚构教学数据分离。
+
 CCHAN 后续已开放明确标注虚构数据的教学版，参见 [cchan-playground.md](cchan-playground.md)。live 表示教学交互可用，不表示真实模型推理。
 
 后续仓储阶段已将 OR 与 warehouse 实验开放为 live；专用实现与最新测试见 [warehouse-playground.md](warehouse-playground.md)。下述五个 building 的描述为原 Phase 1 交付状态，其他项目仍保持预览。

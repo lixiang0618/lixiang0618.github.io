@@ -10,7 +10,7 @@
  window.addEventListener('storage',event=>{if(event.key==='lx_blog_theme'){document.documentElement.dataset.blogTheme=event.newValue==='dark'?'dark':'light';syncTheme();}});syncTheme();
  if(!registry||!views)return;
  const project=registry.projects.find(p=>p.id===document.body.dataset.project);if(!project||!project.experiments.length)return;
- if(['or','cchan'].includes(project.id))return; // Dedicated live experiment uses its own controller.
+ if(['or','cchan','sna'].includes(project.id))return; // Dedicated live experiment uses its own controller.
  const tabs=Array.from(document.querySelectorAll('[role="tab"]')),panels=Array.from(document.querySelectorAll('.experiment-panel'));
  function activate(id,focus=false,push=false){
   const exp=project.experiments.find(n=>n.id===id)||project.experiments[0];
