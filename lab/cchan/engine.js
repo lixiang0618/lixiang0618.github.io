@@ -1,0 +1,16 @@
+/* Paper equations (11–14), Table 3 and synthetic offline Top-K teaching engine. */
+(function(root){'use strict';
+const finite=x=>typeof x==='number'&&Number.isFinite(x),validCost=x=>finite(x)&&x>=0;
+function params(check=280.9,lambda=.8){if(!validCost(check)||!finite(lambda)||lambda<0||lambda>1)throw Error('Invalid cost parameters');return {check,lambda};}
+function lossBatch(rows,check=280.9,lambda=.8){params(check,lambda);if(!Array.isArray(rows)||!rows.length)throw Error('Empty cohort');const out=rows.map(r=>{if(![0,1].includes(r.y)||!finite(r.p)||r.p<0||r.p>1||!validCost(r.cost))throw Error('Invalid loss sample');const weight=r.y?lambda*check*r.p+r.cost*(1-r.p):check*r.p;
+ // Log clamp at -100 retains finite exact-endpoint teaching examples.
+ const bce=-(r.y*Math.max(-100,Math.log(r.p))+(1-r.y)*Math.max(-100,Math.log1p(-r.p)));return {...r,weight,bce};});
+ const meanWeight=out.reduce((s,r)=>s+r.weight,0)/out.length;if(meanWeight===0)return {rows:out.map(r=>({...r,normalized:null,weighted:null})),meanWeight,bce:out.reduce((s,r)=>s+r.bce,0)/out.length,weighted:null};
+ for(const r of out){r.normalized=r.weight/meanWeight;r.weighted=r.bce*r.normalized;}return {rows:out,meanWeight,bce:out.reduce((s,r)=>s+r.bce,0)/out.length,weighted:out.reduce((s,r)=>s+r.weighted,0)/out.length};}
+function validate(data){if(!data||data.kind!=='fictional'||!Array.isArray(data.cases)||!data.cases.length||data.cases.length>5000||!Array.isArray(data.models)||!data.models.length)throw Error('Invalid fictional teaching data');const ids=new Set(),models=new Set();for(const m of data.models){if(!/^[a-z][a-z0-9_]*$/.test(m.id)||models.has(m.id))throw Error('Duplicate/invalid model');models.add(m.id);}for(const c of data.cases){if(!/^DEMO_\d{3,5}$/.test(c.id)||ids.has(c.id)||![0,1].includes(c.y)||!validCost(c.cost))throw Error('Invalid anonymous case');ids.add(c.id);for(const m of data.models)if(!finite(c.scores?.[m.id])||c.scores[m.id]<0||c.scores[m.id]>1)throw Error('Invalid fictional score');}return data;}
+function curves(data,model,check=280.9,lambda=.8){validate(data);params(check,lambda);if(!data.models.some(m=>m.id===model))throw Error('Unknown teaching ranking');const queue=data.cases.slice().sort((a,b)=>b.scores[model]-a.scores[model]||a.id.localeCompare(b.id));const fraud=queue.reduce((s,c)=>s+c.y,0),reference=queue.reduce((s,c)=>s+c.y*c.cost,0),all=queue.reduce((s,c)=>s+(c.y?lambda:1)*check,0),denom=Math.min(reference,all);let total=reference,detected=0;const points=[];
+ const point=k=>({k,total,detected,missed:fraud-detected,avoided:reference-total,savings:denom===0?null:1-total/denom});points.push(point(0));for(const [i,c] of queue.entries()){total+=c.y?lambda*check-c.cost:check;detected+=c.y;points.push(point(i+1));}return {queue,points,reference,fraud,check,lambda,model};}
+function at(curve,k){if(!Number.isInteger(k)||k<0||k>=curve.points.length)throw Error('Invalid budget');return curve.points[k];}
+function caseCost(c,selected,check=280.9,lambda=.8){params(check,lambda);if(![0,1].includes(c.y)||!validCost(c.cost))throw Error('Invalid case');return selected?(c.y?lambda:1)*check:c.y*c.cost;}
+const api={params,lossBatch,validate,curves,at,caseCost};if(typeof module!=='undefined'&&module.exports)module.exports=api;else root.CchanEngine=api;
+})(typeof window!=='undefined'?window:globalThis);

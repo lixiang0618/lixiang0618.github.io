@@ -3,11 +3,12 @@ const fs=require('node:fs'),path=require('node:path');
 const registry=require('../lab/shared/project-registry');
 const views=require('../lab/shared/lab-render');
 const warehouse=require('../lab/warehouse/page');
+const cchan=require('../lab/cchan/page');
 const root=path.resolve(__dirname,'..');
 function page(lang,project){
  const zh=lang==='zh',prefix=zh?'/zh/':'/',home=prefix+'lab.html',url=project?views.route(project,lang):home;
  const opposite=project?views.route(project,zh?'en':'zh'):(zh?'/lab.html':'/zh/lab.html');
- const title=project?`${project.id==='or'?views.t(project.detailTitle,lang):project.title} · Lab · Xiangology`:'The Playground · Lab · Xiangology';
+ const title=project?`${['or','cchan'].includes(project.id)?views.t(project.detailTitle,lang):project.title} · Lab · Xiangology`:'The Playground · Lab · Xiangology';
  const description=project?views.t(project.description,lang):views.label(lang,'An interactive collection of AI applications, machine learning models, optimization algorithms, and research explorations.','汇集 AI 应用、机器学习模型、优化算法与研究探索的交互实验空间。');
  const nav=[['index',zh?'个人主页':'Profile'],['lab','Lab <span class="nav-beta">Beta</span>'],['blog',zh?'博客':'Blog'],['moments',zh?'朋友圈':'Moments'],['about',zh?'关于我':'About Me']].map(([id,label])=>`      <a href="${prefix+id}.html"${id==='lab'?' aria-current="page"':''}>${label}</a>`).join('\n');
  return `<!doctype html>
@@ -32,7 +33,7 @@ function page(lang,project){
   <link rel="stylesheet" href="/lab.css">
   <script defer src="/lab/shared/project-registry.js"></script>
   <script defer src="/lab/shared/lab-render.js"></script>
-  <script defer src="/js/lab.js"></script>${project?.id==='or'?'\n  <link rel="stylesheet" href="/lab/warehouse/warehouse.css"><script defer src="/lab/warehouse/core.js"></script><script defer src="/lab/warehouse/visual.js"></script><script defer src="/lab/warehouse/app.js"></script>':''}
+  <script defer src="/js/lab.js"></script>${project?.id==='cchan'?'\n  <link rel="stylesheet" href="/lab/cchan/cchan.css"><script defer src="/lab/cchan/graph.js"></script><script defer src="/lab/cchan/engine.js"></script><script defer src="/lab/cchan/demo.js"></script><script defer src="/lab/cchan/visual.js"></script><script defer src="/lab/cchan/app.js"></script>':''}${project?.id==='or'?'\n  <link rel="stylesheet" href="/lab/warehouse/warehouse.css"><script defer src="/lab/warehouse/core.js"></script><script defer src="/lab/warehouse/visual.js"></script><script defer src="/lab/warehouse/app.js"></script>':''}
 </head>
 <body class="lab-page"${project?` data-project="${project.id}"`:''}>
   <header class="site-header">
@@ -43,8 +44,8 @@ ${nav}
   </header>
   <div class="lab-options"><a class="lab-language" href="${opposite}" lang="${zh?'en':'zh-CN'}">${zh?'English':'中文'}</a><button type="button" data-lab-theme aria-pressed="false">${zh?'深色模式':'Dark mode'}</button></div>
   <main class="lab-main" id="lab-main">
-    ${project?.id==='or'?warehouse.page(lang):project?views.projectPage(project,lang):views.home(registry.projects,lang)}
-    <noscript><p class="lab-phase-note">${project?.id==='or'?(zh?'此实验需要 JavaScript 和 Web Worker 才能进行交互与计算；模型说明仍可阅读。':'This experiment requires JavaScript and Web Worker for interaction and computation; model documentation remains readable.'):zh?'当前为静态预览。开启 JavaScript 可切换实验标签和主题；所有交互实验仍未开放。':'This is a static preview. Enable JavaScript to switch experiment tabs and theme; interactive experiments remain unavailable.'}</p></noscript>
+    ${project?.id==='cchan'?cchan.page(lang):project?.id==='or'?warehouse.page(lang):project?views.projectPage(project,lang):views.home(registry.projects,lang)}
+    <noscript><p class="lab-phase-note">${project?.id==='cchan'?(zh?'此教学演示需要 JavaScript 才能操作；研究方法说明仍可阅读。':'Enable JavaScript for this educational interaction; methodology remains readable.'):project?.id==='or'?(zh?'此实验需要 JavaScript 和 Web Worker 才能进行交互与计算；模型说明仍可阅读。':'This experiment requires JavaScript and Web Worker for interaction and computation; model documentation remains readable.'):zh?'当前为静态预览。开启 JavaScript 可切换实验标签和主题；所有交互实验仍未开放。':'This is a static preview. Enable JavaScript to switch experiment tabs and theme; interactive experiments remain unavailable.'}</p></noscript>
   </main>
   <footer class="site-footer"><div class="footer-inner"><span>© <span id="year">2026</span> XIANG LI</span></div></footer>
 </body>
