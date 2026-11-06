@@ -13,28 +13,27 @@ Created from `origin/lab` (83b1a74), then fast-forwarded to SNA (69d1739) with t
 - Pure energy/fuel/portion arithmetic, with input bounds, unknown nutrient preservation and explicit gross versus active energy.
 - Daily log controller implements add/edit/delete/day-clear, local dates, schema-versioned localStorage, cross-tab refresh, and linked overview. Energy difference is food intake minus active exercise only; no nutrient grams are subtracted.
 
-## Source verification blocker — not finished
+## Demo catalog and remaining photos
 
-The current cloud network policy denies USDA FoodData Central, the 2024 Adult Compendium and Wikimedia Commons/image hosts. A network configuration draft was saved for user review; saving a draft does not apply or publish it.
+The user supplied ten nutrient records with identifiers DEMO-001 through DEMO-010: cooked rice, roasted skinless chicken breast, boiled egg, boiled broccoli, raw banana, raw apple, whole milk, roasted salmon, dry oats and firm tofu. Values were transcribed without alteration. Tofu sugar remains null.
 
-Requested hosts: `fdc.nal.usda.gov`, `api.nal.usda.gov`, `pacompendium.com`, `www.pacompendium.com`, `commons.wikimedia.org`, `upload.wikimedia.org`.
+`catalog.json` now uses `mode: "demo"` and `verified: false`. The food selector, portion calculation, daily diary and summaries are enabled. The page identifies these as user-provided examples, not verified USDA records. DEMO identifiers are preserved as local sample identifiers and are never linked to invented FoodData Central record pages.
 
-Consequently `catalog.json` deliberately has empty food/MET arrays and `verified: false`. No food photos, nutrient records, FDC IDs, MET values or photo licenses have been fabricated. The production page disables food/activity logging and discloses pending verification. Wellife remains **building** in the Lab registry. Motion signal exploration and simulated classification are functional.
+The user also authorized approximate teaching MET assumptions. Six sample parameters (sitting 1.3, walking 3.5, push-ups 3.8, squats 5, frog jumps 8, running 8.3) are marked DEMO, proxy and unverified; they enable the energy/fuel/log interactions. These are not claimed to be 2024 Compendium entries or individual measurements.
 
-The browser test supplies isolated, explicitly fictional fixture records through request interception. These records and its placeholder image are not shipped in the catalog and do not constitute source/photo verification.
+Real food photographs are still pending. Cards currently use textual food-name placeholders explicitly labeled “Photo pending”; no site logo, generated photo, external hotlink, or broken image is used. Setting a food's `photo` metadata to a real local image automatically enables the existing photograph/credit view.
 
-To finish after network publication:
+Wellife remains **building** in the Lab registry while photographs are missing. Replacing sample data with official records can be done without changing the arithmetic or diary architecture.
 
-1. Retrieve 8–12 official FDC records; preserve response/source metadata and exact preparation states. Map energy, carbohydrate, protein, fat, total sugar and water per 100 g; absent values remain null.
-2. Download legally licensed food photos locally; preserve author, original file page, license URL, retrieval date and local file path. Check every image visually and record any resizing.
-3. Verify 2024 Compendium activity codes/descriptions/METs. Mark push-ups/squats/frog-jump mappings as proxies where exact entries do not exist; offer only verified intensity references.
-4. Populate and validate catalog, run browser tests against real data/photos, promote registry to live only when complete, regenerate pages, commit and push follow-up changes.
+The current cloud network policy blocks direct source/image downloads. A network configuration draft was saved for user review; saving does not apply or publish it. Requested hosts: `fdc.nal.usda.gov`, `api.nal.usda.gov`, `pacompendium.com`, `www.pacompendium.com`, `commons.wikimedia.org`, `upload.wikimedia.org`. Alternatively the user can upload photos with permission to use them.
+
+Future official-data upgrade: retrieve source records and metadata, verify preparation states, preserve nulls, cite actual numeric FDC IDs, then switch data provenance. Never relabel DEMO records as verified official data.
 
 ## Catalog interface
 
-Top level: `{version: 1, verified, foods, activities, sources}`.
+Top level: `{version: 1, verified, mode, foods, activities, sources}`.
 
-Food: `{id, name: {en,zh}, fdcId, description, state: {en,zh}, portion, per100g: {energy,carbs,protein,fat,sugar,water}, photo: {path,author,license,licenseUrl,source}}`. Values are numeric or null. Units kcal/100g for energy, g/100g otherwise.
+Food: `{id, name: {en,zh}, fdcId, description, state: {en,zh}, portion, per100g: {energy,carbs,protein,fat,sugar,water}, provenance, photo: null | {path,author,license,licenseUrl,source}}`. Values are numeric or null. Units kcal/100g for energy, g/100g otherwise.
 
 Activity: `{id, references: [{id, met, code, proxy, label: {en,zh}, description: {en,zh}, source: {en,zh}}]}`.
 
@@ -42,11 +41,11 @@ Source: `{label: {en,zh}, url, accessed}`.
 
 ## Validation
 
-- `node tests/wellife.test.cjs`: 10/10 passed, deterministic models, gravity/velocity consistency, distinguishing features, identity-independent classifier, stable Softmax, actual convolution/pooling, MET/fuel/portion arithmetic, unknown values, diary persistence/edit/clear, storage failures.
-- `NODE_PATH=/workspace/.onboarding/lx-tests/node_modules node tests/wellife-browser.cjs`: 20 fixture UI contexts (375,390,430,768,1440 × en/zh × light/dark), all passed. Includes six activity choices/inference, channel readout, portion scaling, add/edit/delete, persistence without duplication, overview arithmetic, document width. Additional actual empty-catalog test confirms disabled logging and working waveform playback.
+- `node tests/wellife.test.cjs`: 11/11 passed, deterministic models, gravity/velocity consistency, distinguishing features, identity-independent classifier, stable Softmax, actual convolution/pooling, MET/fuel/portion arithmetic, unknown values, diary persistence/edit/clear, storage failures.
+- `NODE_PATH=/workspace/.onboarding/lx-tests/node_modules node tests/wellife-browser.cjs`: 20 fixture UI contexts (375,390,430,768,1440 × en/zh × light/dark), all passed. Includes six activity choices/inference, channel readout, portion scaling, add/edit/delete, persistence without duplication, overview arithmetic, document width. Additional tests cover the ten supplied production demo records, actual portion/log persistence, unknown sugar, optional photographs, no fabricated USDA links and waveform playback. Empty catalogs still disable logging.
 - `NODE_PATH=/workspace/.onboarding/lx-tests/node_modules node --test tests/*.test.cjs`: 128 tests, 125 passed, 3 existing Blog fixture/taxonomy failures (pinned listing, article count and stale generated metadata), matching pre-existing SNA baseline. No unrelated Blog data changed.
 - `node dev/build-lab-pages.js`: passed, 18 generated pages. Only Lab listings and Wellife detail pages change.
 - `node dev/build-vercel.js`: passed; no deployment configuration changes.
-- Mobile screenshot inspected with isolated fixture data; section-number wrapping and unknown nutrient totals corrected. Real food image composition and production food/MET workflows await source acquisition.
+- Mobile screenshot inspected with isolated fixture data; section-number wrapping and unknown nutrient totals corrected. Real food image composition awaits uploaded photographs. Food/MET workflows now use explicitly labeled demo data.
 
 No backend, Worker, D1, comments/likes or deployment settings modified. No merge, PR or manual deployment.
