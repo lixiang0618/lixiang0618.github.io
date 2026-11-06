@@ -55,8 +55,20 @@ Development and push target for this UX change is `lab` only. No main merge, bac
 
 ## Readability and alignment update
 
-The interface now operates on the current local day only: no calendar or history picker. Existing past records remain intact in storage but are not displayed. New entries, aggregation and day clear all use the current local date, with midnight refresh. The intensity selector is removed; recognition uses the detected activity’s default existing MET reference.
+The date picker defaults to the current local day. New entries, aggregation and day clear use the selected day. Midnight refresh follows today until the visitor chooses a different date. Existing records remain isolated by day. The intensity selector is removed; recognition uses the detected activity’s default existing MET reference.
 
 Both process-button chains have been removed. Controls, nutrient names and units use larger text; mobile nutrient totals wrap into three readable columns. Native selectors have a consistent arrow and hover/focus treatment. Both workbenches align their headings, selectors, 360px visual stages and bottom add buttons on desktop. On small screens the image and waveform stages are 310px high (285px at 320px width). Food photos use contain so the food stays fully visible. Comparison notes and repetitive primary-screen prose are removed; concise formulas, provenance and units remain under the collapsed methods area.
 
 Focused validation: the four bilingual functional contexts pass, plus layout checks at 320, 375, 430, 768, 1024 and 1440px. Checks include document and control overflow, nutrient name size, matching desktop panel/stage bounds, today-only record creation and absence of date/intensity/process controls. Desktop/mobile screenshots were inspected. No full-site test run was needed for this UI change.
+
+## Clean Health-Tech visual system
+
+The latest design uses a Wellife-scoped cool white theme: #F7F9F8 page, #FFFFFF cards, #26332E text, #687A73 secondary text and #E3EAE6 borders. Net Energy is #8863BD on #F0ECFA; intake #C8794D on #FCECE1; exercise #4F9482 on #E1F2ED. Dark theme has corresponding semantic variants. Other Lab pages are unchanged. Typography uses the system sans-serif stack rather than editorial serif headings.
+
+The dashboard contains one Net Energy donut and two equal-height intake/exercise cards. SVG arcs encode intake/(intake + active exercise) and active/(intake + active exercise), not goal completion. Center text is intake minus active exercise. Empty or incomplete energy data produces only the track, with no invented proportions. Donut attributes and numbers transition on updates and respect reduced motion.
+
+Five nutrient cards use local semantic SVG icons, equal grid sizing, aligned labels/value rows and explicit gram units. They reflow at narrow widths. Fuel comparison remains available inside Methods & sources rather than duplicating energy statistics in the main dashboard.
+
+Food and Motion workbenches retain matched columns, stages and add-button baselines; their actions use food orange and exercise teal. Records use the same semantic colors, line icons, 24-hour time, name, quantity, energy and action columns. All existing numeric data, classifier, energy/fuel formulas and local storage keys are preserved. Date switching is restored per the latest brief; adding and clearing a past date does not affect today's records.
+
+Validation: 14 Wellife and 8 Lab template tests pass, static build and syntax checks pass. Four bilingual functional browser contexts cover recognition, portion/fuel calculations, edit/delete/persistence, real donut ratios, zero state and date isolation. Layout contexts cover 320–1440px, both languages, exact white background, five complete equal-size nutrient cards, matching Net/side-card bounds and matched workbench stages/buttons; screenshots were inspected. No full-site test sweep or deployment/configuration changes.
