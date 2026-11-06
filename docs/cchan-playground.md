@@ -1,108 +1,51 @@
-# CCHAN 教学交互版
+# CCHAN Research Playground — refinement
 
-## 范围与 Git
+## Scope and routes
 
-从 `feat/warehouse-simulation-playground` 的 `0d604b05e91f4f1c70317abf8b96d7b384bb1b15` 创建 `feat/cchan-interactive-playground`。不基于 main，不修改原 OR/Lab 分支，不合并或部署。若创建 PR，其 base 应为 OR 分支。
+Work remains on `lab`. Routes are `/lab/projects/cchan/` and `/zh/lab/projects/cchan/`. This refinement changes only the CCHAN frontend, its page-generation script inclusion, source provenance, and applicable tests. No backend, deployment configuration or other Playground implementation is changed.
 
-最新用户授权：数据为保密数据，允许自行构造虚构数据，不要求运行真实算法，以论文效果与机制为准。因此本交付是**明确标注的教学应用**，而非 GNN 训练、推理、论文性能复现或真实医疗风险评估。
+The page keeps the pale-green palette and four sections. The heading is reduced to `CCHAN Playground` and one research sentence. The former editable record builder, step-by-step reveal controls and 24-case ranking interface are replaced by the requested presentation. The existing `CchanEngine.lossBatch` and its paper-equation implementation are reused for the optional sample-loss explorer. Existing graph/engine utilities remain independently testable.
 
-沿用 `/lab/projects/cchan/`、`/zh/lab/projects/cchan/`。只有四个主要交互区，无独立元路径选择器或消融实验区。CCHAN 状态 live 表示教学交互可用，不代表真实模型已上线。
+## Four sections
 
-## 来源与差异
+1. **Why Coupling**: both Case A and Case B are visible as SVGs, followed by joint/group semantic descriptions. An automatic conversion cycles through basic path, highlighted H/D context, semantic-copy fusion into HD, and the explicit shared context. Original H and D nodes remain in the SVG. D′ is outside the highlighted context. The conversion depicts the shared-diagnosis case; the separate Case B explains why sharing only a hospital can mismatch the intended diagnosis. Pause/play/replay and reduced-motion are supported.
+2. **Graph Construction**: three-column workflow from the two original Figure 3 example triplets through joint/group contexts to the complete final graph. The final illustration has 13 nodes and 16 strokes (4 solid basic, 12 dashed coupling); all node positions and endpoints are transcribed from the supplied manuscript image, including DD. Nodes and context chips support hover, focus, tap and keyboard activation. Mobile stacks the final graph below the first two panels.
+3. **Cost-Sensitive Learning**: compact Patient A/B examples (90%/$300 selected versus 65%/$10,000 not selected) explain the limitation of risk-only selection. These are clearly illustrative, not actual patient records. Table 3 is shown with TN=0, FP=Ccheck, FN=claim amount, TP=λCcheck. Requested existing teaching parameters Ccheck=280.9 and λ=0.8 give TP=224.72. A new SVG follows Figure 4 with two colored neighbor-attention branches, per-path Z, global β semantic fusion, MLP/prediction, cost matrix/normalized weight, and weighted BCE. Main flow and dashed label/BCE dependencies are explicit. The diagram states that the cost factor depends on y, prediction and financial costs; it does not imply that the matrix is generated from prediction alone. Stage hover/focus reveals formulas. The loss explorer reuses the existing exact cohort-normalized loss engine.
+4. **Top-K Investigation**: a fixed-height viewport renders at most eight illustrative rows out of 100. Processing takes 4.8 seconds of active visible playback, then a 350ms completion transition reveals the manuscript figure in the same region. Rows move continuously using transforms; the chart is initially hidden and the queue is hidden when the chart is revealed. Replay returns to the queue. Pause/play, background suspension, navigation cleanup, and reduced-motion are supported. Reduced-motion directly reveals the stable result on entering the section.
 
-教学参考为用户提供的手稿《Healthcare Insurance Fraud Detection under Cost Constraints: A Coupling Heterogeneous Graph Attention Network Approach》，重点为第 3.1～3.3 节、表 3、第 5.1 节和图 3～4。没有推断作者、发表状态或 DOI。
+## Research sources and experiment settings
 
-手稿引用代码仓库：<https://github.com/xiaofeistart/CCHAN-Cost-Sensitive-Coupling-HAN>，检查提交 `91a9d5c83a37fcfab5e52aa1f30082893fd386dd` 中 `CCHAN.ipynb`，未运行其训练，也未发布其数据。
+Source: supplied `healthcare fraud detection-DSS(1)(1).docx`, Figures 1/3/4/7, Table 3, Sections 3.1–3.3, and the resource-constrained inspection experiment. `lab/cchan/research-sources.json` records the manuscript SHA-256 and embedded-figure hashes.
 
-已确认并在页面折叠说明中披露的差异：
+The complete research corpus has 20,000 patients, including 1,000 fraudulent patients (5%), and 1,830,386 claims. The Top-K experiment is a distinct 1,000-patient subset: 900 normal and 100 fraudulent patients (10% fraud), with 20 high-claim and 80 relatively low-claim fraudulent patients. Figure 7 uses K from 0 to 100. These values are displayed separately from the 100-case interactive queue.
 
-- 论文共享医院—疾病语境；Notebook 的 HD 按患者循环创建，并未跨患者合并。按最新授权，本教学图按论文的共享实体对构造。
-- 论文语义注意力为全局汇总；Notebook 为患者分别计算。本页按论文示意全局权重；图中的线宽、条形和 0.72 都是人为示意，没有真实注意力数值。
-- Notebook 函数核查成本默认 280.9，而运行调用使用 0.06，未说明可验证的单位换算。本页把 280.9 与 λ=0.8 明确标为可调的教学参数，使用抽象“成本单位”，不声称真实货币金额。
-- 论文广义示意中有更多同类型耦合，具体 CCHAN 采用 PH、PD、HD、PP。本页不引入 HH/DD；只显示有共同邻居的 PP，孤立 PP 为可读性省略，不能把图中节点数当论文全量统计。
+No original per-K numeric arrays for all eight models were found in the repository. Accordingly, `assets/lab/cchan/figure-7.png` is the **unchanged original embedded image** `word/media/image7.png`, not a traced, fitted or simulated reconstruction. It retains LR/RF/SVM/XGB/GCN/GAT/GraphSAGE/CCHAN colors and the red CCHAN curve. A source-hash test verifies the original pixels. The diagram and caption explicitly keep the illustrative queue independent of the paper results.
 
-原始 DOCX、公开仓库的特征压缩包和真实患者编号均未加入本站。论文中表 8 的个人编码没有转录到页面或测试数据。
+### Source distinctions preserved
 
-## 四个交互区
+- Figure 3 draws DD–P1 and DD–P2 connections as well as DD–H1. Applying a strict common-neighbor rule to just the two displayed triplets would yield only DD–H1. The exact source illustration is therefore held in a separate figure fixture in `research.js`; it is **not** presented as the output of the existing generic common-neighbor graph builder, and those extra strokes are not inferred as new observed clinical relationships. The manuscript's illustrated endpoints are reproduced as requested rather than silently corrected.
+- Figure 4 labels the classifier MLP, while Equation 9 describes a linear map followed by sigmoid. The diagram follows Figure 4 and the stage explanation preserves the text distinction; no model architecture is executed or claimed.
+- β follows the paper's global semantic-attention interpretation; no numeric attention coefficients are invented. Neighbors, α and β are conceptual symbols, not estimated model outputs.
+- Ccheck=280.9 and λ=0.8 are the requested existing teaching settings. The table's four cost definitions come from the manuscript. No currency rescaling is inferred for Figure 7.
 
-### 01 语义对比
+## Files
 
-P1/H1/D1 与 P2/H1/D2 为虚构事件。基础图和耦合图切换时基本实体坐标固定。将 P2 疾病改为 D1 后，两个 HD 语境合并，两个患者连接同一共享 HD；重置恢复初态。图旁说明共享医院并非欺诈证据，耦合也不构成因果证明。
+- `lab/cchan/page.js`: shared bilingual four-section markup and paper-based SVG content.
+- `lab/cchan/research.js`: source-figure topology, positions, SVG renderers and pure illustrative queue/timing helpers.
+- `lab/cchan/app.js`: node/stage interactions, existing loss-engine integration and visibility-aware timelines.
+- `lab/cchan/cchan.css`: scoped green theme, responsive layouts and motion handling.
+- `lab/cchan/research-sources.json`, `assets/lab/cchan/figure-7.png`: provenance and unchanged research result figure.
+- `dev/build-lab-pages.js`: load the CCHAN research helper before its controller.
+- Generated English/Chinese CCHAN `index.html` files only.
+- CCHAN unit/browser tests and the applicable Lab shell disclosure assertion.
 
-### 02 构图
+## Verification
 
-支持 1～8 条虚构记录，实体为 P1～P3、H1～H2、D1～D2。可添加、删除、编辑、重置、生成，五阶段前进/后退或重播。编辑后明确要求重新生成，不静默把旧图关联到新记录。
-
-基础边为每条三元组的共现关系；PH、PD、HD 对记录中出现的实体对去重。耦合节点只连接两组成实体在聚合基础图中的第三类型共同邻居。PP 是拥有共同医院/疾病的无序患者对，并只连接共同基本邻居。不添加为了美观而捏造的耦合节点间边。
-
-这是聚合图的教学实现，不能保留时间，也不能保证所有推导情境来自同一原始事件。固定坐标、节点从来源位置出现、虚线耦合边、点击及键盘节点检查器帮助观察构造。
-
-### 03 成本敏感学习
-
-流程为耦合图、图注意力、特征融合、分类器、评分、Cost-BCE 与反向传播。支持逐步解释和重播。示意线宽与全局语义条形没有对应真实权重。学习动画与损失控件不会改变核查队列评分，也不会训练模型。
-
-可调样本的标签、评分与成本，加三个固定虚构样本组成四样本归一化组。按论文计算：
-
-```
-Λ_i = y_i [λ C_check p_i + C_amount,i (1-p_i)] + (1-y_i) C_check p_i
-Λbar_i = Λ_i / mean(Λ)
-BCE_i = -y_i log(p_i) - (1-y_i) log(1-p_i)
-CostBCE_i = Λbar_i · BCE_i
-```
-
-页面显示原始成本因子、组内均值、归一化权重及两个损失，解释相对组均值的放大或减弱。成本权重不是直接与索赔额成比例。对数在 -100 截断以支持 p=0/1 教学端点；归一化均值为零则返回未定义，不用假结果替代。
-
-### 04 核查模拟
-
-24 个完全虚构案例与两列人工评分；“CCHAN 风格”“HAN 风格”均明确标注虚构，不能当模型对比实验。两种排序共用相同的标签与成本，分数相同按匿名编号排序，不做风险分数乘金额的替代排名。
-
-核查预算 K 与重播进度是不同概念：K 为选定工作量，统计和曲线指示点对应已揭示的前缀。开始前隐藏标签、曲线与统计；开始后可暂停、继续、重播、直接跳转或修改 K 做离线回溯评估。切换教学排序重新隐藏结果，重置恢复初态；切到后台暂停所有重播。
-
-成本规则：TN=0、FN=样本成本、FP=C_check、TP=λC_check。起点为所有未核查欺诈的成本之和，每选中一个案例，欺诈用 `λC_check−C_amount` 更新，正常用 `C_check` 更新。所有未核查案例始终计入总成本。预先生成前缀数组，滑块不重新运行图算法。
-
-Cost Avoided = 无人核查成本 − 当前成本，允许负数。论文 Savings 的最小基准分母另在方法说明中解释；不在主结果中伪装成论文评估指标。曲线只证明这些人为数据的结果，不证明实际 CCHAN 优于 HAN，也不承诺真实追回金额。
-
-病例检查器展示评分、成本、排名、状态及揭示后的结果；没有局部医疗图或真实注意力数据，因此不生成虚假图解释。
-
-## 代码与生成
-
-- `lab/cchan/graph.js`：纯构图与阶段筛选。
-- `lab/cchan/engine.js`：纯损失、数据校验、稳定排序、经济成本与前缀统计。
-- `lab/cchan/demo.js`：明确为 fictional 的匿名教学数据与人工评分。
-- `lab/cchan/visual.js`：SVG、稳定布局、曲线，不包含模型算法。
-- `lab/cchan/app.js`：四区 UI、计时与状态、控制器、主题语言链接、旧锚点兼容。
-- `lab/cchan/page.js`、`cchan.css`：共享双语静态内容与作用域样式。
-- `dev/build-lab-pages.js`：CCHAN 专用页面及资源注入；OR 生成不变。
-- `js/lab.js`：CCHAN 交由专用控制器处理，原共享主题保留。
-- `lab/shared/project-registry.js`、`lab-render.js`：教学状态与首页卡片/开放说明。
-- 生成文件：`lab.html`、`zh/lab.html`、`lab/projects/cchan/index.html`、`zh/lab/projects/cchan/index.html`。
-- `tests/cchan.test.cjs`、`tests/cchan-browser.cjs`：新测试；原 Lab 测试更新以覆盖两个开放项目。
-
-无新增依赖、API 或后台；没有修改仓储模块、首页、Worker/D1、点赞、评论或邮件。沿用已有导航、页脚、颜色变量、主题偏好与静态构建。中英文共用逻辑，旧 `#coupling`、`#cost` 分别兼容到构图与学习章节，语言链接保留章节 Hash。
+Targeted checks cover the figure's node/edge fixture, original image hash, paper settings, the unchanged Cost-BCE engine, 100-case timeline boundaries, static generation, mobile/desktop overflow, focus/tap interactions, initial chart hiding, queue virtualization, completion/replay, conversion controls, reduced motion, language anchors and background pause/resume. Screenshots are inspected for English desktop and Chinese mobile. Diagram/image panels may scroll internally on small screens to keep mathematical labels readable. Chromium is used; physical iPhone Safari is not claimed tested.
 
 ```sh
 node dev/build-lab-pages.js
-NODE_PATH=/workspace/.onboarding/lx-tests/node_modules node tests/cchan.test.cjs
+NODE_PATH=/path/to/test/dependencies node --test tests/cchan.test.cjs tests/lab-shell.test.cjs
+SITE_TEST_URL=http://127.0.0.1:8118 NODE_PATH=/path/to/test/dependencies node tests/cchan-browser.cjs
 node dev/build-vercel.js
-# 本地静态服务器运行后：
-NODE_PATH=/workspace/.onboarding/lx-tests/node_modules SITE_TEST_URL=http://127.0.0.1:8112 node tests/cchan-browser.cjs
 ```
-
-## 若将来启用研究数据
-
-当前数据校验只接受 `kind: fictional` 与 DEMO_ 编号，避免把真实患者表意外当教学资源发布。当前交付不需要研究数据。将来若另行授权研究版，应在独立改动中审核数据许可与不可重识别性，提供同一评估集合的安全编号、标签、统一单位的样本成本、各模型实际预测、成本参数、排序规则、模型与数据版本。必须另行验证和标识来源，不能仅替换名称就把本教学版声明为研究结果。
-
-## 验证边界
-
-数值测试独立逐案例枚举核对两种排序的每个 K，包含 K=0/K=N、四种经济成本、减少成本、稳定同分排序、重播前缀一致性。另覆盖共享 HD、PP 规则、重复记录、固定坐标、损失手工值、端点评分、零分母与错误输入。使用 double 数值，成本比较容差 1e-8。
-
-浏览器覆盖 375/430/768/1024/1366/1440px、中英文、浅深主题、图编辑、键盘节点、暂停继续、预算与进度、案例揭示、无 JavaScript、资源失败、减少动态效果及旧锚点。真实 Safari/手机实机、生产部署与真实模型没有验证；本页也不声称训练或预测有效性。
-
-## 本次执行结果
-
-- 新增 CCHAN 测试 8/8、Lab 注册/静态生成测试 8/8 通过。
-- 全套单元测试共 110 项，107 通过。3 项为原有博客数据数量、排序及生成元数据基线失败，本任务不修改无关数据。
-- 最终构建上，CCHAN 的六种宽度 × 中英文 × 浅深主题共 24 组主要交互检查通过，覆盖构图、记录编辑、损失、核查、暂停继续、预算端点、案例同步及成本参数错误。
-- 旧锚点同页兼容发现问题后已修复，并针对鼠标/键盘暂停、语言保留章节、构图/学习重播、无 JS、减少动态及模块加载失败完成补充验证。
-- 手机坐标轴留白调整后，另行在全部 24 组上核对无溢出及纵轴标题/刻度无重叠；生成并检查手机和桌面截图。
-- 原 Lab 九页面的 216 组合回归、原仓储完整浏览器测试，以及首页/导航/博客目录 UI 回归通过。没有修改仓储文件或后端。

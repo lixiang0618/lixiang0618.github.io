@@ -21,7 +21,7 @@ test('every building workspace has both a semantic lock and genuinely disabled c
 });
 test('concept pages never fabricate experiments, pipelines or results',()=>{for(const p of registry.projects.filter(p=>p.status==='concept'))for(const lang of ['en','zh']){const dom=new JSDOM(views.projectPage(p,lang));assert.equal(dom.window.document.querySelectorAll('.lab-workspace,.experiment-tabs,.lab-pipeline').length,0);assert(dom.window.document.querySelector('.concept-note'));dom.window.close();}});
 test('LearnGo and research-specific previews retain uncertainty and never mark a fake implementation live',()=>{
- const lookup=id=>registry.projects.find(p=>p.id===id);assert.deepEqual(lookup('learngo').experiments.map(x=>x.title),['SuperChat','SuperNote','SuperScan']);assert.equal(lookup('wellife').experiments.length,2);assert.equal(lookup('cchan').experiments.length,1);assert(page('zh',lookup('cchan')).includes('虚构数据教学演示'));
+ const lookup=id=>registry.projects.find(p=>p.id===id);assert.deepEqual(lookup('learngo').experiments.map(x=>x.title),['SuperChat','SuperNote','SuperScan']);assert.equal(lookup('wellife').experiments.length,2);assert.equal(lookup('cchan').experiments.length,1);assert(page('zh',lookup('cchan')).includes('交互患者与队列为示意'));
  const warehouse=page('en',lookup('or'));assert(warehouse.includes('confidence interval'));assert(warehouse.includes('Absolute Gap ='));assert(warehouse.includes('b &gt; 2:'));assert(!warehouse.includes('experiment-lock'));
  assert(page('en',lookup('sna')).includes('26 × 26'));assert(!page('en',lookup('sna')).includes('experiment-lock'));assert.throws(()=>views.workspace({...lookup('or').experiments[0],status:'live'},'en'),/implemented, tested/);
 });
