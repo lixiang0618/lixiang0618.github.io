@@ -25,7 +25,13 @@
         "water": 68.4
       },
       "provenance": "user-supplied-demo",
-      "photo": null
+      "photo": {
+        "path": "/assets/wellife/foods/rice.jpg",
+        "author": "Douglas Perkins",
+        "license": "CC0",
+        "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/deed.en",
+        "source": "https://commons.wikimedia.org/wiki/File:A_bowl_of_rice.jpg"
+      }
     },
     {
       "id": "chicken",
@@ -49,7 +55,13 @@
         "water": 65.3
       },
       "provenance": "user-supplied-demo",
-      "photo": null
+      "photo": {
+        "path": "/assets/wellife/foods/chicken.jpg",
+        "author": "The Bushranger",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "source": "https://commons.wikimedia.org/wiki/File:Butterflied_chicken_breast.jpg"
+      }
     },
     {
       "id": "egg",
@@ -73,7 +85,13 @@
         "water": 74.6
       },
       "provenance": "user-supplied-demo",
-      "photo": null
+      "photo": {
+        "path": "/assets/wellife/foods/egg.jpg",
+        "author": "Ramesh NG",
+        "license": "CC BY-SA 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+        "source": "https://commons.wikimedia.org/wiki/File:Boiled_Egg_-_Crossection.jpg"
+      }
     },
     {
       "id": "broccoli",
@@ -97,7 +115,13 @@
         "water": 89.3
       },
       "provenance": "user-supplied-demo",
-      "photo": null
+      "photo": {
+        "path": "/assets/wellife/foods/broccoli.jpg",
+        "author": "Horacio Cambeiro",
+        "license": "CC BY-SA 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+        "source": "https://commons.wikimedia.org/wiki/File:Cooked_broccoli_florets_in_a_textured_glass_bowl.jpg"
+      }
     },
     {
       "id": "banana",
@@ -121,7 +145,13 @@
         "water": 74.9
       },
       "provenance": "user-supplied-demo",
-      "photo": null
+      "photo": {
+        "path": "/assets/wellife/foods/banana.jpg",
+        "author": "Evan-Amos",
+        "license": "CC BY-SA 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+        "source": "https://commons.wikimedia.org/wiki/File:Banana-Single.jpg"
+      }
     },
     {
       "id": "apple",
@@ -145,7 +175,13 @@
         "water": 85.6
       },
       "provenance": "user-supplied-demo",
-      "photo": null
+      "photo": {
+        "path": "/assets/wellife/foods/apple.jpg",
+        "author": "Abhijit Tembhekar from Mumbai, India",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+        "source": "https://commons.wikimedia.org/wiki/File:Red_Apple.jpg"
+      }
     },
     {
       "id": "milk",
@@ -169,7 +205,13 @@
         "water": 88.1
       },
       "provenance": "user-supplied-demo",
-      "photo": null
+      "photo": {
+        "path": "/assets/wellife/foods/milk.jpg",
+        "author": "Stefan Kühn",
+        "license": "CC BY-SA 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+        "source": "https://commons.wikimedia.org/wiki/File:Milk_glass.jpg"
+      }
     },
     {
       "id": "salmon",
@@ -193,7 +235,13 @@
         "water": 64.8
       },
       "provenance": "user-supplied-demo",
-      "photo": null
+      "photo": {
+        "path": "/assets/wellife/foods/salmon.jpg",
+        "author": "NjoyHarmony",
+        "license": "CC0",
+        "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/deed.en",
+        "source": "https://commons.wikimedia.org/wiki/File:SalmonFillet.jpg"
+      }
     },
     {
       "id": "oats",
@@ -217,7 +265,13 @@
         "water": 10.8
       },
       "provenance": "user-supplied-demo",
-      "photo": null
+      "photo": {
+        "path": "/assets/wellife/foods/oats.jpg",
+        "author": "en:user:Hankwang",
+        "license": "Public domain",
+        "licenseUrl": "https://commons.wikimedia.org/wiki/File:Rolled_oats.jpg",
+        "source": "https://commons.wikimedia.org/wiki/File:Rolled_oats.jpg"
+      }
     },
     {
       "id": "tofu",
@@ -241,7 +295,13 @@
         "water": 69.8
       },
       "provenance": "user-supplied-demo",
-      "photo": null
+      "photo": {
+        "path": "/assets/wellife/foods/tofu.jpg",
+        "author": "fireworks",
+        "license": "CC0",
+        "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/deed.en",
+        "source": "https://commons.wikimedia.org/wiki/File:Tofu_3.jpg"
+      }
     }
   ],
   "activities": [
@@ -385,5 +445,5 @@
     }
   ],
   "sources": [],
-  "note": "Nutrient values supplied by the user with DEMO identifiers. These are not verified USDA records. MET values are illustrative teaching assumptions. Food photographs are pending upload."
+  "note": "User-provided DEMO nutrient records and illustrative MET assumptions; not verified USDA/Compendium data. Photographs are locally downloaded from Wikimedia Commons with attribution in assets/wellife/foods/SOURCES.json."
 }
