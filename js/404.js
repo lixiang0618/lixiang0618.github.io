@@ -24,7 +24,7 @@
     // Root-relative links also work when the host serves this file at a deep URL.
     document.querySelectorAll('[data-nf-home]').forEach(n=>{n.href=prefix+'index.html';n.setAttribute('aria-label',t.name+' — '+t.home);const img=n.querySelector('img');if(img){img.src='/assets/branding/xiangology.svg';img.alt='Xiangology';}else n.textContent=t.name;});
     document.querySelector('.site-header .site-nav')?.setAttribute('aria-label',zh?'主要导航':'Primary');
-    const sections=zh?{index:'个人主页',lab:'Lab',blog:'博客',moments:'朋友圈',about:'关于我'}:{index:'Profile',lab:'Lab',blog:'Blog',moments:'Moments',about:'About Me'};
+    const sections=zh?{index:'个人主页',lab:'Lab',blog:'博客',moments:'朋友圈',about:'关于我'}:{index:'Profile',lab:'Lab',blog:'Blog',moments:'Moments',about:'About'};
     document.querySelectorAll('[data-nf-section]').forEach(n=>{const key=n.dataset.nfSection;n.href=prefix+key+'.html';if(key!=='lab')n.textContent=sections[key];});
     document.querySelectorAll('[data-nf-language]').forEach(n=>{n.href=zh?'/404.html':'/zh/404.html';n.textContent=zh?'EN':'中文';});
     const pause=main.querySelector('.nf-pause'),motion=matchMedia('(prefers-reduced-motion: reduce)');let paused=false;

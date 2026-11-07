@@ -36,7 +36,7 @@ function equal(a,b,label,tolerance=1){assert(Math.abs(a-b)<=tolerance,`${label}:
   for(const lang of ['', 'zh/'])for(const name of ['index.html','index-mobile.html','about.html','blog.html','blog-post.html?p=Python','moments.html','404.html','lab.html']){
    await p.goto(base+'/'+lang+name,{waitUntil:'domcontentloaded'});await p.locator('.site-brand-logo').evaluate(n=>n.decode());
    const nav=p.locator('.site-header .site-nav');const urls=await nav.locator('a').evaluateAll(nodes=>nodes.map(n=>new URL(n.href).pathname));assert.deepEqual(urls.slice(0,4),['index','lab','blog','moments'].map(file=>'/'+lang+file+'.html'));
-   assert.equal(await nav.locator('.nav-beta').count(),1);assert.equal(await p.locator('.site-brand-logo').getAttribute('src'),'/assets/branding/xiangology.svg');
+   assert.equal(await nav.locator('.nav-beta').count(),0);assert.equal(await p.locator('.site-brand-logo').getAttribute('src'),'/assets/branding/xiangology.svg');
    assert(await nav.locator('a').evaluateAll(nodes=>nodes.every(n=>{const r=n.getBoundingClientRect();return r.left>=0&&r.right<=innerWidth+1;})),'nav bounds');
    const rectangles=await nav.locator('a').evaluateAll(nodes=>nodes.map(n=>n.getBoundingClientRect().toJSON()));for(let i=0;i<rectangles.length;i++)for(let j=i+1;j<rectangles.length;j++){const a=rectangles[i],d=rectangles[j];assert(a.right<=d.left+.5||d.right<=a.left+.5||a.bottom<=d.top+.5||d.bottom<=a.top+.5,'nav overlap');}
    if(name==='lab.html'){

@@ -12,7 +12,7 @@ function page(lang,project){
  const opposite=project?views.route(project,zh?'en':'zh'):(zh?'/lab.html':'/zh/lab.html');
  const title=project?.id==='cchan'?`${zh?'欺诈预测 Playground':'Fraud Detection Playground'} · Lab · Xiangology`:project?`${project.detailTitle?views.t(project.detailTitle,lang):project.title} · Lab · Xiangology`:'The Playground · Lab · Xiangology';
  const description=project?.id==='cchan'?(zh?'通过耦合图与成本敏感学习，探索医疗欺诈预测。':'Exploring healthcare fraud detection through coupling graphs and cost-sensitive learning.'):project?views.t(project.description,lang):views.label(lang,'An interactive collection of AI applications, machine learning models, optimization algorithms, and research explorations.','汇集 AI 应用、机器学习模型、优化算法与研究探索的交互实验空间。');
- const nav=[['index',zh?'个人主页':'Profile'],['lab','Lab <span class="nav-beta">Beta</span>'],['blog',zh?'博客':'Blog'],['moments',zh?'朋友圈':'Moments'],['about',zh?'关于我':'About Me']].map(([id,label])=>`      <a href="${prefix+id}.html"${id==='lab'?' aria-current="page"':''}>${label}</a>`).join('\n');
+ const nav=[['index',zh?'个人主页':'Profile'],['lab','Lab'],['blog',zh?'博客':'Blog'],['moments',zh?'朋友圈':'Moments'],['about',zh?'关于我':'About']].map(([id,label])=>`      <a href="${prefix+id}.html"${id==='lab'?' aria-current="page"':''}>${label}</a>`).join('\n');
  return `<!doctype html>
 <html lang="${zh?'zh-CN':'en'}" class="lab-document">
 <head>
