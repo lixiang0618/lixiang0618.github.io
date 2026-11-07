@@ -68,3 +68,13 @@ CCHAN 后续已开放明确标注虚构数据的教学版，参见 [cchan-playgr
 - 验证无 JavaScript 静态内容，并强制不透明样式检查无模糊时的锁层可读性；这不是不支持 backdrop-filter 的旧浏览器实机验证。
 - 原首页/导航/博客目录浏览器回归通过。全套单元测试 94 项中 91 项通过；3 项原有博客数据基线断言失败（文章数量、置顶顺序、生成元数据），未修改无关内容。
 - 已检查移动与桌面截图。真实 Safari、移动硬件及生产托管行为未验证；没有连接真实模型或算法，符合本阶段范围。
+
+## Warm Clay Research Gallery（2026-11-07）
+
+- 仅首页新增 `lab-gallery` 作用域与 `lab/gallery.css`、`js/lab-gallery.js`。原导航几何、项目顺序／入口、状态和语言切换保留，所有项目详情 HTML 输出不变。
+- Hero 精简为 The Playground. 与副标题；固定 SVG 节点和预设路径在 1.9 秒内编织并向两侧舒展。仓库没有 `lab_network_weave_fixed_preview.html`，因此依据任务描述实现，未声称逐帧复刻缺失预览。
+- Blog／Moments 的 editorial curtain 只匹配原有页面路径；本次不改变它，也不加载第二层幕布。保留原生导航／历史和对应语言的移动端主页入口，Lab 在自己的标题区域完成入场。
+- 五张动态 SVG：RAG 资料检索与生成、六通道周期信号与检测窗口、通道内穿梭车／停靠取货、异构图与示意成本下降、真实 SNA 归档的板块／核心／中间人高亮。CCHAN 封面明确标注示意，不展示虚构实验数值；SNA 原始坐标、分组与关系来自已有 JSON。
+- 标题和插画静态 HTML 默认完整可见；脚本失败、无脚本及减少动态效果时保留有效入口与完整插画。IntersectionObserver 管理封面 CSS 动画暂停，后台标签暂停，SNA 定时器仅在可见时运行，无额外依赖或接口请求。
+- 精简卡片文字与标签，Live／开发中使用更清晰状态徽标；未来项目保持 Concept。
+- 定向验证：`node --test tests/lab-shell.test.cjs`，`node tests/lab-gallery-browser.cjs`，`node dev/build-vercel.js`。浏览器覆盖 375/390/430/768/1440px、中英文、深浅主题、入口、布局稳定、节点位置稳定、视口暂停、减少动态效果、无脚本及增强脚本失败回退。真实 iPhone Safari 仍需人工确认。
