@@ -71,3 +71,12 @@ NODE_PATH=/path/to/test/dependencies node --test tests/cchan.test.cjs tests/lab-
 SITE_TEST_URL=http://127.0.0.1:8118 NODE_PATH=/path/to/test/dependencies node tests/cchan-browser.cjs
 node dev/build-vercel.js
 ```
+
+## 定向 UI 修订（2026-11-07）
+
+- Section 01 使用严格的桌面三列两行六卡片；移动端按相同叙事顺序单列排列。新增直接患者关系、缺失共享实体与群体耦合示意，教学图不写入研究拓扑。
+- 损失模块恢复单一 Cost-Sensitive Weight 外框，包含上部成本矩阵／归一化权重与下部 BCE 条；最终损失保持框外。隐藏冗余依赖线，数学解释保留在气泡及公式详情中。
+- 成本表为连续 2×2 网格，TP／FN 场景和对应单元格使用相同绿色双向联动。
+- 网络增加边命中区与独立高亮覆盖层，突出邻居和端点，保留实线／虚线及全部原始节点坐标和关系。键盘聚焦滚动后重新定位气泡。
+- Top-K 保留全部原始数值，优化曲线配色和图例；支持曲线悬浮、图例点击锁定／切换和 Show All 重置。
+- 定向浏览器用例新增六卡片顺序与等宽／同行等高、邻居与边覆盖层、边气泡、图例锁定及重置检查。
