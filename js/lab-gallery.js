@@ -9,7 +9,8 @@
  const observer='IntersectionObserver'in window?new IntersectionObserver(entries=>{for(const entry of entries)entry.isIntersecting?visible.add(entry.target):visible.delete(entry.target);update();},{threshold:.1}):null;
  for(const art of arts)observer?observer.observe(art):visible.add(art);
  // The base HTML is visible without this class; even interrupted animation cannot trap content.
- if(hero&&!motion.matches&&!document.hidden){hero.classList.add('weave-enter');heroTimer=setTimeout(()=>hero.classList.remove('weave-enter'),2200);}
+ function enter(){if(hero&&!motion.matches&&!document.hidden){hero.classList.add('weave-enter');heroTimer=setTimeout(()=>hero.classList.remove('weave-enter'),2200);}}
+ if(window.labEntryReady)window.labEntryReady.then(enter);else enter();
  document.addEventListener('visibilitychange',update);motion.addEventListener('change',update);
  window.addEventListener('pagehide',e=>{clearInterval(timer);clearTimeout(heroTimer);arts.forEach(a=>a.classList.remove('is-running'));hero?.classList.remove('weave-enter');if(!e.persisted)observer?.disconnect();});window.addEventListener('pageshow',update);
  // Match editorial navigation's mobile home entrypoint, retaining native links/history.

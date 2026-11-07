@@ -78,3 +78,12 @@ CCHAN 后续已开放明确标注虚构数据的教学版，参见 [cchan-playgr
 - 标题和插画静态 HTML 默认完整可见；脚本失败、无脚本及减少动态效果时保留有效入口与完整插画。IntersectionObserver 管理封面 CSS 动画暂停，后台标签暂停，SNA 定时器仅在可见时运行，无额外依赖或接口请求。
 - 精简卡片文字与标签，Live／开发中使用更清晰状态徽标；未来项目保持 Concept。
 - 定向验证：`node --test tests/lab-shell.test.cjs`，`node tests/lab-gallery-browser.cjs`，`node dev/build-vercel.js`。浏览器覆盖 375/390/430/768/1440px、中英文、深浅主题、入口、布局稳定、节点位置稳定、视口暂停、减少动态效果、无脚本及增强脚本失败回退。真实 iPhone Safari 仍需人工确认。
+
+### 项目接入与 Lab 转场补充
+
+- 移除首页 Horizon 和 Agent / RAG 入口，保留旧地址兼容；GraphRAG、Recommendation 作为最后两张正式卡片，状态为 Coming to Lab／待接入网站，表示已有项目尚未接入本站。
+- GraphRAG 封面联动图谱路径、检索片段和生成内容；Recommendation 展示偏好连接、候选召回与排序。沿用可见性暂停／减少动态效果规则。
+- 两个目标页只有项目标题、简短定位与空白骨架工作区；工作区通过 inert／disabled 隔离，由像素网格、模糊和锁头覆盖，不虚构项目输出。
+- 复用现有 editorial curtain，Lab 目的地专用暖矿物绿 `#DCE5DF`、深绿 `#30483D` 和陶土色短线；Profile／Blog／Moments 原黄色保留。About、文章页和 Lab 详情页仅补入公共转场资源以支持进入 Lab，不改内容功能。
+- Lab 在 head 阶段建立入场就绪 Promise，由 viewTransition.finished 释放；页面增强等待其完成后再启动 Network Weave。直接访问、减少动态效果及不支持跨文档 View Transition 的浏览器直接显示页面。等待中的 Hero 有有限时长 CSS 回退，避免异常时永久隐藏。
+- `tests/lab-entry-browser.cjs` 实际暂停幕布在中点，核验 Lab 配色及 Weave 尚未启动，再恢复幕布并验证 Weave 开始；覆盖 Profile、Moments、中文 Blog 手机端、About 和项目返回 Lab。

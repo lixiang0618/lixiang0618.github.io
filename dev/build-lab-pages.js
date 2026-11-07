@@ -28,6 +28,8 @@ function page(lang,project){
   <meta property="og:description" content="${views.e(description)}">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://lxiang.cc${url}">
+  <link rel="stylesheet" href="/editorial-curtain.css">
+  <script src="/js/editorial-curtain.js"></script>
   <script src="/js/blog-theme.js"></script>
   <link rel="icon" href="/Resources/微信头像.jpg">
   <link rel="stylesheet" href="/styles.css">

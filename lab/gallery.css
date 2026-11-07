@@ -108,3 +108,21 @@
 @media(prefers-reduced-motion:reduce){.lab-gallery *,.lab-gallery *::before,.lab-gallery *::after{animation:none!important;transition:none!important}.lab-gallery .project-card:hover{transform:none}.gallery-art .rag-generated,.gallery-art .cost-curve{stroke-dashoffset:0}.shuttle-load{opacity:1}}
 .gallery-art:not(.is-enhanced) *{animation:none!important}
 .gallery-art .sna-gallery-edge.is-lens-edge{stroke:var(--lab-orange);opacity:.5;stroke-width:2}
+.lab-gallery .status-integration{color:var(--lab-orange);background:var(--lab-soft)}
+.graphrag-network circle,.recommend-avatar{fill:var(--art-green);stroke:var(--lab-surface);stroke-width:2}
+.gallery-art .graphrag-network path{stroke:var(--lab-line);stroke-width:2}
+.gallery-art .graph-rag-route{animation:graph-rag-search 6s ease infinite}
+.graphrag-network circle:nth-last-child(2){fill:var(--lab-orange);animation:graph-rag-node 6s ease infinite}
+.gallery-art .recommend-person{fill:var(--art-green);stroke:none}
+.gallery-art .recommend-route{stroke:var(--lab-line);animation:recommend-route 7s ease infinite}
+.gallery-art .recommend-route.route-1{animation-delay:.6s}.gallery-art .recommend-route.route-2{animation-delay:1.2s}.gallery-art .recommend-route.route-3{animation-delay:1.8s}
+.recommend-candidate{animation:recommend-match 7s ease infinite}.recommend-candidate.candidate-1{animation-delay:.6s}.recommend-candidate.candidate-2{animation-delay:1.2s}
+.recommend-ranked{animation:recommend-rank 7s ease infinite}.recommend-ranked.rank-1{animation-delay:.35s}.recommend-ranked.rank-2{animation-delay:.7s}
+.gallery-art .recommend-ranked path{stroke:var(--lab-orange);stroke-width:2.3}
+@keyframes graph-rag-search{0%,12%,100%{stroke:var(--lab-line)}25%,65%{stroke:var(--lab-orange);stroke-width:3}}
+@keyframes graph-rag-node{0%,100%{stroke-width:2}30%,60%{stroke:var(--lab-orange);stroke-width:6}}
+@keyframes recommend-route{0%,10%,90%,100%{stroke:var(--lab-line)}30%,55%{stroke:var(--lab-orange)}}
+@keyframes recommend-match{0%,15%,95%,100%{fill:var(--lab-soft)}35%,60%{fill:var(--lab-line);stroke:var(--lab-orange)}}
+@keyframes recommend-rank{0%,30%,100%{transform:translateX(0)}50%,75%{transform:translateX(-9px)}}
+html[data-lab-entry="pending"] .gallery-hero{animation:lab-entry-fallback 4s step-end both}
+@keyframes lab-entry-fallback{0%{opacity:0}100%{opacity:1}}

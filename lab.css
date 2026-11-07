@@ -115,3 +115,6 @@
 @media(prefers-reduced-motion:reduce) { .project-card { transition:none; }.project-card:hover { transform:none; } }
 .lab-icon-arrow { display:inline-block; vertical-align:middle; flex:none; }
 .concept-mark .lab-icon-arrow { width:32px; height:32px; }
+.integration-workspace{margin:12px 0 72px}.integration-workspace .workspace-preview{min-height:380px}
+.integration-lock{background-image:linear-gradient(90deg,transparent 50%,var(--lab-glass) 50%),linear-gradient(transparent 50%,var(--lab-glass) 50%);background-size:18px 18px;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.integration-lock .lock-copy{max-width:260px;padding:30px 24px}.integration-lock .lock-copy h3{margin-bottom:0}
