@@ -6,6 +6,10 @@
   const motion = window.matchMedia?.('(prefers-reduced-motion: reduce)') || {matches: true};
   const supported = 'onpageswap' in window && 'onpagereveal' in window && 'navigation' in window &&
     CSS.supports('selector(:active-view-transition-type(editorial))');
+  let releaseLabEntry;
+  const labEntry = /\/lab\.html$/.test(location.pathname);
+  if(labEntry){window.labEntryReady=new Promise(resolve=>{releaseLabEntry=()=>{delete document.documentElement.dataset.labEntry;resolve();};});
+    try{const intent=JSON.parse(sessionStorage.getItem(key));if(supported&&!motion.matches&&intent?.url===location.href&&Date.now()-intent.time<120000)document.documentElement.dataset.labEntry='pending';}catch{}}
   let pending = null;
   let busy = false;
   let timeout;
@@ -14,9 +18,11 @@
   const forget = () => { try { sessionStorage.removeItem(key); } catch { /* Private storage. */ } };
   function page(url) {
     if (url.origin !== location.origin || url.search || url.hash) return null;
-    const match = url.pathname.match(/^(.*\/)(index(?:-mobile)?\.html|blog\.html|moments\.html)?$/);
+    const project=url.pathname.match(/^(.*\/)lab\/projects\/[^/]+\/$/);
+    if(project)return {base:project[1],title:'PROJECT.'};
+    const match = url.pathname.match(/^(.*\/)(index(?:-mobile)?\.html|blog\.html|moments\.html|lab\.html|about\.html|blog-post\.html)?$/);
     if (!match) return null;
-    return {base: match[1], title: !match[2] || match[2].startsWith('index') ? 'PROFILE.' : match[2] === 'blog.html' ? 'BLOG.' : 'MOMENTS.'};
+    return {base: match[1], title: !match[2] || match[2].startsWith('index') ? 'PROFILE.' : ({'blog.html':'BLOG.','moments.html':'MOMENTS.','lab.html':'LAB.','about.html':'ABOUT.','blog-post.html':'ARTICLE.'}[match[2]])};
   }
   function clean() {
     document.querySelector('.editorial-curtain')?.remove();
@@ -26,7 +32,7 @@
   }
   function curtain(title, transition) {
     const element = document.createElement('div');
-    element.className = 'editorial-curtain';
+    element.className = 'editorial-curtain'+(title==='LAB.'?' editorial-curtain-lab':'');
     element.setAttribute('aria-hidden', 'true');
     const text = document.createElement('strong');
     text.textContent = title;
@@ -35,9 +41,10 @@
     transition.types.add('editorial');
     // Keep the named element alive until the browser releases its snapshot.
     // Removing it at `ready` can cancel the generated pseudo-element animation.
-    transition.finished.finally(clean).catch(() => {});
+    transition.finished.finally(()=>{clean();if(labEntry)releaseLabEntry?.();}).catch(() => {});
   }
   document.addEventListener('DOMContentLoaded', () => {
+    if(!supported||motion.matches)releaseLabEntry?.();
     // Match the site's existing mobile entrypoints without an intermediate redirect.
     if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
       document.querySelectorAll('.site-nav a, a.brand').forEach(link => {
@@ -53,8 +60,9 @@
     const link = event.target.closest?.('a[href]');
     if (!link || event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || link.hasAttribute('download') || (link.target && link.target !== '_self')) return;
     const url = new URL(link.href);
-    const target = page(url), current = page(new URL(location.href));
+    const target = page(url), current = page(new URL(location.origin+location.pathname));
     if (!target || !current || target.base !== current.base || target.title === current.title) return;
+    if (!['PROFILE.','BLOG.','MOMENTS.','LAB.'].includes(target.title)) return;
     if (busy) { event.preventDefault(); return; }
     if (!supported || motion.matches) return;
     if (current.title === 'PROFILE.') write('lx_profile_scroll:' + current.base, String(scrollY));
@@ -73,9 +81,9 @@
     let intent;
     try { intent = JSON.parse(read(key)); } catch { /* Invalid/stale intent. */ }
     forget();
-    if (!event.viewTransition || motion.matches || !intent || intent.url !== location.href || Date.now() - intent.time > 120000 || navigation.activation?.navigationType !== 'push' || navigation.activation.from?.key !== intent.from) { clean(); return; }
+    if (!event.viewTransition || motion.matches || !intent || intent.url !== location.href || Date.now() - intent.time > 120000 || navigation.activation?.navigationType !== 'push' || navigation.activation.from?.key !== intent.from) { clean(); releaseLabEntry?.(); return; }
     const target = page(new URL(location.href));
-    if (!target || target.title !== intent.title) { clean(); return; }
+    if (!target || target.title !== intent.title) { clean(); releaseLabEntry?.(); return; }
     if (target.title === 'PROFILE.') {
       const position = Number(read('lx_profile_scroll:' + target.base));
       if (Number.isFinite(position) && position > 0) window.scrollTo({top: position, behavior: 'instant'});
@@ -83,7 +91,7 @@
     busy = true;
     curtain(target.title, event.viewTransition);
   });
-  window.addEventListener('pageshow', event => { if (event.persisted) { forget(); clean(); } });
+  window.addEventListener('pageshow', event => { if (event.persisted) { forget(); clean(); releaseLabEntry?.(); } else if(!busy&&document.documentElement.dataset.labEntry!=='pending')releaseLabEntry?.(); });
   window.navigation?.addEventListener('navigateerror', () => { forget(); clean(); });
   window.navigation?.addEventListener('navigate', event => {
     const intent = pending;

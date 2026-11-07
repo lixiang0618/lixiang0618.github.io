@@ -1,0 +1,19 @@
+/* Focused checks for the compact four-section SNA presentation. */
+const {chromium}=require('playwright-core'),assert=require('node:assert/strict'),d=require('../lab/sna/data.json');
+const base=process.env.SITE_TEST_URL||'http://127.0.0.1:8118';
+(async()=>{const b=await chromium.launch({executablePath:process.env.CHROMIUM_PATH||'/usr/bin/chromium',args:['--no-sandbox','--disable-dev-shm-usage']});try{
+ for(const [width,lang,theme] of [[375,'zh','light'],[430,'en','dark'],[1024,'zh','light'],[1440,'en','light']]){
+  const c=await b.newContext({viewport:{width,height:950}});await c.addInitScript(t=>localStorage.setItem('lx_blog_theme',t),theme);await c.route('**/*',r=>r.request().url().startsWith(base)?r.continue():r.abort());const p=await c.newPage(),errors=[];p.on('pageerror',e=>errors.push(e.message));await p.goto(base+(lang==='zh'?'/zh':'')+'/lab/projects/sna/');await p.waitForSelector('#sna-app[data-ready=true]');
+  assert.equal(await p.locator('h1').textContent(),'SNA Playground');assert.equal(await p.locator('.sna-section').count(),4);assert.equal(await p.locator('.sna-formula-grid>.sna-card').count(),3);assert.equal(await p.locator('#qap,#sna-sort,#sna-block-matrix,.sna-threshold').count(),0);
+  assert.equal(await p.locator('#sna-matrix [data-cell]').count(),676);await p.locator('#sna-matrix [data-cell="0,1"]').focus();assert((await p.locator('#sna-cell').textContent()).includes('1.217958179'));await p.keyboard.press('ArrowRight');assert.equal(await p.locator('#sna-matrix [data-cell="0,2"]').getAttribute('aria-pressed'),'true');
+  for(const term of ['pca','nf','si']){await p.locator(`.sna-dictionary [data-term="${term}"]`).focus();assert(await p.locator(`.sna-formula [data-term="${term}"].is-linked`).count()>0);}await p.locator('.sna-dictionary [data-term="pca"]').click();assert(await p.locator('#sna-symbol-pca').isVisible());const tip=await p.locator('#sna-symbol-pca').boundingBox();assert(tip.x>=0&&tip.x+tip.width<=width);await p.keyboard.press('Escape');assert(!await p.locator('#sna-symbol-pca').isVisible());assert(!((await p.locator('#sna-blocks-list').textContent()).includes('Block 1')));
+  for(const id of ['core','block','broker']){assert.equal(await p.locator(`#sna-${id}-network .sna-node`).count(),26);assert.equal(await p.locator(`#sna-${id}-network .sna-edge`).count(),269);}
+  assert.equal(await p.locator('.sna-block-card').count(),4);await p.locator('.sna-block-card[data-group="3"]').focus();assert.equal(await p.locator('#sna-block-network .sna-node:not(.sna-node-muted)').count(),9);
+  const ids=await p.locator('.sna-bar-row').evaluateAll(es=>es.map(e=>+e.dataset.school)),expected=d.nodes.filter(n=>n.brokerage&&n.brokerage.gatekeeper+n.brokerage.liaison>0).map(n=>n.id);assert.deepEqual(ids,expected);assert.equal(ids.length,8);
+  await p.locator('.sna-bar-row[data-school="1"]').focus();assert.equal(await p.locator('#sna-broker-network .sna-node-selected[data-school="1"]').count(),1);assert.equal(await p.locator('#sna-broker-network .sna-triad-edge').count(),2);assert.equal(await p.locator('.sna-triad .sna-group-envelope').count(),4);
+  if(width>1000){for(const [left,right] of [['#sna-block-network','#sna-blocks-list'],['#sna-broker-network','.sna-frequency']]){const [a,z]=await p.evaluate(([l,r])=>[l,r].map(s=>{const b=document.querySelector(s).getBoundingClientRect();return {y:b.y,height:b.height};}),[left,right]);assert(Math.abs(a.y-z.y)<2);assert(Math.abs(a.height-z.height)<2,`${left}: ${a.height} != ${z.height}`);}}
+  assert(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));assert.deepEqual(errors,[]);
+  for(const id of ['gravity','core','blocks','microscope']){await p.locator('#'+id).scrollIntoViewIfNeeded();await p.screenshot({path:`/tmp/sna-compact-${width}-${id}.png`});}
+  await c.close();console.log('PASS compact SNA',width,lang,theme);
+ }
+}finally{await b.close();}})().catch(e=>{console.error(e);process.exitCode=1;});

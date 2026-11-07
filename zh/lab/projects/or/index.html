@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="zh-CN" class="lab-document">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>仓储仿真游乐场 · Lab · Xiangology</title>
+  <meta name="description" content="配置 SP-AS/RS 仓库、探索双指令运动，并对比浏览器 Monte Carlo 估计与解析近似。">
+  <link rel="canonical" href="https://lxiang.cc/zh/lab/projects/or/">
+  <link rel="alternate" hreflang="en" href="https://lxiang.cc/lab/projects/or/">
+  <link rel="alternate" hreflang="zh-CN" href="https://lxiang.cc/zh/lab/projects/or/">
+  <link rel="alternate" hreflang="x-default" href="https://lxiang.cc/lab/projects/or/">
+  <meta property="og:title" content="仓储仿真游乐场 · Lab · Xiangology">
+  <meta property="og:description" content="配置 SP-AS/RS 仓库、探索双指令运动，并对比浏览器 Monte Carlo 估计与解析近似。">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://lxiang.cc/zh/lab/projects/or/">
+  <link rel="stylesheet" href="/editorial-curtain.css">
+  <script src="/js/editorial-curtain.js"></script>
+  <script src="/js/blog-theme.js"></script>
+  <link rel="icon" href="/Resources/微信头像.jpg">
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="/assets/branding/branding.css">
+  <link rel="stylesheet" href="/lab.css">
+  <script defer src="/lab/shared/project-registry.js"></script>
+  <script defer src="/lab/shared/lab-render.js"></script>
+  <script defer src="/js/lab.js"></script>
+  <link rel="stylesheet" href="/lab/warehouse/warehouse.css"><script defer src="/lab/warehouse/core.js"></script><script defer src="/lab/warehouse/visual.js"></script><script defer src="/lab/warehouse/cycle.js"></script><script defer src="/lab/warehouse/cycle-view.js"></script><script defer src="/lab/warehouse/app.js"></script>
+</head>
+<body class="lab-page" data-project="or">
+  <header class="site-header">
+    <a class="brand" href="/zh/index.html" aria-label="Xiangology — 首页"><img class="site-brand-logo" src="/assets/branding/xiangology.svg" alt="Xiangology" width="168" height="42"></a>
+    <nav class="site-nav" aria-label="主要导航">
+      <a href="/zh/index.html">个人主页</a>
+      <a href="/zh/lab.html" aria-current="page">Lab</a>
+      <a href="/zh/blog.html">博客</a>
+      <a href="/zh/moments.html">朋友圈</a>
+      <a href="/zh/about.html">关于我</a>
+    </nav>
+  </header>
+  <div class="lab-options"><a class="lab-language" href="/lab/projects/or/" lang="en">English</a><button type="button" data-lab-theme aria-pressed="false">深色模式</button></div>
+  <main class="lab-main" id="lab-main">
+    <header class="wh-header"><a class="lab-back" href="/zh/lab.html">← Lab</a><h1>仓储仿真游乐场</h1></header><div id="warehouse-app">
+ <section class="wh-section" aria-labelledby="wh-cycle-title"><div class="wh-section-title"><span>01</span><h2 id="wh-cycle-title">一次存储与取货周期</h2></div>
+ <div class="wh-cycle-pair"><article class="wh-cycle-card wh-dc"><div class="wh-card-title"><h3>DC · 双指令</h3><span>FOCUS</span></div><div id="wh-dc-scene" class="wh-flat-scene"></div><output id="wh-dc-clock" class="wh-cycle-clock" aria-live="off">0.0 s</output></article><article class="wh-cycle-card wh-sc"><div class="wh-card-title"><h3>SC · 单指令</h3><span>BASELINE</span></div><div id="wh-sc-scene" class="wh-flat-scene"></div><output id="wh-sc-clock" class="wh-cycle-clock" aria-live="off">0.0 s</output></article></div>
+ <div id="wh-context" class="wh-context" role="status" aria-live="polite"></div><div class="wh-playback"><div class="wh-play-buttons"><button type="button" id="wh-prev" disabled>← 上一步</button><button type="button" id="wh-play" class="wh-play" disabled>播放</button><button type="button" id="wh-next" disabled>下一步 →</button><button type="button" id="wh-replay" disabled>↻ 重播</button></div><label class="wh-progress-control"><span>时间轴</span><input type="range" id="wh-timeline" min="0" max="1" step="any" value="0" disabled><output id="wh-animation-time" aria-live="off">0.0 s</output></label></div>
+ <div class="wh-task-tools"><div class="wh-actions"><button type="button" data-task="random">新任务</button><button type="button" data-task="same">同层</button><button type="button" data-task="different">异层</button></div><span id="wh-task-label"></span></div></section>
+ <section class="wh-section" aria-labelledby="wh-config-title"><div class="wh-section-title"><span>02</span><h2 id="wh-config-title">配置与运行</h2></div><div class="wh-config-grid"><form id="wh-config" class="wh-panel wh-parameter-panel" novalidate><h3>参数配置</h3><div class="wh-fields"><label>货架层数<input name="tiers" type="number" value="12" min="1" max="1000" step="1" required></label><label>货架列数<input name="bays" type="number" value="24" min="1" max="1000" step="1" required></label><label>货格宽度 (m)<input name="cell_width" type="number" value="4.5" min="0.1" max="100" step="0.1" required></label><label>货格高度 (m)<input name="cell_height" type="number" value="4.5" min="0.1" max="100" step="0.1" required></label><label>水平速度 (m/s)<input name="horizontal_speed" type="number" value="2" min="0.1" max="100" step="0.1" required></label><label>垂直速度 (m/s)<input name="vertical_speed" type="number" value="1" min="0.1" max="100" step="0.1" required></label><label>模拟 DC 周期数<select name="samples"><option value="100">100</option><option value="1000">1,000</option><option value="10000" selected>10,000</option><option value="100000">100,000</option><option value="1000000">1,000,000</option></select></label></div>
+ <details class="wh-advanced"><summary>高级设置</summary><div class="wh-fields"><label>随机种子<input name="seed" type="number" value="20261106" min="0" max="4294967295" step="1" required></label><label>坐标约定<select name="coordinate_mode"><option value="tier1_origin">tier1_origin</option><option value="cell_centers">cell_centers</option><option value="far_edges">far_edges</option></select></label></div></details>
+ <dl class="wh-derived"><div><dt>长度 · m</dt><dd id="wh-length">—</dd></div><div><dt>高度 · m</dt><dd id="wh-height">—</dd></div><div><dt>形状因子 · b</dt><dd id="wh-shape">—</dd></div><div><dt>货位数 / 架</dt><dd id="wh-capacity">—</dd></div></dl>
+ <p id="wh-validation" class="wh-validation" role="alert"></p><div class="wh-run-footer"><div class="wh-run"><button type="button" id="wh-run" class="wh-primary" disabled>运行仿真</button><button type="button" id="wh-cancel" hidden>取消</button></div><progress id="wh-progress" max="1" value="0" hidden aria-label="仿真进度"></progress><span id="wh-status" role="status" aria-live="polite">就绪</span></div></form>
+ <div class="wh-panel wh-scene-wrap"><h3>实时三维机架</h3><div id="wh-scene"></div><div class="wh-legend"><span class="wh-store">■ S · 存储</span><span class="wh-retrieve">□ R · 取货</span><span>VP · 垂直平台</span><span>HP · 水平平台</span></div></div></div></section>
+ <section class="wh-section" aria-labelledby="wh-results-title"><div class="wh-section-title"><span>03</span><h2 id="wh-results-title">仿真结果</h2></div>
+ <div id="wh-results" class="wh-results"><article class="wh-metric "><h3>解析期望时间<small>近似值</small></h3><p id="wh-result-theory">—</p></article><article class="wh-metric "><h3>模拟均值<small>Monte Carlo 估计</small></h3><p id="wh-result-mean">—</p></article><article class="wh-metric wh-metric-focus"><h3>相对差值</h3><p id="wh-result-relative">—</p></article><article class="wh-metric "><h3>绝对差值</h3><p id="wh-result-absolute">—</p></article><article class="wh-metric "><h3>95% Monte Carlo 置信区间</h3><p id="wh-result-ci">—</p></article><article class="wh-metric "><h3>模拟 DC 周期数</h3><p id="wh-result-count">—</p></article></div>
+ <div class="wh-chart-panel wh-panel"><div class="wh-chart-title"><h3>均值收敛</h3><div class="wh-chart-legend"><span class="wh-mean-key">Monte Carlo 运行均值</span><span class="wh-theory-key">解析期望时间</span></div></div><div id="wh-chart"><p class="wh-empty">运行仿真后显示收敛曲线。</p></div><div id="wh-tooltip" class="wh-tooltip" role="status"></div></div>
+ <details class="wh-result-details"><summary>运行详情</summary><p id="wh-result-config"></p><div id="wh-interpretation"></div></details></section>
+ <details class="wh-method"><summary>方法与模型详情</summary>
+ <details><summary>DC / SC 动画时序</summary><p>DC 遵循现有模型：存储完成后才开始取货；异层 VP 移层与取货 HP 往返同时开始。动画使用共同的物理时间轴，统一映射为 18 秒展示。</p><p>SC 展示两次返回 I/O 的单指令。存储后 VP 返回 I/O，空载存储 HP 独立复位；新取货指令使 VP 与取货 HP 出发，同层 HP 需先完成复位再取货。双方在交接点同步后送回 I/O。这是机制对照，不是论文新增的解析或 Monte Carlo 结果。</p></details>
+ <details><summary>系统与运动规则</summary><p>SP-AS/RS 将垂直与水平平台分离：每架一台 VP，每层一台 HP。DC 周期存入一件、取出一件；存完才揭示取货位置，交接时间为零。</p><div class="wh-equations"><p>Xᵢ = xᵢ/vₕ, Yᵢ = yᵢ/vᵥ; Tₛ = X₁ + Y₁</p><p>同层: Tᵣ = |X₁ − X₂| + X₂ + Y₁</p><p>异层: Tᵣ = max(|Y₁ − Y₂|, 2X₂) + Y₂</p><p>T = Tₛ + Tᵣ</p></div><p>异层 VP 与取货 HP 同时开始，较快的一方等待较慢的一方。送达 I/O 即停止计时，不额外等待存储 HP 空载回位。每个独立 DC 重置设备初态。</p></details>
+ <details><summary>解析公式 · 论文式（16）</summary><p>L = mw, H = nh, tₕ = L/vₕ, b = (H/vᵥ)/tₕ; n = 层数.</p><div class="wh-equations"><p>E[T] = tₕ · F(b,n)</p><p>0 &lt; b ≤ 2: F = 3/2 − 1/(6n) + b + (n−1)b²/(24n)</p><p>b &gt; 2: F = 1/2 + 5/(6n) + (4n−1)b/(3n) + (4n−4)/(3nb) − (2n−2)/(3nb²)</p></div><p>连续理论面采用 H=nh，默认离散最高层却位于 (n−1)h。公式保留同层概率 1/n，但异层高度差使用连续近似；计算时不舍入形状因子。</p></details>
+ <details><summary>Monte Carlo、Gap 与置信区间</summary><div class="wh-equations"><p>Êₙ = (1/N) Σ Tᵢ; s² = Σ(Tᵢ−Êₙ)²/(N−1)</p><p>SE = s/√N; CI₉₅ = Êₙ ± 1.959963984540054 · SE</p><p>Absolute Gap = |Êₙ − E[T]|</p><p>Relative Gap = 100 · |Êₙ − E[T]|/|E[T]| %</p></div><p>理论分母为零时相对差值未定义。区间沿用 Python 的正态近似，描述模拟总体均值的抽样不确定性，而非公式的不确定性；早期小样本区间可能不可靠。检查点为同一条序列的前缀，不是独立重复实验。稳定差值可能合理，解析线不必落在区间内。</p><p>浏览器使用 Mulberry32 与无偏整数拒绝抽样，并非 NumPy PCG64；相同种子不代表 Python/JavaScript 序列相同。数值对照使用完全相同的任务序列。</p></details>
+ <details><summary>假设、坐标与限制</summary><p>存取层列独立、均匀、有放回抽样，允许同一货位。没有库存、调度、排队、加减速、非零交接时间、额外深度运动、其他停驻策略、SC 数值比较或回到空闲点的延迟。</p><p>默认 tier1_origin 是复现约定，并非论文公开源码。其他模式用于敏感性分析。模拟完整矩形货架，不为匹配发表表格中不一致的容量标注而删格。较小 Gap 或 b=1 均不证明仓库最优。</p><p>SVG 深度、第二排货架和重播节奏均为教学展示选择；模型坐标可能位于货位参考边界。图形最多显示 12 个层组、20 个列组，实际抽样点仍按比例定位。</p></details>
+ <details><summary>研究来源与复现</summary><p>Tian Liu, Xianhao Xu, Hu Qin, Andrew Lim (2016). <cite>Travel time analysis of the dual command cycle in the split-platform AS/RS with I/O dwell point policy</cite>. Flexible Services and Manufacturing Journal 28:442–460.</p><a href="https://doi.org/10.1007/s10696-015-9221-7" target="_blank" rel="noopener noreferrer">DOI: 10.1007/s10696-015-9221-7</a><p>书目信息与规则取自所提供的 warehouse_dc 复现材料。论文参考图用于指导物理布局；本网站不宣称已独立核验论文全文或拥有作者原始代码。</p></details></details></div>
+    <noscript><p class="lab-phase-note">此实验需要 JavaScript 和 Web Worker 才能进行交互与计算；模型说明仍可阅读。</p></noscript>
+  </main>
+  <footer class="site-footer"><div class="footer-inner"><span>© <span id="year">2026</span> XIANG LI</span></div></footer>
+</body>
+</html>

@@ -95,3 +95,5 @@
     mix-blend-mode: normal;
   }
 }
+/* Lab keeps the same editorial sweep, with a warm mineral palette. */
+.editorial-curtain-lab{--curtain-bg:#DCE5DF;--curtain-text:#30483D;--curtain-accent:#BF7448}

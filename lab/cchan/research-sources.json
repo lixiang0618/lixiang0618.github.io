@@ -1,0 +1,67 @@
+{
+  "paper": {
+    "title": "Healthcare Insurance Fraud Detection under Cost Constraints: A Coupling Heterogeneous Graph Attention Network Approach",
+    "file": "healthcare fraud detection-DSS(1)(1).docx",
+    "sha256": "4f1c33610146bca882809e6e338a353001444f6b471e4c0134ab0b667b3cd089"
+  },
+  "figure7": {
+    "source": "word/media/image7.png",
+    "sha256": "ecf9cdcb1564ec8f7d9fa895610364fd50379ae4168e3b89f850c5fd67757f15",
+    "presentation": "Archived original manuscript image. The current interactive chart uses the user-supplied topk_cost_data.json instead."
+  },
+  "figure3": {
+    "source": "word/media/image3.png",
+    "sha256": "6485fa370953a16a682d7665d3c4751f9f1f2c44007c1804b5b2d0553df76e19",
+    "presentation": "SVG node positions and edge endpoints transcribed from the final-panel illustration."
+  },
+  "settings": {
+    "fullPatients": 20000,
+    "fullFraudulent": 1000,
+    "claims": 1830386,
+    "inspectionCohort": 1000,
+    "normal": 900,
+    "fraudulent": 100,
+    "highClaimFraudulent": 20,
+    "lowerClaimFraudulent": 80,
+    "kRange": [
+      0,
+      100
+    ]
+  },
+  "costMatrix": {
+    "TN": 0,
+    "FP": "C_check",
+    "FN": "Claim amount",
+    "TP": "lambda * C_check",
+    "check": 280.9,
+    "lambda": 0.8,
+    "TPWithDemoParameters": 224.72,
+    "source": "Manuscript Table 3 (definitions); existing teaching parameters retained as requested."
+  },
+  "demo": {
+    "queueCases": 100,
+    "durationMs": 4800,
+    "kind": "fictional illustrative sequence, independent of manuscript Figure 7"
+  },
+  "limitations": [
+    "The interactive Top-K plot uses the user-supplied JSON verbatim. Its upstream generation method and patient-level predictions are not included; fractional K values are retained.",
+    "Figure 3 explicitly draws DD–P1 and DD–P2 edges although the strict common-neighbor rule over the two record triplets would only connect DD to H1. The reproduced illustration is kept separate from the existing rule-based teaching builder; no such additional edges are inferred as real observations.",
+    "Figure 4 uses MLP; text Equation 9 specifies a linear classifier plus sigmoid. The visual follows the supplied figure without asserting an additional implemented model architecture."
+  ],
+  "topkJson": {
+    "file": "topk_cost_data.json",
+    "sha256": "883f9c1cb50e8c0b8dd6cc620c68fd315699a83a7eb0e0d73a5647296397ab24",
+    "pointsPerModel": 100,
+    "models": [
+      "LR",
+      "RF",
+      "SVM",
+      "XGB",
+      "GCN",
+      "GAT",
+      "GraphSAGE",
+      "CCHAN"
+    ],
+    "provenance": "User-supplied curve data; numeric values and fractional K preserved verbatim. Not patient-level records."
+  }
+}

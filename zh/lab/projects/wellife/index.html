@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="zh-CN" class="lab-document">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Wellife — 饮食 · 运动 · 平衡 · Lab · Xiangology</title>
+  <meta name="description" content="体验可复现运动信号与模拟推理；示例营养与 MET 假设支持本地日记，连接食物照片、六轴运动与每日概览。">
+  <link rel="canonical" href="https://lxiang.cc/zh/lab/projects/wellife/">
+  <link rel="alternate" hreflang="en" href="https://lxiang.cc/lab/projects/wellife/">
+  <link rel="alternate" hreflang="zh-CN" href="https://lxiang.cc/zh/lab/projects/wellife/">
+  <link rel="alternate" hreflang="x-default" href="https://lxiang.cc/lab/projects/wellife/">
+  <meta property="og:title" content="Wellife — 饮食 · 运动 · 平衡 · Lab · Xiangology">
+  <meta property="og:description" content="体验可复现运动信号与模拟推理；示例营养与 MET 假设支持本地日记，连接食物照片、六轴运动与每日概览。">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://lxiang.cc/zh/lab/projects/wellife/">
+  <link rel="stylesheet" href="/editorial-curtain.css">
+  <script src="/js/editorial-curtain.js"></script>
+  <script src="/js/blog-theme.js"></script>
+  <link rel="icon" href="/Resources/微信头像.jpg">
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="/assets/branding/branding.css">
+  <link rel="stylesheet" href="/lab.css">
+  <script defer src="/lab/shared/project-registry.js"></script>
+  <script defer src="/lab/shared/lab-render.js"></script>
+  <script defer src="/js/lab.js"></script>
+  <link rel="stylesheet" href="/lab/wellife/wellife.css"><script defer src="/lab/wellife/motion.js"></script><script defer src="/lab/wellife/engine.js"></script><script defer src="/lab/wellife/signal-monitor.js"></script><script defer src="/lab/wellife/app.js"></script>
+</head>
+<body class="lab-page" data-project="wellife">
+  <header class="site-header">
+    <a class="brand" href="/zh/index.html" aria-label="Xiangology — 首页"><img class="site-brand-logo" src="/assets/branding/xiangology.svg" alt="Xiangology" width="168" height="42"></a>
+    <nav class="site-nav" aria-label="主要导航">
+      <a href="/zh/index.html">个人主页</a>
+      <a href="/zh/lab.html" aria-current="page">Lab</a>
+      <a href="/zh/blog.html">博客</a>
+      <a href="/zh/moments.html">朋友圈</a>
+      <a href="/zh/about.html">关于我</a>
+    </nav>
+  </header>
+  <div class="lab-options"><a class="lab-language" href="/lab/projects/wellife/" lang="en">English</a><button type="button" data-lab-theme aria-pressed="false">深色模式</button></div>
+  <main class="lab-main" id="lab-main">
+    <div class="wf" id="wellife-app">
+ <header class="wf-top"><div><a class="wf-back" href="/zh/lab.html">← Lab</a><span class="wf-wordmark">wellife<span>.</span></span></div><span class="wf-tagline">Eat · Move · Balance</span></header>
+ <section class="wf-balance" aria-labelledby="wf-overview"><div class="wf-balance-heading"><h1 id="wf-overview">每日收支</h1><label class="wf-date"><span>日期</span><input id="wf-day" type="date" aria-label="选择日期"></label></div>
+ <div id="wf-preview-note" class="wf-preview-note" hidden><span id="wf-preview-title"></span><button type="button" id="wf-preview-toggle"></button></div>
+ <div class="wf-energy"><article class="wf-net-card"><h2>净能量</h2><div class="wf-donut"><svg id="wf-donut" viewBox="0 0 180 180" role="img" aria-label="暂无能量记录"><g fill="none" stroke-width="13" transform="rotate(-90 90 90)"><circle class="wf-donut-track" cx="90" cy="90" r="74"/><circle id="wf-donut-food" cx="90" cy="90" r="74" pathLength="100" stroke-dasharray="0 100"/><circle id="wf-donut-motion" cx="90" cy="90" r="74" pathLength="100" stroke-dasharray="0 100"/></g></svg><div class="wf-donut-label"><strong id="wf-difference">0</strong><small>kcal</small></div></div><p>摄入 − 额外运动消耗</p></article>
+ <div class="wf-energy-side"><article class="wf-intake-card"><h2><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3v6m3-6v6M3 6h7M6.5 9v12M17 3c-3 3-3 8 0 8h2M19 3v18"/></svg></i>饮食摄入</h2><div class="wf-energy-number"><strong id="wf-in">0</strong><small>kcal</small></div></article><article class="wf-exercise-card"><h2><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="15" cy="4" r="2"/><path d="m12 8 4 3 4 1M12 8l-4 4-4 1m7-2 3 5 5 3M11 14l-3 6H4"/></svg></i>运动消耗</h2><div class="wf-energy-number"><strong id="wf-out">0</strong><small>kcal</small></div></article></div></div>
+ <h2 class="wf-nutrient-heading">营养摄入</h2>
+ <div id="wf-totals" class="wf-nutrients wf-totals"></div>
+</section>
+ <div class="wf-workbenches">
+ <section class="wf-workbench" aria-labelledby="wf-food"><div class="wf-section-title"><h2 id="wf-food">食物识别</h2><span class="wf-step">01 / EAT</span></div>
+ <div class="wf-sample-controls wf-pickers"><button type="button" id="wf-food-prev" aria-label="上一个样本">←</button><label>食物样本<select id="wf-food-sample" disabled></select></label><button type="button" id="wf-food-next" aria-label="下一个样本">→</button><span id="wf-food-index">— / 10</span></div>
+ <div class="wf-photo wf-stage" id="wf-selected-image"></div>
+ <h3 class="wf-detected" id="wf-food-name" aria-live="polite">载入中…</h3>
+ <form id="wf-food-form"><div class="wf-controls"><label>份量 · g<input id="wf-grams" type="number" value="150" min="1" max="5000" step="1" required></label><label class="wf-grow">调整份量<input id="wf-portion" type="range" min="1" max="1000" value="150"></label></div><div id="wf-portion-result" class="wf-nutrients wf-portions"></div><div class="wf-action-footer"><button id="wf-add-food" class="wf-primary wf-add" type="submit" disabled>＋ 添加饮食</button><output id="wf-food-feedback" class="wf-feedback" role="status"></output></div></form></section>
+ <section class="wf-workbench" aria-labelledby="wf-motion"><div class="wf-section-title"><h2 id="wf-motion">运动识别</h2><span class="wf-step">02 / MOVE</span></div><div class="wf-controls wf-dataset-controls wf-pickers"><label class="wf-grow">传感器样本<select id="wf-dataset"><option value="0">Sample 01</option><option value="1">Sample 02</option><option value="2">Sample 03</option><option value="3">Sample 04</option><option value="4">Sample 05</option><option value="5">Sample 06</option></select></label><label>通道<select id="wf-axis"><option value="-1">全部六轴</option><option value="0">Ax</option><option value="1">Ay</option><option value="2">Az</option><option value="3">Vx</option><option value="4">Vy</option><option value="5">Vz</option></select></label></div>
+ <div class="wf-monitor wf-stage"><canvas id="wf-signal" role="img" aria-label="加速度 m/s² 与线速度 m/s"></canvas></div><h3 id="wf-detected-activity" class="wf-detected" aria-live="polite">分析中…</h3>
+ <form id="wf-motion-form"><div class="wf-controls"><label>体重 · kg<input id="wf-kg" type="number" value="70" min="20" max="350" step="0.1" required></label><label>时长 · min<input id="wf-minutes" type="number" value="30" min="1" max="1440" step="1" required></label></div><div class="wf-motion-results"><div class="wf-energy-result" id="wf-energy-result"></div><div id="wf-probabilities" class="wf-probabilities"></div></div>
+ <details class="wf-fuel-details"><summary>供能比例</summary><div class="wf-controls"><label>碳水<input id="wf-fuel-c" type="number" value="60" min="0" max="100" step="1" required></label><label>脂肪<input id="wf-fuel-f" type="number" value="35" min="0" max="100" step="1" required></label><label>蛋白质<input id="wf-fuel-p" type="number" value="5" min="0" max="100" step="1" required></label></div><output id="wf-fuel"></output></details><div class="wf-action-footer"><button id="wf-add-motion" class="wf-primary wf-add" type="submit" disabled>＋ 添加运动</button><output id="wf-motion-feedback" class="wf-feedback" role="status"></output></div></form></section></div>
+ <section class="wf-records" aria-labelledby="wf-records-heading"><div class="wf-section-title"><h2 id="wf-records-heading">今日记录</h2><div class="wf-record-tools"><span id="wf-count"></span><button type="button" id="wf-clear">清空</button></div></div><div id="wf-timeline-list"></div><button type="button" id="wf-view-all" hidden>查看全部</button></section>
+ <details id="wf-method" class="wf-method"><summary>方法与来源</summary><p>食物采用预设图片查表，合成传感器信号通过特征规则与 Softmax 分类。营养为用户提供的示例，MET 为教学假设。</p> <details class="wf-usage"><summary>供能使用估算</summary><div class="wf-comparison"><label>摄入与使用<select id="wf-compare"><option value="carbs">碳水</option><option value="energy">能量</option><option value="protein">蛋白质</option><option value="fat">脂肪</option><option value="sugar">糖</option><option value="water">水</option></select></label><div class="wf-compare-bars"><div><span>摄入</span><i class="wf-meter"><b id="wf-compare-in-bar"></b></i><output id="wf-compare-in"></output></div><div><span id="wf-usage-label">运动能量</span><i class="wf-meter wf-cool"><b id="wf-compare-out-bar"></b></i><output id="wf-compare-out"></output></div></div></div></details><div class="wf-method-grid">
+ <article><h3>运动信号</h3><p>固定种子的位置轨迹微分得到速度与加速度。x 向前、y 横向、z 向上，Az 含 9.81 m/s² 重力。</p><output id="wf-readout" class="wf-readout" aria-live="off"></output><label>查看样本数值<input type="range" id="wf-time" min="0" max="800" value="0"></label><p id="wf-features"></p></article>
+ <article><h3>CNN 架构示意</h3><svg id="wf-featuremap" viewBox="0 0 600 70" role="img" aria-label="固定卷积核与池化示意"></svg><math display="block"><msub><mi>p</mi><mi>k</mi></msub><mo>=</mo><mfrac><msup><mi>e</mi><msub><mi>z</mi><mi>k</mi></msub></msup><mrow><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mn>6</mn></munderover><msup><mi>e</mi><msub><mi>z</mi><mi>j</mi></msub></msup></mrow></mfrac></math></article>
+ <article><h3>能量与供能</h3><p><code>E<sub>gross</sub> = MET × 3.5 × kg × min / 200</code><br><code>E<sub>active</sub> = (MET − 1) × 3.5 × kg × min / 200</code><br><code>C / F / P = E<sub>gross</sub> × r / (4 / 9 / 4)</code></p><p>供能比例归一化，估算氧化量与摄入分别汇总。</p></article>
+ <article><h3>当日汇总</h3><p><code>N = N<sub>100g</sub> × grams / 100</code><br><code>Difference = E<sub>food</sub> − E<sub>active</sub></code></p><p>差值未计基础代谢，营养缺失值保持未知。</p></article></div><details><summary>数据与照片署名</summary><div id="wf-sources"></div><a href="/lab/wellife/catalog.json">数据目录</a></details></details>
+ <dialog id="wf-edit-dialog"><form id="wf-edit-form"><h3>修改记录</h3><div id="wf-edit-fields"></div><div class="wf-controls"><button class="wf-primary" type="submit">保存</button><button type="button" id="wf-cancel-edit">取消</button></div></form></dialog><div id="wf-status" class="wf-toast" role="status" aria-live="polite"></div></div>
+    <noscript><p class="lab-phase-note">交互需要 JavaScript；公式和方法说明仍可阅读。</p></noscript>
+  </main>
+  <footer class="site-footer"><div class="footer-inner"><span>© <span id="year">2026</span> XIANG LI</span></div></footer>
+</body>
+</html>

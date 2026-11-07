@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="zh-CN" class="lab-document">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Recommendation System · Lab · Xiangology</title>
+  <meta name="description" content="从用户偏好出发，探索候选召回与个性化排序。">
+  <link rel="canonical" href="https://lxiang.cc/zh/lab/projects/recommender/">
+  <link rel="alternate" hreflang="en" href="https://lxiang.cc/lab/projects/recommender/">
+  <link rel="alternate" hreflang="zh-CN" href="https://lxiang.cc/zh/lab/projects/recommender/">
+  <link rel="alternate" hreflang="x-default" href="https://lxiang.cc/lab/projects/recommender/">
+  <meta property="og:title" content="Recommendation System · Lab · Xiangology">
+  <meta property="og:description" content="从用户偏好出发，探索候选召回与个性化排序。">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://lxiang.cc/zh/lab/projects/recommender/">
+  <link rel="stylesheet" href="/editorial-curtain.css">
+  <script src="/js/editorial-curtain.js"></script>
+  <script src="/js/blog-theme.js"></script>
+  <link rel="icon" href="/Resources/微信头像.jpg">
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="/assets/branding/branding.css">
+  <link rel="stylesheet" href="/lab.css">
+  <script defer src="/lab/shared/project-registry.js"></script>
+  <script defer src="/lab/shared/lab-render.js"></script>
+  <script defer src="/js/lab.js"></script>
+</head>
+<body class="lab-page" data-project="recommender">
+  <header class="site-header">
+    <a class="brand" href="/zh/index.html" aria-label="Xiangology — 首页"><img class="site-brand-logo" src="/assets/branding/xiangology.svg" alt="Xiangology" width="168" height="42"></a>
+    <nav class="site-nav" aria-label="主要导航">
+      <a href="/zh/index.html">个人主页</a>
+      <a href="/zh/lab.html" aria-current="page">Lab</a>
+      <a href="/zh/blog.html">博客</a>
+      <a href="/zh/moments.html">朋友圈</a>
+      <a href="/zh/about.html">关于我</a>
+    </nav>
+  </header>
+  <div class="lab-options"><a class="lab-language" href="/lab/projects/recommender/" lang="en">English</a><button type="button" data-lab-theme aria-pressed="false">深色模式</button></div>
+  <main class="lab-main" id="lab-main">
+    <a class="lab-back" href="/zh/lab.html">← 返回 Lab</a><header class="project-header"><div class="project-identity"><p class="lab-eyebrow">个性化</p><span class="lab-status status-integration"><i aria-hidden="true"></i>待接入网站</span></div><h1>Recommendation System</h1><p class="project-description">从用户偏好出发，探索候选召回与个性化排序。</p></header><section class="lab-workspace integration-workspace" aria-label="待接入网站"><div class="workspace-stage"><fieldset disabled inert aria-hidden="true" class="workspace-preview"><div class="workspace-panel"><svg class="lab-sketch" viewBox="0 0 600 220" role="img" aria-label="布局示意，并非实验数据"><path d="M88 108L143 47" class="sketch-line"/><path d="M143 47L228 28" class="sketch-line"/><path d="M228 28L317 47" class="sketch-line"/><path d="M317 47L385 28" class="sketch-line"/><path d="M385 28L475 68" class="sketch-line"/><path d="M475 68L520 139" class="sketch-line"/><path d="M520 139L447 189" class="sketch-line"/><path d="M447 189L350 174" class="sketch-line"/><path d="M350 174L269 193" class="sketch-line"/><path d="M269 193L177 173" class="sketch-line"/><path d="M177 173L88 108" class="sketch-line"/><path d="M143 47L290 110" class="sketch-line"/><path d="M228 28L290 110" class="sketch-line"/><path d="M317 47L290 110" class="sketch-line"/><path d="M475 68L290 110" class="sketch-line"/><path d="M520 139L290 110" class="sketch-line"/><path d="M350 174L290 110" class="sketch-line"/><path d="M177 173L290 110" class="sketch-line"/><path d="M228 28L269 193" class="sketch-line"/><path d="M385 28L350 174" class="sketch-line"/><circle cx="88" cy="108" r="9" class="node-a"/><circle cx="143" cy="47" r="9" class="node-a"/><circle cx="228" cy="28" r="9" class="node-a"/><circle cx="317" cy="47" r="15" class="node-a"/><circle cx="385" cy="28" r="9" class="node-a"/><circle cx="475" cy="68" r="9" class="node-a"/><circle cx="520" cy="139" r="9" class="node-a"/><circle cx="447" cy="189" r="9" class="node-a"/><circle cx="350" cy="174" r="9" class="node-a"/><circle cx="269" cy="193" r="9" class="node-a"/><circle cx="177" cy="173" r="9" class="node-a"/><circle cx="290" cy="110" r="9" class="node-a"/></svg></div><div class="workspace-panel"><div class="skeleton-lines"><i></i><i></i><i></i><i></i></div><svg class="lab-sketch" viewBox="0 0 600 220" role="img" aria-label="布局示意，并非实验数据"><rect x="30" y="69" width="156" height="74" rx="5" class="sketch-box"/><path d="M48 91h118m-118 12h108" class="sketch-line"/><path d="M192 106h14m-4-4 4 4-4 4" class="sketch-line"/><rect x="210" y="69" width="156" height="74" rx="5" class="sketch-box"/><path d="M228 91h118m-118 12h108" class="sketch-line"/><path d="M372 106h14m-4-4 4 4-4 4" class="sketch-line"/><rect x="390" y="69" width="156" height="74" rx="5" class="sketch-box"/><path d="M408 91h118m-118 12h108" class="sketch-line"/></svg></div><div class="workspace-panel"><div class="skeleton-lines"><i></i><i></i><i></i></div><div class="empty-chart"></div></div></fieldset><div class="experiment-lock integration-lock"><div class="lock-copy"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3m-4 5v2"/></svg><h3>待接入网站</h3></div></div></div></section>
+    <noscript><p class="lab-phase-note">当前为静态预览。开启 JavaScript 可切换实验标签和主题；所有交互实验仍未开放。</p></noscript>
+  </main>
+  <footer class="site-footer"><div class="footer-inner"><span>© <span id="year">2026</span> XIANG LI</span></div></footer>
+</body>
+</html>
