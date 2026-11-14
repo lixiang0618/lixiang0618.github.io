@@ -2,7 +2,7 @@
 (()=>{'use strict';
  if(!document.body.classList.contains('lab-gallery'))return;
  const motion=matchMedia('(prefers-reduced-motion: reduce)'),hero=document.querySelector('.gallery-hero'),arts=[...document.querySelectorAll('[data-gallery-art]')],visible=new Set();let timer=0,lens=0,heroTimer=0;
- const sna=arts.find(el=>el.dataset.galleryArt==='sna'),lenses=['all','1','2','3','4','core','bridge','all'];
+ const sna=arts.find(el=>el.dataset.galleryArt==='sna'&&el.querySelector('.sna-lens')),lenses=['all','1','2','3','4','core','bridge','all'];
  function paintLens(){const value=lenses[lens],nodes=[...sna.querySelectorAll('.sna-gallery-node')],matches=n=>value==='core'?n.dataset.core==='true':value==='bridge'?n.dataset.bridge==='true':n.dataset.community===value;sna.dataset.lens=value;sna.querySelector('.sna-lens').textContent=descriptions[lens];for(const edge of sna.querySelectorAll('[data-gallery-edge]')){const [a,b]=edge.dataset.galleryEdge.split('-').map(Number);edge.classList.toggle('is-lens-edge',value!=='all'&&(value==='bridge'?(matches(nodes[a])||matches(nodes[b])):(matches(nodes[a])&&matches(nodes[b]))));}}
  const descriptions=document.documentElement.lang.startsWith('zh')?['完整网络','板块 1','板块 2','板块 3','板块 4','核心—边缘','桥接节点','完整网络']:['Full network','Block 1','Block 2','Block 3','Block 4','Core–periphery','Brokerage','Full network'];
  function update(){const run=!document.hidden&&!motion.matches;for(const art of arts){art.classList.add('is-enhanced');art.classList.toggle('is-running',run&&visible.has(art));}clearInterval(timer);timer=0;if(run&&sna&&visible.has(sna))timer=setInterval(()=>{lens=(lens+1)%lenses.length;paintLens();},1800);if(!run){hero?.classList.remove('weave-enter');if(motion.matches&&sna){lens=0;paintLens();}}}

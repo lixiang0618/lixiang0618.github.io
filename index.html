@@ -2,23 +2,10 @@
 <html class="profile-home" lang="en">
 <head>
   <meta charset="utf-8">
+  <script src="/js/profile-entry.js"></script>
   <link rel="stylesheet" href="editorial-curtain.css">
   <script src="js/editorial-curtain.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <script>
-    (function() {
-      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-      const isAlreadyOnZh = window.location.pathname.includes('/zh/');
-      const isChineseBrowser = navigator.language && navigator.language.toLowerCase().includes('zh');
-      if (isMobile && window.location.pathname.indexOf('index-mobile.html') === -1) {
-        if (isChineseBrowser && !isAlreadyOnZh) {
-          window.location.href = 'zh/index-mobile.html';
-        } else if (!isChineseBrowser && !isAlreadyOnZh) {
-          window.location.href = 'index-mobile.html';
-        }
-      }
-    })();
-  </script>
   <title>Li Xiang | Personal Website</title>
   <meta name="description" content="Li Xiang  - Information Management & Information System undergraduate. GNN, Data Science, AIoT.">
   <meta name="author" content="Li Xiang">
@@ -51,8 +38,13 @@
   </script>
   <link rel="stylesheet" href="profile-editorial.css">
   <link rel="stylesheet" href="/assets/branding/branding.css">
+  <script defer src="/js/profile-country-flags.js"></script>
   <script defer src="js/profile-location.js"></script>
   <script defer src="js/profile-layout.js"></script>
+  <link rel="stylesheet" href="/lab/gallery.css">
+  <link rel="stylesheet" href="/profile-graph.css">
+  <script defer src="/js/profile-art.js"></script>
+  <script defer src="/js/profile-graph.js"></script>
 </head>
 <body>
   <header class="site-header">
@@ -86,7 +78,7 @@
               <img src="https://tse1.mm.bing.net/th/id/OIP.wo1WIItmWh812PwxQwsbLAAAAA?cb=12&rs=1&pid=ImgDetMain&o=7&rm=3" alt="XiaoHongShu" />
               <span>RedNote</span>
             </a>
-            <a class="social-link" href="https://www.linkedin.com/in/lxiang618" target="_blank" rel="noopener" aria-label="Douyin">
+            <a class="social-link" href="https://www.linkedin.com/in/lxiang618" target="_blank" rel="noopener" aria-label="LinkedIn">
               <img src="Resources/linkedin.png" alt="LinkedIn" />
               <span>LinkedIn</span>
             </a>
@@ -106,7 +98,7 @@
           <div class="profile-location-wrap">
             <section class="profile-location" data-profile-location aria-busy="true" aria-hidden="true" aria-label="Current shared location">
               <header class="profile-location-heading" title="Location sharing status, not online presence or continuous tracking"><i class="profile-location-dot" aria-hidden="true"></i><span>CURRENTLY AROUND</span><span class="profile-location-status"><span data-location-status></span></span></header>
-              <div class="profile-location-main"><svg class="profile-location-pin" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 11-8 11S4 16 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg><p class="profile-location-label"></p></div>
+              <div class="profile-location-main"><svg class="profile-location-pin" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 11-8 11S4 16 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg><img class="profile-location-flag" width="25" height="19" alt="" hidden><p class="profile-location-label"></p></div>
               <p class="profile-location-updated"><span></span><time></time></p>
             </section>
           </div>
@@ -114,16 +106,15 @@
         </div>
 
         <div class="hero-media">
-          <img src="Resources/portrait-1.jpg" alt="portrait" class="hero-img" id="portrait-img" />
+          <img src="Resources/portrait-1.jpg" alt="portrait" class="hero-img" id="portrait-img" srcset="/assets/homepage/portrait-1.jpg">
         </div>
 
         
 
         <!-- <div class="hero-media">
-          <img src="Resources/portrait.jpg" alt="portrait" class="hero-img" />
+          <img loading="lazy" decoding="async" src="Resources/portrait.jpg" alt="portrait" class="hero-img" srcset="/assets/homepage/portrait-1.jpg">
         </div> -->
       </div>
-      <a class="hero-scroll-cue" href="#education"><span class="hero-scroll-dot" aria-hidden="true"></span><span>Scroll to explore</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v15m-5-5 5 5 5-5"/></svg></a>
     </section>
 
     
@@ -149,8 +140,8 @@
           <div class="meta-inline">Sept. 2022  - Jun. 2026</div>
           <ul>
             <li>Bachelor of Management in Information Management & Information System</li>
-            <li>Major Average Mark: 89.18/100; Rank: 1/32</li>
-            <li>Core Courses: Operation Research, Algorithm Design, Convex Optimisation, Computer Networks</li>
+
+
           </ul>
         </div>
       </div>
@@ -165,10 +156,10 @@
           </ul>
         </div>
       </div>
-      
+
 
       <!-- <div class="education_portrait">
-        <img src="./Resources/portrait.jpg" alt="Profile portrait">
+        <img loading="lazy" decoding="async" src="./Resources/portrait.jpg" alt="Profile portrait">
       </div> -->
     </section>
 
@@ -243,11 +234,11 @@
       
         <div class="nus-aiot">
           <div class="nus-aiot-column left">
-            <img src="./Resources/internship-nus-1.png" alt="">
+            <img loading="lazy" decoding="async" src="./Resources/internship-nus-1.png" alt="">
           </div>
           <div class="nus-aiot-column right">
-            <img src="./Resources/internship-nus-2.jpg" alt="">
-            <img src="./Resources/internship-nus-3.jpg" alt="">
+            <img loading="lazy" decoding="async" src="./Resources/internship-nus-2.jpg" alt="">
+            <img loading="lazy" decoding="async" src="./Resources/internship-nus-3.jpg" alt="">
           </div>
         </div>
       </div>
@@ -289,11 +280,11 @@
         <!-- 右侧：图片区 - - 左边一张大图，右边两张小图竖着排列 -->
         <div class="right-section-compact">
           <div class="compact-left">
-            <img src="./Resources/project-learnGo-1.gif" alt="LearnGo main demo">
+            <img loading="lazy" decoding="async" src="./Resources/project-learnGo-1.gif" alt="LearnGo main demo">
           </div>
           <div class="compact-right">
-            <img src="./Resources/project-learnGo-2.gif" alt="LearnGo interface 1">
-            <img src="./Resources/project-learnGo-3.gif" alt="LearnGo interface 2">
+            <img loading="lazy" decoding="async" src="./Resources/project-learnGo-2.gif" alt="LearnGo interface 1">
+            <img loading="lazy" decoding="async" src="./Resources/project-learnGo-3.gif" alt="LearnGo interface 2">
           </div>
         </div>
       </div>
@@ -432,31 +423,31 @@
         <div class="sports-showcase">
           <div class="sports-icons">
             <div class="sport">
-              <img src="./Resources/volleyball.png" alt="Volleyball icon">
-              <p>Volleyball<br><span>Silver Team & Star Team (2 yrs)</span></p>
+              <img loading="lazy" decoding="async" src="./Resources/volleyball.png" alt="Volleyball icon">
+              <p>Volleyball</p>
             </div>
             <div class="sport">
-              <img src="./Resources/badminton.png" alt="Badminton icon">
-              <p>Badminton<br><span>6 yrs of Experience</span></p>
+              <img loading="lazy" decoding="async" src="./Resources/badminton.png" alt="Badminton icon">
+              <p>Badminton</p>
             </div>
             <div class="sport">
-              <img src="./Resources/pingpong.png" alt="Table tennis icon">
-              <p>Table Tennis<br><span>3 yrs of Training</span></p>
+              <img loading="lazy" decoding="async" src="./Resources/pingpong.png" alt="Table tennis icon">
+              <p>Table Tennis</p>
             </div>
           </div>
         </div>
 
         <div class="photo-wall">
-          <img src="./Resources/sports-1.jpg" alt="Volleyball team">
-          <img src="./Resources/sports-2.jpg" alt="Badminton practice">
-          <img src="./Resources/sports-3.jpg" alt="Tennis match">
-          <img src="./Resources/sports-4.jpg" alt="Volleyball game">
-          <img src="./Resources/sports-5.jpg" alt="Team celebration">
-          <img src="./Resources/sports-6.jpg" alt="Training">
-          <img src="./Resources/sports-7.jpg" alt="Training">
-          <img src="./Resources/sports-8.jpg" alt="Training">
-          <img src="./Resources/sports-9.jpg" alt="Training">
-          <img src="./Resources/sports-10.jpg" alt="Training">
+          <img loading="lazy" decoding="async" src="./Resources/sports-1.jpg" alt="Volleyball team">
+          <img loading="lazy" decoding="async" src="./Resources/sports-2.jpg" alt="Badminton practice">
+          <img loading="lazy" decoding="async" src="./Resources/sports-3.jpg" alt="Tennis match">
+          <img loading="lazy" decoding="async" src="./Resources/sports-4.jpg" alt="Volleyball game">
+          <img loading="lazy" decoding="async" src="./Resources/sports-5.jpg" alt="Team celebration">
+          <img loading="lazy" decoding="async" src="./Resources/sports-6.jpg" alt="Training">
+          <img loading="lazy" decoding="async" src="./Resources/sports-7.jpg" alt="Training">
+          <img loading="lazy" decoding="async" src="./Resources/sports-8.jpg" alt="Training">
+          <img loading="lazy" decoding="async" src="./Resources/sports-9.jpg" alt="Training">
+          <img loading="lazy" decoding="async" src="./Resources/sports-10.jpg" alt="Training">
         </div>
       </div>
     </section>
