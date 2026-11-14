@@ -97,6 +97,7 @@
     const percent = item.getAttribute('data-percent');
     const color = item.getAttribute('data-color');
     const circle = item.querySelector('circle:last-child');
+    if (!circle) return;
     circle.style.setProperty('--percent', percent);
     circle.style.setProperty('--circle-color', color);
   });

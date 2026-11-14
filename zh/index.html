@@ -2,17 +2,10 @@
 <html class="profile-home" lang="zh-CN">
 <head>
   <meta charset="utf-8">
+  <script src="/js/profile-entry.js"></script>
   <link rel="stylesheet" href="../editorial-curtain.css">
   <script src="../js/editorial-curtain.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <script>
-    (function() {
-      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-      if (isMobile && window.location.pathname.indexOf('index-mobile.html') === -1) {
-        window.location.href = '/zh/index-mobile.html';
-      }
-    })();
-  </script>
   <title>李想 | 个人网站</title>
   <meta name="description" content="李想  -  华中师范大学信息管理与信息系统专业本科生。图网络、数据科学、AIoT。">
   <meta name="author" content="李想">
@@ -45,8 +38,13 @@
   </script>
   <link rel="stylesheet" href="../profile-editorial.css">
   <link rel="stylesheet" href="/assets/branding/branding.css">
+  <script defer src="/js/profile-country-flags.js"></script>
   <script defer src="../js/profile-location.js"></script>
   <script defer src="../js/profile-layout.js"></script>
+  <link rel="stylesheet" href="/lab/gallery.css">
+  <link rel="stylesheet" href="/profile-graph.css">
+  <script defer src="/js/profile-art.js"></script>
+  <script defer src="/js/profile-graph.js"></script>
 </head>
 <body>
   <header class="site-header">
@@ -77,7 +75,7 @@
               <img src="https://tse1.mm.bing.net/th/id/OIP.wo1WIItmWh812PwxQwsbLAAAAA?cb=12&rs=1&pid=ImgDetMain&o=7&rm=3" alt="小红书" />
               <span>小红书</span>
             </a>
-            <a class="social-link" href="https://www.linkedin.com/in/lxiang618" target="_blank" rel="noopener" aria-label="Douyin">
+            <a class="social-link" href="https://www.linkedin.com/in/lxiang618" target="_blank" rel="noopener" aria-label="LinkedIn">
               <img src="../Resources/linkedin.png" alt="LinkedIn" />
               <span>领英</span>
             </a>
@@ -96,17 +94,16 @@
           <div class="profile-location-wrap">
             <section class="profile-location" data-profile-location aria-busy="true" aria-hidden="true" aria-label="目前所在位置">
               <header class="profile-location-heading" title="表示位置共享状态，不代表在线或持续追踪"><i class="profile-location-dot" aria-hidden="true"></i><span>目前所在位置</span><span class="profile-location-status"><span data-location-status></span></span></header>
-              <div class="profile-location-main"><svg class="profile-location-pin" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 11-8 11S4 16 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg><p class="profile-location-label"></p></div>
+              <div class="profile-location-main"><svg class="profile-location-pin" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 11-8 11S4 16 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg><img class="profile-location-flag" width="25" height="19" alt="" hidden><p class="profile-location-label"></p></div>
               <p class="profile-location-updated"><span></span><time></time></p>
             </section>
           </div>
         </div>
 
         <div class="hero-media">
-          <img src="../Resources/portrait-1.jpg" alt="照片" class="hero-img" id="portrait-img" />
+          <img src="../Resources/portrait-1.jpg" alt="照片" class="hero-img" id="portrait-img" srcset="/assets/homepage/portrait-1.jpg">
         </div>
       </div>
-      <a class="hero-scroll-cue" href="#education"><span class="hero-scroll-dot" aria-hidden="true"></span><span>向下探索</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v15m-5-5 5 5 5-5"/></svg></a>
     </section>
 
     <section id="education" class="section">
@@ -130,8 +127,8 @@
           <div class="meta-inline">2022年9月  -  2026年6月</div>
           <ul>
             <li>信息管理与信息系统专业，管理学学士</li>
-            <li>专业课平均分：89.18/100；排名：1/32</li>
-            <li>核心课程：运筹学、算法设计、凸优化、计算机网络</li>
+
+
           </ul>
         </div>
       </div>
@@ -200,11 +197,11 @@
       
         <div class="nus-aiot">
           <div class="nus-aiot-column left">
-            <img src="../Resources/internship-nus-1.png" alt="">
+            <img loading="lazy" decoding="async" src="../Resources/internship-nus-1.png" alt="">
           </div>
           <div class="nus-aiot-column right">
-            <img src="../Resources/internship-nus-2.jpg" alt="">
-            <img src="../Resources/internship-nus-3.jpg" alt="">
+            <img loading="lazy" decoding="async" src="../Resources/internship-nus-2.jpg" alt="">
+            <img loading="lazy" decoding="async" src="../Resources/internship-nus-3.jpg" alt="">
           </div>
         </div>
       </div>
@@ -243,11 +240,11 @@
       
         <div class="right-section-compact">
           <div class="compact-left">
-            <img src="../Resources/project-learnGo-1.gif" alt="LearnGo主演示">
+            <img loading="lazy" decoding="async" src="../Resources/project-learnGo-1.gif" alt="LearnGo主演示">
           </div>
           <div class="compact-right">
-            <img src="../Resources/project-learnGo-2.gif" alt="LearnGo界面1">
-            <img src="../Resources/project-learnGo-3.gif" alt="LearnGo界面2">
+            <img loading="lazy" decoding="async" src="../Resources/project-learnGo-2.gif" alt="LearnGo界面1">
+            <img loading="lazy" decoding="async" src="../Resources/project-learnGo-3.gif" alt="LearnGo界面2">
           </div>
         </div>
       </div>
@@ -351,31 +348,31 @@
         <div class="sports-showcase">
           <div class="sports-icons">
             <div class="sport">
-              <img src="../Resources/volleyball.png" alt="排球图标">
-              <p>排球<br><span>季军队伍 & 2年明星队伍</span></p>
+              <img loading="lazy" decoding="async" src="../Resources/volleyball.png" alt="排球图标">
+              <p>排球</p>
             </div>
             <div class="sport">
-              <img src="../Resources/badminton.png" alt="羽毛球图标">
-              <p>羽毛球<br><span>6年经验</span></p>
+              <img loading="lazy" decoding="async" src="../Resources/badminton.png" alt="羽毛球图标">
+              <p>羽毛球</p>
             </div>
             <div class="sport">
-              <img src="../Resources/pingpong.png" alt="乒乓球图标">
-              <p>乒乓球<br><span>3年训练</span></p>
+              <img loading="lazy" decoding="async" src="../Resources/pingpong.png" alt="乒乓球图标">
+              <p>乒乓球</p>
             </div>
           </div>
         </div>
 
         <div class="photo-wall">
-          <img src="../Resources/sports-1.jpg" alt="排球团队">
-          <img src="../Resources/sports-2.jpg" alt="羽毛球练习">
-          <img src="../Resources/sports-3.jpg" alt="网球比赛">
-          <img src="../Resources/sports-4.jpg" alt="排球比赛">
-          <img src="../Resources/sports-5.jpg" alt="团队庆祝">
-          <img src="../Resources/sports-6.jpg" alt="训练">
-          <img src="../Resources/sports-7.jpg" alt="训练">
-          <img src="../Resources/sports-8.jpg" alt="训练">
-          <img src="../Resources/sports-9.jpg" alt="训练">
-          <img src="../Resources/sports-10.jpg" alt="训练">
+          <img loading="lazy" decoding="async" src="../Resources/sports-1.jpg" alt="排球团队">
+          <img loading="lazy" decoding="async" src="../Resources/sports-2.jpg" alt="羽毛球练习">
+          <img loading="lazy" decoding="async" src="../Resources/sports-3.jpg" alt="网球比赛">
+          <img loading="lazy" decoding="async" src="../Resources/sports-4.jpg" alt="排球比赛">
+          <img loading="lazy" decoding="async" src="../Resources/sports-5.jpg" alt="团队庆祝">
+          <img loading="lazy" decoding="async" src="../Resources/sports-6.jpg" alt="训练">
+          <img loading="lazy" decoding="async" src="../Resources/sports-7.jpg" alt="训练">
+          <img loading="lazy" decoding="async" src="../Resources/sports-8.jpg" alt="训练">
+          <img loading="lazy" decoding="async" src="../Resources/sports-9.jpg" alt="训练">
+          <img loading="lazy" decoding="async" src="../Resources/sports-10.jpg" alt="训练">
         </div>
       </div>
     </section>
