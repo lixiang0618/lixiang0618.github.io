@@ -151,7 +151,7 @@
   const mobileHero = matchMedia('(max-width: 700px)');
   function arrangeHero() {
     if (mobileHero.matches) {
-      heroText.prepend(name);
+      portraitMedia.after(name);
       if (locationWrap) portraitColumn.append(locationWrap);
       heroInner.append(contacts);
     } else {
@@ -171,7 +171,7 @@
   let ambientWidth = 0, ambientHeight = 0, ambientFrame = 0, ambientTime = 0, ambientLast = 0;
   let ambientVisible = true;
   const pointer = {x: 0, y: 0, strength: 0, target: 0};
-  const particles = Array.from({length: 180}, (_, i) => ({x: ((i * .61803398875) % 1), y: (Math.sin(i * 127.1 + 31.7) * 43758.5453 + 43759) % 1, phase: i * 2.39, depth: .35 + (i % 7) / 10}));
+  const particles = Array.from({length: 600}, (_, i) => ({x: ((i * .61803398875) % 1), y: (Math.sin(i * 127.1 + 31.7) * 43758.5453 + 43759) % 1, phase: i * 2.39, depth: .35 + (i % 7) / 10}));
   function resizeAmbient() {
     const rect = hero.getBoundingClientRect();
     ambientWidth = rect.width; ambientHeight = rect.height;
@@ -195,69 +195,115 @@
     }));
     const photoLeft = portraitMedia.getBoundingClientRect().left;
     const gap = Math.max(0, photoLeft - textRight);
-    const locationBounds = locationWrap?.getBoundingClientRect();
-    const textBounds = heroText.getBoundingClientRect();
-    const mobileRadius = Math.min(54, textBounds.width * .29);
-    const center = narrow ? {
-      x: textBounds.left - bounds.left + textBounds.width / 2,
-      y: Math.max(translation.getBoundingClientRect().bottom + mobileRadius + 14, (locationBounds?.top || phrase.bottom) + (locationBounds?.height || 80) / 2) - bounds.top
-    } : {x: (textRight + photoLeft) / 2 - bounds.left, y: phrase.top - bounds.top + phrase.height * .58};
-    pointer.strength += (pointer.target - pointer.strength) * .045;
-    const reach = Math.max(0, 1 - Math.hypot(pointer.x - center.x, pointer.y - center.y) / 240) * pointer.strength;
-    const beat = Math.pow((1 + Math.cos(t * 1.05)) / 2, 5);
-    const offset = {x: (pointer.x - center.x) * reach * .22, y: (pointer.y - center.y) * reach * .22};
-    const constellation = Array.from({length: 13}, (_,i) => {
-      const outer = i < 8;
-      const angle = i * Math.PI * 2 / (outer ? 8 : 5) + t * (outer ? .18 : -.29);
-      const radius = (narrow ? mobileRadius : Math.min(145, Math.max(55, gap * .43))) * (outer ? 1 : .43) * (.9 + .1 * Math.sin(t * .65 + i*1.7));
-      return {x:center.x+Math.cos(angle)*radius+offset.x*(.5+i/24),y:center.y+Math.sin(angle)*radius*.95+Math.sin(t*.8+i)*9+offset.y*(.5+i/24)};
+    const center = {x: narrow ? w*.5 : (textRight+photoLeft)/2-bounds.left, y:phrase.top-bounds.top+phrase.height*.6};
+    pointer.strength += (pointer.target-pointer.strength)*.045;
+    // One continuous field: broad drifting dust, a denser current, and shared pulses.
+    const flow = u => narrow ? {
+      x:w*.5+Math.sin(u*5.3+t*.09)*w*.39,
+      y:70+u*(h-100)
+    } : {
+      x:center.x+Math.sin(u*5+t*.09)*Math.min(100,gap*.25),
+      y:25+u*(h-40)
+    };
+    const nodes = particles.slice(0,narrow?180:250).map((p,i)=>{
+      const inCurrent=i>=(narrow?85:130);
+      const u=(p.y+t*.012)%1, path=flow(u);
+      let x=inCurrent?path.x+Math.sin(p.phase+t*.16)*(narrow?65:100):p.x*w+Math.sin(t*.17+p.phase)*20;
+      let y=inCurrent?path.y+Math.cos(p.phase+t*.2)*22:p.y*h+Math.cos(t*.14+p.phase)*22;
+      const influence=Math.max(0,1-Math.hypot(x-pointer.x,y-pointer.y)/150)*pointer.strength;
+      x+=(pointer.x-x)*influence*.13; y+=(pointer.y-y)*influence*.13;
+      const pulse=Math.pow(Math.max(0,Math.cos(y/h*7-t*.85)),10);
+      return {x,y,pulse,depth:p.depth,bright:inCurrent};
     });
-    // Clip the atmosphere around actual content, including the path between points.
-    const quietAreas = [name, statement, translation, contacts, portraitMedia, locationWrap].filter(Boolean).map(node => node.getBoundingClientRect());
-    ctx.save();
-    ctx.beginPath(); ctx.rect(0,0,w,h);
-    for (const area of quietAreas) ctx.rect(area.left-bounds.left-12,area.top-bounds.top-9,area.width+24,area.height+18);
-    ctx.clip('evenodd');
-    const field = particles.slice(0, narrow ? 65 : 180).map(p => {
-      let x = ((p.x*w + t*(3+p.depth*5)) % (w+70))-35 + Math.sin(t*.24+p.phase)*24;
-      let y = ((p.y*h + t*(1+p.depth*2)) % (h+60))-30 + Math.cos(t*.19+p.phase)*28;
-      const distance = Math.hypot(x-pointer.x,y-pointer.y);
-      const influence = Math.max(0,1-distance/160)*pointer.strength;
-      x += (x-pointer.x)*influence*.22; y += (y-pointer.y)*influence*.22;
-      return {x,y,depth:p.depth,alpha:.22+p.depth*.26+influence*.16};
-    });
-    for (let i=0;i<field.length;i++) {
-      const p=field[i];
-      for (let j=i+1;j<field.length;j++) {
-        const q=field[j], distance=Math.hypot(p.x-q.x,p.y-q.y);
-        const limit=narrow?72:105;
-        if (distance>limit) continue;
-        ctx.strokeStyle=`rgba(152,109,70,${(1-distance/limit)*.23})`; ctx.lineWidth=.65;
-        ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.stroke();
+    const quietNodes=[name,statement,translation,contacts,locationWrap].filter(Boolean);
+    const textRects=[];
+    for(const node of quietNodes){
+      const walker=document.createTreeWalker(node,NodeFilter.SHOW_TEXT);
+      while(walker.nextNode()){
+        if(!walker.currentNode.textContent.trim())continue;
+        const range=document.createRange();range.selectNodeContents(walker.currentNode);
+        for(const r of range.getClientRects())textRects.push({left:r.left-bounds.left,right:r.right-bounds.left,top:r.top-bounds.top,bottom:r.bottom-bounds.top});
       }
-      ctx.fillStyle=`rgba(153,100,57,${p.alpha})`;
-      ctx.beginPath();ctx.arc(p.x,p.y,.7+p.depth*1.15,0,Math.PI*2);ctx.fill();
     }
-    ctx.restore();
-    const hue = 24 + Math.sin(t * .53) * 12;
-    constellation.forEach((p,i) => {
-      const neighbours = i < 8 ? [(i+1)%8,8+i%5] : [8+(i-7)%5];
-      if (i < 4 && Math.sin(t*.4+i) > .2) neighbours.push(i+4);
-      neighbours.forEach(j => {
-        const q=constellation[j];
-        ctx.strokeStyle=`hsla(${i%3===0?165:24+i*2},65%,43%,${j>=8?.52:.34})`; ctx.lineWidth=j>=8?1.1:.85;
-        ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.quadraticCurveTo((p.x+q.x)/2+Math.sin(t+i)*8,(p.y+q.y)/2+Math.cos(t+j)*8,q.x,q.y);ctx.stroke();
-        const u=(t*.3+i*.19)%1;
-        ctx.fillStyle=`hsla(${i%3===0?165:28},85%,48%,${Math.sin(u*Math.PI)*.95})`;
-        ctx.beginPath();ctx.arc(p.x+(q.x-p.x)*u,p.y+(q.y-p.y)*u,1.6,0,Math.PI*2);ctx.fill();
-      });
-      const color = i%4===0 ? 165 : i%3===0 ? 43 : hue;
-      const glow = ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,18);
-      glow.addColorStop(0, `hsla(${color},85%,50%,.4)`); glow.addColorStop(1,`hsla(${color},85%,50%,0)`);
-      ctx.fillStyle=glow; ctx.beginPath(); ctx.arc(p.x,p.y,18,0,Math.PI*2); ctx.fill();
-      ctx.fillStyle = `hsl(${color},80%,${i%4===0?38:49}%)`;
-      ctx.beginPath(); ctx.arc(p.x,p.y,(i>=8?3.5:2.8) + beat*.7,0,Math.PI*2); ctx.fill();
+    const clarity=(x,y)=>{
+      let distance=100;
+      for(const r of textRects){
+        const dx=Math.max(r.left-x,0,x-r.right),dy=Math.max(r.top-y,0,y-r.bottom);
+        distance=Math.min(distance,Math.hypot(dx,dy));
+      }
+      const u=Math.min(1,distance/22);
+      return .08+.92*u*u*(3-2*u);
+    };
+    if(narrow){
+      const place=locationWrap.getBoundingClientRect(),caption=translation.getBoundingClientRect();
+      const pockets=[
+        {x:w*.15,y:place.top-bounds.top+place.height*.5},
+        {x:w*.79,y:(place.bottom+phrase.top)/2-bounds.top},
+        {x:w*.34,y:caption.bottom-bounds.top+32}
+      ];
+      for(let i=0;i<51;i++){
+        const p=particles[450+i],anchor=pockets[i%3],angle=p.phase+t*(i%2?.12:-.1);
+        const radius=16+p.depth*45;
+        const x=anchor.x+Math.cos(angle)*radius,y=anchor.y+Math.sin(angle)*radius*.48;
+        const pulse=Math.pow(Math.max(0,Math.cos(y/h*7-t*.85)),10);
+        nodes.push({x,y,pulse,depth:p.depth,bright:true});
+      }
+    } else {
+      // Fill the actual text-to-portrait gap with overlapping, open clusters.
+      const spread=Math.min(185,Math.max(45,gap*.43));
+      for(let i=0;i<90;i++){
+        const p=particles[450+i],band=i%3;
+        const angle=p.phase+t*(band%2?.09:-.07);
+        const radius=.25+p.depth*.7;
+        const x=center.x+Math.cos(angle)*spread*radius;
+        const y=center.y+(band-1)*95+Math.sin(angle)*65*radius+Math.sin(t*.2+i)*9;
+        const pulse=Math.pow(Math.max(0,Math.cos(y/h*7-t*.85)),10);
+        nodes.push({x,y,pulse,depth:p.depth,bright:true});
+      }
+    }
+    ctx.save();
+    ctx.beginPath();ctx.rect(0,0,w,h);
+    const portraitRect=portraitMedia.getBoundingClientRect();
+    if(narrow){ctx.moveTo(portraitRect.right-bounds.left+5,portraitRect.top-bounds.top+portraitRect.height/2);ctx.ellipse(portraitRect.left-bounds.left+portraitRect.width/2,portraitRect.top-bounds.top+portraitRect.height/2,portraitRect.width/2+5,portraitRect.height/2+5,0,0,Math.PI*2);}
+    else ctx.rect(portraitRect.left-bounds.left-6,portraitRect.top-bounds.top-6,portraitRect.width+12,portraitRect.height+12);
+    ctx.clip('evenodd');
+    // Fine dust uses the same current and palette as the connected nodes.
+    for(let i=250;i<(narrow?430:600);i++){
+      const p=particles[i],u=(p.y+t*.013)%1,path=flow(u);
+      const x=path.x+Math.sin(p.phase+t*.11)*(narrow?100:170), y=path.y+Math.cos(p.phase)*35;
+      const pulse=Math.pow(Math.max(0,Math.cos(y/h*7-t*.85)),10);
+      ctx.globalAlpha=clarity(x,y);
+      ctx.fillStyle=`rgba(181,115,50,${.22+p.depth*.17+pulse*.3})`;
+      ctx.beginPath();ctx.arc(x,y,.35+p.depth*.45,0,Math.PI*2);ctx.fill();
+    }
+    nodes.forEach((p,i)=>{
+      const neighbours=[];
+      for(let j=i+1;j<nodes.length;j++){
+        const q=nodes[j],distance=Math.hypot(p.x-q.x,p.y-q.y);
+        if(distance<(narrow?95:130))neighbours.push({q,distance,j});
+      }
+      neighbours.sort((a,b)=>a.distance-b.distance);
+      for(const {q,distance,j} of neighbours.slice(0,4)){
+        const pulse=(p.pulse+q.pulse)/2, strength=1-distance/(narrow?95:130);
+        ctx.globalAlpha=Math.min(clarity(p.x,p.y),clarity(q.x,q.y),clarity((p.x+q.x)/2,(p.y+q.y)/2));
+        ctx.strokeStyle=`rgba(176,105,48,${strength*(.24+pulse*.45)})`;ctx.lineWidth=.55+pulse*.35;
+        ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.stroke();
+        if((i+j)%7===0){
+          const u=(t*.16+i*.173)%1;
+          ctx.fillStyle=`rgba(220,143,46,${strength*(.35+pulse*.5)})`;
+          ctx.beginPath();ctx.arc(p.x+(q.x-p.x)*u,p.y+(q.y-p.y)*u,.9+pulse*.5,0,Math.PI*2);ctx.fill();
+        }
+      }
+      ctx.globalAlpha=clarity(p.x,p.y);
+      if(p.bright&&p.pulse>.55){
+        const glow=ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,10);
+        glow.addColorStop(0,`rgba(231,155,54,${p.pulse*.22})`);glow.addColorStop(1,'rgba(231,155,54,0)');
+        ctx.fillStyle=glow;ctx.beginPath();ctx.arc(p.x,p.y,10,0,Math.PI*2);ctx.fill();
+      }
+      ctx.fillStyle=`rgba(${p.pulse>.5?'202,119,34':'149,96,58'},${.4+p.depth*.16+p.pulse*.35})`;
+      ctx.beginPath();ctx.arc(p.x,p.y,.65+p.depth*.65+p.pulse*.7,0,Math.PI*2);ctx.fill();
     });
+    ctx.restore();
     if (ambientVisible && !document.hidden && !motion.matches) ambientFrame = requestAnimationFrame(paintAmbient);
   }
   function resumeAmbient() {
